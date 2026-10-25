@@ -1,0 +1,12 @@
+{
+  "app": {
+    "title": "Research Browser",
+    "languageToggle": "עברית"
+  },
+  "engine": {
+    "connecting": "Starting the research engine…",
+    "ready": "Engine ready",
+    "failed": "The research engine could not be reached: {{message}}",
+    "retry": "Retry"
+  }
+}

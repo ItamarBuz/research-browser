@@ -1,0 +1,12 @@
+{
+  "name": "research-browser",
+  "private": true,
+  "packageManager": "pnpm@10.34.7",
+  "scripts": {
+    "dev": "pnpm --filter desktop tauri dev",
+    "lint": "pnpm --filter desktop lint",
+    "typecheck": "pnpm --filter desktop typecheck",
+    "test": "pnpm --filter desktop test",
+    "gen:api": "pnpm --filter desktop gen:api"
+  }
+}

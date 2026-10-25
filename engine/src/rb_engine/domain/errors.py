@@ -1,0 +1,43 @@
+"""Typed error hierarchy for expected engine failures.
+
+Each error carries the HTTP status and title it maps to, so the API edge can render an
+RFC 7807 problem response without knowing about individual error types.
+"""
+
+from typing import ClassVar
+
+
+class EngineError(Exception):
+    """Base class for all expected (non-bug) engine failures."""
+
+    status_code: ClassVar[int] = 500
+    title: ClassVar[str] = "Engine error"
+    type_slug: ClassVar[str] = "engine-error"
+
+    def __init__(self, detail: str) -> None:
+        super().__init__(detail)
+        self.detail = detail
+
+
+class SourceUnavailableError(EngineError):
+    """A remote academic source could not be reached or returned an unusable response."""
+
+    status_code = 503
+    title = "Source unavailable"
+    type_slug = "source-unavailable"
+
+
+class ModelNotReadyError(EngineError):
+    """A required local model is not downloaded, verified or loaded yet."""
+
+    status_code = 503
+    title = "Model not ready"
+    type_slug = "model-not-ready"
+
+
+class DocumentParseError(EngineError):
+    """A document (e.g. an imported PDF) could not be parsed into text."""
+
+    status_code = 422
+    title = "Document could not be parsed"
+    type_slug = "document-parse-error"

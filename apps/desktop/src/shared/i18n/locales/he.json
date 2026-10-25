@@ -1,0 +1,12 @@
+{
+  "app": {
+    "title": "דפדפן מחקר",
+    "languageToggle": "English"
+  },
+  "engine": {
+    "connecting": "מפעיל את מנוע המחקר…",
+    "ready": "המנוע מוכן",
+    "failed": "לא ניתן להתחבר למנוע המחקר: {{message}}",
+    "retry": "נסה שוב"
+  }
+}
