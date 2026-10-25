@@ -5,11 +5,15 @@ import json
 import sys
 
 from rb_engine.api.app import create_app
+from rb_engine.runtime.container import EngineServices
 from rb_engine.runtime.settings import EngineSettings
 
 
 def main() -> None:
-    app = create_app(EngineSettings(port=1, token="schema-export-only"))
+    def no_services() -> EngineServices:
+        raise AssertionError("schema export never starts the app")
+
+    app = create_app(EngineSettings(port=1, token="schema-export-only"), no_services)
     # Windows consoles default to a legacy code page; the schema will carry Hebrew text.
     if isinstance(sys.stdout, io.TextIOWrapper):
         sys.stdout.reconfigure(encoding="utf-8")

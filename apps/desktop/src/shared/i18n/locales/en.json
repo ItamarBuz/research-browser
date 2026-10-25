@@ -3,10 +3,84 @@
     "title": "Research Browser",
     "languageToggle": "עברית"
   },
+  "nav": {
+    "label": "Main",
+    "home": "Home",
+    "settings": "Settings"
+  },
   "engine": {
     "connecting": "Starting the research engine…",
     "ready": "Engine ready",
     "failed": "The research engine could not be reached: {{message}}",
     "retry": "Retry"
+  },
+  "home": {
+    "title": "Welcome",
+    "comingSoon": "Search is coming in the next milestone. Meanwhile, download the AI models for your computer so everything runs locally.",
+    "setUpModels": "Set up AI models"
+  },
+  "settings": {
+    "loading": "Loading…",
+    "error": "Something went wrong: {{message}}",
+    "hardware": {
+      "title": "Your computer",
+      "os": "Operating system",
+      "cpu": "Processor",
+      "cores": "{{physical}} cores · {{logical}} threads",
+      "memory": "Memory",
+      "memoryValue": "{{total}} total · {{available}} available now",
+      "gpu": "Graphics acceleration",
+      "gpuUnified": "shares system memory",
+      "noGpu": "None detected (supported: NVIDIA CUDA, Apple Silicon). Models will run on the processor."
+    },
+    "tier": {
+      "title": "Performance tier",
+      "names": {
+        "lite": "Lite",
+        "standard": "Standard",
+        "pro": "Pro"
+      },
+      "descriptions": {
+        "lite": "Small, fast models that fit comfortably in limited memory. Answers are good but less nuanced.",
+        "standard": "Balanced models with result re-ranking. A good fit for most modern computers.",
+        "pro": "The largest local models and longest context, for the most accurate analysis."
+      },
+      "reasons": {
+        "system_ram": "{{value}} of system memory",
+        "gpu_memory": "{{value}} of dedicated GPU memory",
+        "unified_memory": "{{value}} of unified memory (Apple Silicon)",
+        "override_user": "You chose this tier manually",
+        "override_env": "Set by the RB_TIER environment variable"
+      },
+      "chooseLegend": "Choose a tier",
+      "automatic": "Automatic (recommended) · detected: {{tier}}",
+      "lockedByEnv": "The tier is fixed by the RB_TIER environment variable, so it cannot be changed here."
+    },
+    "models": {
+      "title": "AI models",
+      "intro": "These models are recommended for the {{tier}} tier. They are downloaded once and run entirely on your computer.",
+      "downloadAll": "Download all recommended ({{size}})",
+      "download": "Download",
+      "retry": "Retry",
+      "ready": "Ready",
+      "failed": "Download failed",
+      "progressLabel": "Downloading {{name}}",
+      "optionalTitle_one": "{{count}} optional model",
+      "optionalTitle_other": "{{count}} optional models",
+      "optionalIntro": "Not needed for your tier, but available, for example a Hebrew-specialized language model.",
+      "columns": {
+        "model": "Model",
+        "purpose": "Used for",
+        "size": "Size",
+        "license": "License",
+        "status": "Status"
+      },
+      "roles": {
+        "embedder": "Semantic search",
+        "reranker": "Result ranking",
+        "nli": "Criticism analysis",
+        "llm": "Language model"
+      }
+    }
   }
 }

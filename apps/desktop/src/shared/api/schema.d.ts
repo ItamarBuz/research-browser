@@ -21,10 +21,120 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/system": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get System */
+        get: operations["getSystem"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/system/tier-override": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Set Tier Override */
+        put: operations["setTierOverride"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/models": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Models */
+        get: operations["listModels"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/models/{model_id}/download": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Start Model Download */
+        post: operations["startModelDownload"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        /** GpuInfo */
+        GpuInfo: {
+            /** Name */
+            name: string;
+            /**
+             * Backend
+             * @enum {string}
+             */
+            backend: "cuda" | "metal";
+            /**
+             * Memory Mb
+             * @description Dedicated VRAM, or the usable share of unified memory
+             */
+            memory_mb: number;
+            /**
+             * Unified Memory
+             * @description True when the GPU shares system RAM (Apple Silicon)
+             */
+            unified_memory: boolean;
+        };
+        /** HTTPValidationError */
+        HTTPValidationError: {
+            /** Detail */
+            detail?: components["schemas"]["ValidationError"][];
+        };
+        /** HardwareProfile */
+        HardwareProfile: {
+            /** Os */
+            os: string;
+            /** Arch */
+            arch: string;
+            /** Cpu Physical Cores */
+            cpu_physical_cores: number;
+            /** Cpu Logical Cores */
+            cpu_logical_cores: number;
+            /** Total Ram Mb */
+            total_ram_mb: number;
+            /** Available Ram Mb */
+            available_ram_mb: number;
+            /** Gpus */
+            gpus: components["schemas"]["GpuInfo"][];
+        };
         /** HealthResponse */
         HealthResponse: {
             /**
@@ -36,6 +146,102 @@ export interface components {
             version: string;
             /** Api Version */
             api_version: number;
+        };
+        /** ModelInfo */
+        ModelInfo: {
+            /** Id */
+            id: string;
+            /** Name */
+            name: string;
+            role: components["schemas"]["ModelRole"];
+            /** License */
+            license: string;
+            /** Size Bytes */
+            size_bytes: number;
+            /** Tiers */
+            tiers: components["schemas"]["Tier"][];
+            /** Recommended */
+            recommended: boolean;
+            state: components["schemas"]["ModelState"];
+        };
+        /** ModelList */
+        ModelList: {
+            tier: components["schemas"]["Tier"];
+            /** Models */
+            models: components["schemas"]["ModelInfo"][];
+        };
+        /**
+         * ModelRole
+         * @enum {string}
+         */
+        ModelRole: "embedder" | "reranker" | "nli" | "llm";
+        /** ModelState */
+        ModelState: {
+            status: components["schemas"]["ModelStatus"];
+            /** Downloaded Bytes */
+            downloaded_bytes: number;
+            /** Total Bytes */
+            total_bytes: number;
+            /** Error */
+            error?: string | null;
+        };
+        /**
+         * ModelStatus
+         * @enum {string}
+         */
+        ModelStatus: "not_downloaded" | "downloading" | "ready" | "failed";
+        /** SystemInfo */
+        SystemInfo: {
+            hardware: components["schemas"]["HardwareProfile"];
+            tier: components["schemas"]["TierDecision"];
+            /** Resident Model Limit */
+            resident_model_limit: number;
+        };
+        /**
+         * Tier
+         * @description Feature/model scale the engine runs at. Ordered from smallest to largest.
+         * @enum {string}
+         */
+        Tier: "lite" | "standard" | "pro";
+        /** TierDecision */
+        TierDecision: {
+            detected: components["schemas"]["Tier"];
+            effective: components["schemas"]["Tier"];
+            /** Override Source */
+            override_source: ("user" | "env") | null;
+            /** Reasons */
+            reasons: components["schemas"]["TierReason"][];
+        };
+        /** TierOverrideRequest */
+        TierOverrideRequest: {
+            /** @description null returns to automatic detection */
+            tier: components["schemas"]["Tier"] | null;
+        };
+        /**
+         * TierReason
+         * @description A machine-readable reason; the UI turns it into a localized sentence.
+         */
+        TierReason: {
+            /**
+             * Code
+             * @enum {string}
+             */
+            code: "system_ram" | "gpu_memory" | "unified_memory" | "override_user" | "override_env";
+            /** Value Gb */
+            value_gb?: number | null;
+        };
+        /** ValidationError */
+        ValidationError: {
+            /** Location */
+            loc: (string | number)[];
+            /** Message */
+            msg: string;
+            /** Error Type */
+            type: string;
+            /** Input */
+            input?: unknown;
+            /** Context */
+            ctx?: Record<string, never>;
         };
     };
     responses: never;
@@ -62,6 +268,110 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["HealthResponse"];
+                };
+            };
+        };
+    };
+    getSystem: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SystemInfo"];
+                };
+            };
+        };
+    };
+    setTierOverride: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["TierOverrideRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SystemInfo"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    listModels: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ModelList"];
+                };
+            };
+        };
+    };
+    startModelDownload: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                model_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ModelInfo"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };

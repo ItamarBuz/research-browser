@@ -4,6 +4,7 @@ from fastapi.testclient import TestClient
 from rb_engine import API_VERSION
 from rb_engine.api.app import create_app
 from rb_engine.domain.errors import ModelNotReadyError
+from rb_engine.runtime.container import EngineServices
 from rb_engine.runtime.settings import EngineSettings
 
 
@@ -68,8 +69,11 @@ def test_engine_error_renders_problem_json(
     }
 
 
-def test_unexpected_error_hides_internals(auth_headers: dict[str, str]) -> None:
-    app = create_app(EngineSettings(port=8765, token=auth_headers["Authorization"][7:]))
+def test_unexpected_error_hides_internals(
+    auth_headers: dict[str, str], services: EngineServices
+) -> None:
+    settings = EngineSettings(port=8765, token=auth_headers["Authorization"][7:])
+    app = create_app(settings, lambda: services)
 
     @app.get("/crash")
     def crash() -> None:

@@ -1,0 +1,37 @@
+"""Where the engine keeps its data (models, indexes, preferences) on disk."""
+
+import os
+from dataclasses import dataclass
+from pathlib import Path
+
+import platformdirs
+
+DATA_DIR_ENV_VAR = "RB_DATA_DIR"
+APP_DIR_NAME = "ResearchBrowser"
+
+
+@dataclass(frozen=True, slots=True)
+class DataPaths:
+    root: Path
+
+    @property
+    def models(self) -> Path:
+        return self.root / "models"
+
+    @property
+    def preferences(self) -> Path:
+        return self.root / "preferences.json"
+
+    def ensure(self) -> "DataPaths":
+        self.models.mkdir(parents=True, exist_ok=True)
+        return self
+
+
+def resolve_data_dir(explicit: Path | None = None) -> Path:
+    """`--data-dir`, then RB_DATA_DIR, then the OS's per-user application data folder."""
+    if explicit is not None:
+        return explicit
+    from_env = os.environ.get(DATA_DIR_ENV_VAR)
+    if from_env:
+        return Path(from_env)
+    return Path(platformdirs.user_data_dir(APP_DIR_NAME, appauthor=False))

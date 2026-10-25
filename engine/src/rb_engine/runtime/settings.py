@@ -1,6 +1,7 @@
 """Engine process settings, resolved once at startup and then immutable."""
 
 from dataclasses import dataclass, field
+from pathlib import Path
 
 LOOPBACK_HOST = "127.0.0.1"
 """The engine only ever listens on loopback; it is never exposed to the network."""
@@ -19,6 +20,8 @@ class EngineSettings:
     port: int
     token: str
     parent_pid: int | None = None
+    data_dir: Path | None = None
+    """None means the OS default (see runtime.paths.resolve_data_dir)."""
     allowed_origins: tuple[str, ...] = field(default=DEFAULT_ALLOWED_ORIGINS)
 
     def __post_init__(self) -> None:

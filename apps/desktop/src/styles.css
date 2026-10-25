@@ -4,6 +4,7 @@
   --fg: #1c1917;
   --muted: #57534e;
   --border: #e7e5e4;
+  --surface: #ffffff;
   --ok: #15803d;
   --error: #b91c1c;
   --accent: #1d4ed8;
@@ -26,6 +27,7 @@
     --fg: #f5f5f4;
     --muted: #a8a29e;
     --border: #44403c;
+    --surface: #292524;
     --ok: #4ade80;
     --error: #f87171;
     --accent: #93c5fd;
@@ -45,19 +47,52 @@ body {
 .app__header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 1.5rem;
   padding-block: 0.75rem;
   padding-inline: 1.5rem;
   border-block-end: 1px solid var(--border);
 }
 
-.app__header h1 {
-  margin: 0;
-  font-size: 1.25rem;
+.app__title {
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+
+.app__header nav {
+  display: flex;
+  gap: 0.25rem;
+  margin-inline-end: auto;
+}
+
+.nav-link {
+  border-color: transparent;
+  color: var(--muted);
+}
+
+.nav-link[aria-current="page"] {
+  color: var(--fg);
+  background: var(--surface);
+  border-color: var(--border);
 }
 
 .app__main {
   padding: 1.5rem;
+  max-inline-size: 72rem;
+}
+
+.page-title {
+  margin-block: 0 1rem;
+  font-size: 1.5rem;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.plain-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
 button {
@@ -69,6 +104,148 @@ button {
   background: transparent;
   color: var(--accent);
   cursor: pointer;
+}
+
+button:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
+button.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--bg);
+}
+
+.home > * + * {
+  margin-block-start: 1rem;
+}
+
+/* --- Settings --- */
+
+.settings-section {
+  margin-block-end: 1.5rem;
+  padding: 1.25rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.settings-section h2 {
+  margin-block: 0 0.75rem;
+  font-size: 1.1rem;
+}
+
+.facts {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.4rem 1.5rem;
+  margin: 0;
+}
+
+.facts dt {
+  color: var(--muted);
+}
+
+.facts dd {
+  margin: 0;
+}
+
+.tier-summary {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.tier-summary p {
+  margin: 0;
+}
+
+.tier-badge {
+  flex-shrink: 0;
+  padding-block: 0.2rem;
+  padding-inline: 0.7rem;
+  border-radius: 999px;
+  font-weight: 600;
+  color: var(--bg);
+  background: var(--muted);
+}
+
+.tier-badge--standard {
+  background: var(--accent);
+}
+
+.tier-badge--pro {
+  background: var(--ok);
+}
+
+.tier-choice {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.25rem;
+  margin-block-start: 1rem;
+  padding: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.tier-choice label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.models-table {
+  inline-size: 100%;
+  margin-block-start: 0.75rem;
+  border-collapse: collapse;
+}
+
+.models-table th,
+.models-table td {
+  padding-block: 0.5rem;
+  padding-inline: 0.5rem;
+  text-align: start;
+  border-block-end: 1px solid var(--border);
+}
+
+.models-table thead th {
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.models-table tbody th {
+  font-weight: 500;
+}
+
+.progress {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.ok {
+  color: var(--ok);
+}
+
+.error {
+  color: var(--error);
+}
+
+.error-cell {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.optional-models {
+  margin-block-start: 1rem;
+}
+
+.optional-models summary {
+  cursor: pointer;
+  color: var(--accent);
 }
 
 .status {

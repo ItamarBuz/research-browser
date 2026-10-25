@@ -2,7 +2,17 @@ import { invoke, isTauri } from "@tauri-apps/api/core";
 
 import type { components } from "./schema";
 
-export type HealthResponse = components["schemas"]["HealthResponse"];
+type Schemas = components["schemas"];
+export type HealthResponse = Schemas["HealthResponse"];
+export type SystemInfo = Schemas["SystemInfo"];
+export type HardwareProfile = Schemas["HardwareProfile"];
+export type GpuInfo = Schemas["GpuInfo"];
+export type TierDecision = Schemas["TierDecision"];
+export type Tier = Schemas["Tier"];
+export type TierReason = Schemas["TierReason"];
+export type ModelList = Schemas["ModelList"];
+export type ModelInfo = Schemas["ModelInfo"];
+export type ModelRole = Schemas["ModelRole"];
 
 /** Where the engine sidecar listens and the per-launch token it expects. */
 export interface EngineConnection {
@@ -58,12 +68,41 @@ export class EngineClient {
     return this.request<HealthResponse>("/health");
   }
 
-  private async request<T>(path: string): Promise<T> {
+  getSystem(): Promise<SystemInfo> {
+    return this.request<SystemInfo>("/system");
+  }
+
+  /** `null` returns to automatic tier detection. */
+  setTierOverride(tier: Tier | null): Promise<SystemInfo> {
+    return this.request<SystemInfo>("/system/tier-override", { method: "PUT", body: { tier } });
+  }
+
+  listModels(): Promise<ModelList> {
+    return this.request<ModelList>("/models");
+  }
+
+  startModelDownload(modelId: string): Promise<ModelInfo> {
+    return this.request<ModelInfo>(`/models/${encodeURIComponent(modelId)}/download`, {
+      method: "POST",
+    });
+  }
+
+  private async request<T>(
+    path: string,
+    options: { method?: "PUT" | "POST"; body?: unknown } = {},
+  ): Promise<T> {
+    const init: RequestInit = {
+      headers: {
+        Authorization: `Bearer ${this.connection.token}`,
+        ...(options.body === undefined ? {} : { "Content-Type": "application/json" }),
+      },
+    };
+    if (options.method) init.method = options.method;
+    if (options.body !== undefined) init.body = JSON.stringify(options.body);
+
     let response: Response;
     try {
-      response = await this.fetchImpl(`${this.connection.baseUrl}${path}`, {
-        headers: { Authorization: `Bearer ${this.connection.token}` },
-      });
+      response = await this.fetchImpl(`${this.connection.baseUrl}${path}`, init);
     } catch (cause) {
       throw new EngineRequestError(0, "Engine unreachable", String(cause));
     }
@@ -73,6 +112,12 @@ export class EngineClient {
     return (await response.json()) as T;
   }
 }
+
+/** The engine operations the UI uses; tests substitute a fake implementation. */
+export type EngineApi = Pick<
+  EngineClient,
+  "getHealth" | "getSystem" | "setTierOverride" | "listModels" | "startModelDownload"
+>;
 
 async function toRequestError(response: Response): Promise<EngineRequestError> {
   try {

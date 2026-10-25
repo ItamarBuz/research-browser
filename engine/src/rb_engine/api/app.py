@@ -1,16 +1,30 @@
 """FastAPI application factory."""
 
+from collections.abc import AsyncIterator, Callable
+from contextlib import asynccontextmanager
+
 from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from rb_engine import __version__
-from rb_engine.api import health
+from rb_engine.api import health, models_api, system
 from rb_engine.api.auth import require_token
 from rb_engine.api.problems import register_problem_handlers
+from rb_engine.runtime.container import EngineServices
 from rb_engine.runtime.settings import EngineSettings
 
+ServicesFactory = Callable[[], EngineServices]
 
-def create_app(settings: EngineSettings) -> FastAPI:
+
+def create_app(settings: EngineSettings, services_factory: ServicesFactory) -> FastAPI:
+    """Services are built in the lifespan hook, so merely creating the app (e.g. to export
+    the OpenAPI schema) never touches the disk or probes hardware."""
+
+    @asynccontextmanager
+    async def lifespan(app: FastAPI) -> AsyncIterator[None]:
+        app.state.services = services_factory()
+        yield
+
     app = FastAPI(
         title="Research Browser Engine",
         version=__version__,
@@ -20,6 +34,7 @@ def create_app(settings: EngineSettings) -> FastAPI:
         redoc_url=None,
         openapi_url=None,
         dependencies=[Depends(require_token)],
+        lifespan=lifespan,
     )
     app.state.settings = settings
 
@@ -31,4 +46,6 @@ def create_app(settings: EngineSettings) -> FastAPI:
     )
     register_problem_handlers(app)
     app.include_router(health.router)
+    app.include_router(system.router)
+    app.include_router(models_api.router)
     return app

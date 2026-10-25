@@ -3,9 +3,9 @@ import { describe, expect, it, vi } from "vitest";
 
 import { App } from "./App";
 import type { ConnectFn } from "./features/health/useEngineHealth";
+import { fakeEngine, HEALTH } from "./test/fakeEngine";
 
-const healthy: ConnectFn = () =>
-  Promise.resolve({ status: "ok", version: "0.1.0", api_version: 1 });
+const healthy: ConnectFn = () => Promise.resolve({ api: fakeEngine().api, health: HEALTH });
 
 describe("App", () => {
   it("shows the engine as ready once health succeeds", async () => {
@@ -28,6 +28,19 @@ describe("App", () => {
     expect(connect).toHaveBeenCalledTimes(2);
   });
 
+  it("navigates to settings", async () => {
+    render(<App connect={healthy} />);
+    await screen.findByText("Engine ready");
+
+    fireEvent.click(screen.getByRole("button", { name: "Set up AI models" }));
+
+    expect(await screen.findByRole("heading", { level: 1, name: "Settings" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Settings" })).toHaveAttribute(
+      "aria-current",
+      "page",
+    );
+  });
+
   it("switches to Hebrew and flips the document to RTL", async () => {
     render(<App connect={healthy} />);
     await screen.findByText("Engine ready");
@@ -37,7 +50,8 @@ describe("App", () => {
       await Promise.resolve();
     });
 
-    expect(screen.getByRole("heading")).toHaveTextContent("דפדפן מחקר");
+    expect(screen.getByText("דפדפן מחקר")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("ברוכים הבאים");
     expect(document.documentElement).toHaveAttribute("dir", "rtl");
     expect(document.documentElement).toHaveAttribute("lang", "he");
   });

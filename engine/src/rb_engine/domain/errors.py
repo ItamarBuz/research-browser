@@ -35,6 +35,30 @@ class ModelNotReadyError(EngineError):
     type_slug = "model-not-ready"
 
 
+class ModelNotFoundError(EngineError):
+    """The requested model id is not in the catalog."""
+
+    status_code = 404
+    title = "Unknown model"
+    type_slug = "model-not-found"
+
+
+class ModelIntegrityError(EngineError):
+    """A downloaded model file did not match its pinned SHA-256 hash."""
+
+    status_code = 502
+    title = "Model download corrupted"
+    type_slug = "model-integrity"
+
+
+class InsufficientDiskSpaceError(EngineError):
+    """Not enough free disk space to download a model."""
+
+    status_code = 507
+    title = "Not enough disk space"
+    type_slug = "insufficient-disk-space"
+
+
 class DocumentParseError(EngineError):
     """A document (e.g. an imported PDF) could not be parsed into text."""
 

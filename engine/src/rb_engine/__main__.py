@@ -8,10 +8,13 @@ import argparse
 import logging
 import os
 import sys
+from pathlib import Path
 
 import uvicorn
 
 from rb_engine.api.app import create_app
+from rb_engine.runtime.container import build_services, read_env_tier
+from rb_engine.runtime.paths import DATA_DIR_ENV_VAR, DataPaths, resolve_data_dir
 from rb_engine.runtime.settings import LOOPBACK_HOST, EngineSettings
 from rb_engine.runtime.watchdog import watch_parent
 
@@ -23,13 +26,16 @@ def _parse_settings(argv: list[str]) -> EngineSettings:
     parser.add_argument("--port", type=int, required=True)
     parser.add_argument("--token", help=f"dev only; prefer the {TOKEN_ENV_VAR} env var")
     parser.add_argument("--parent-pid", type=int, help="exit when this process exits")
+    parser.add_argument("--data-dir", type=Path, help=f"overrides {DATA_DIR_ENV_VAR}")
     args = parser.parse_args(argv)
 
     token = args.token or os.environ.get(TOKEN_ENV_VAR)
     if not token:
         parser.error(f"an engine token is required ({TOKEN_ENV_VAR} or --token)")
     try:
-        return EngineSettings(port=args.port, token=token, parent_pid=args.parent_pid)
+        return EngineSettings(
+            port=args.port, token=token, parent_pid=args.parent_pid, data_dir=args.data_dir
+        )
     except ValueError as exc:
         parser.error(str(exc))
 
@@ -41,9 +47,10 @@ def main(argv: list[str] | None = None) -> None:
         format="%(asctime)s %(levelname)s %(name)s: %(message)s",
     )
     settings = _parse_settings(sys.argv[1:] if argv is None else argv)
+    paths = DataPaths(resolve_data_dir(settings.data_dir))
     server = uvicorn.Server(
         uvicorn.Config(
-            create_app(settings),
+            create_app(settings, lambda: build_services(paths, env_tier=read_env_tier())),
             host=LOOPBACK_HOST,
             port=settings.port,
             log_level="info",

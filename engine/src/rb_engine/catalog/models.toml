@@ -1,0 +1,104 @@
+# Local AI models the engine can download.
+#
+# Edit this file by hand, then run `uv run python scripts/pin_models.py` to record the exact
+# revision, sizes and SHA-256 hashes in models.lock.json. The engine refuses entries that
+# are not pinned, and the pin tool refuses licenses outside the permissive allowlist.
+#
+# `tiers` lists the tiers a model is recommended for; at most one model per role per tier.
+# An empty list makes the model optional (offered, but never selected automatically).
+# `license_source` names the upstream repo whose license applies when `repo` is a
+# conversion (e.g. ONNX exports) that does not declare one itself.
+
+# --- Embeddings (all multilingual: Hebrew, English and cross-lingual retrieval) ---
+
+[[models]]
+id = "embed-e5-small"
+name = "Multilingual E5 Small"
+role = "embedder"
+tiers = ["lite"]
+repo = "Xenova/multilingual-e5-small"
+license = "mit"
+license_source = "intfloat/multilingual-e5-small"
+files = ["onnx/model_quantized.onnx", "tokenizer.json", "config.json"]
+
+[[models]]
+id = "embed-e5-base"
+name = "Multilingual E5 Base"
+role = "embedder"
+tiers = ["standard"]
+repo = "Xenova/multilingual-e5-base"
+license = "mit"
+license_source = "intfloat/multilingual-e5-base"
+files = ["onnx/model_quantized.onnx", "tokenizer.json", "config.json"]
+
+[[models]]
+id = "embed-bge-m3"
+name = "BGE-M3"
+role = "embedder"
+tiers = ["pro"]
+repo = "Xenova/bge-m3"
+license = "mit"
+license_source = "BAAI/bge-m3"
+files = ["onnx/model_quantized.onnx", "tokenizer.json", "config.json"]
+
+# --- Reranking (skipped on Lite to save memory) ---
+
+[[models]]
+id = "rerank-bge-v2-m3"
+name = "BGE Reranker v2 M3"
+role = "reranker"
+tiers = ["standard", "pro"]
+repo = "onnx-community/bge-reranker-v2-m3-ONNX"
+license = "apache-2.0"
+license_source = "BAAI/bge-reranker-v2-m3"
+files = ["onnx/model_quantized.onnx", "tokenizer.json", "config.json"]
+
+# --- Stance / natural-language inference (criticism score) ---
+
+[[models]]
+id = "nli-mdeberta-xnli"
+name = "mDeBERTa v3 XNLI (multilingual)"
+role = "nli"
+tiers = ["lite", "standard", "pro"]
+repo = "Xenova/mDeBERTa-v3-base-xnli-multilingual-nli-2mil7"
+license = "mit"
+license_source = "MoritzLaurer/mDeBERTa-v3-base-xnli-multilingual-nli-2mil7"
+files = ["onnx/model_quantized.onnx", "tokenizer.json", "config.json"]
+
+# --- Local LLMs (GGUF, Q4_K_M) ---
+
+[[models]]
+id = "llm-qwen3-4b"
+name = "Qwen3 4B"
+role = "llm"
+tiers = ["lite"]
+repo = "Qwen/Qwen3-4B-GGUF"
+license = "apache-2.0"
+files = ["Qwen3-4B-Q4_K_M.gguf"]
+
+[[models]]
+id = "llm-qwen3-8b"
+name = "Qwen3 8B"
+role = "llm"
+tiers = ["standard"]
+repo = "Qwen/Qwen3-8B-GGUF"
+license = "apache-2.0"
+files = ["Qwen3-8B-Q4_K_M.gguf"]
+
+[[models]]
+id = "llm-qwen3-14b"
+name = "Qwen3 14B"
+role = "llm"
+tiers = ["pro"]
+repo = "Qwen/Qwen3-14B-GGUF"
+license = "apache-2.0"
+files = ["Qwen3-14B-Q4_K_M.gguf"]
+
+[[models]]
+id = "llm-dictalm2-7b"
+name = "DictaLM 2.0 Instruct 7B (Hebrew-specialized)"
+role = "llm"
+tiers = []
+repo = "dicta-il/dictalm2.0-instruct-GGUF"
+license = "apache-2.0"
+files = ["dictalm2.0-instruct.Q4_K_M.gguf"]

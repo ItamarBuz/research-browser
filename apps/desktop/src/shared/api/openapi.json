@@ -30,10 +30,253 @@
           }
         ]
       }
+    },
+    "/system": {
+      "get": {
+        "tags": [
+          "system"
+        ],
+        "summary": "Get System",
+        "operationId": "getSystem",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SystemInfo"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/system/tier-override": {
+      "put": {
+        "tags": [
+          "system"
+        ],
+        "summary": "Set Tier Override",
+        "operationId": "setTierOverride",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TierOverrideRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SystemInfo"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/models": {
+      "get": {
+        "tags": [
+          "models"
+        ],
+        "summary": "List Models",
+        "operationId": "listModels",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelList"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/models/{model_id}/download": {
+      "post": {
+        "tags": [
+          "models"
+        ],
+        "summary": "Start Model Download",
+        "operationId": "startModelDownload",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "model_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Model Id"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelInfo"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
+      "GpuInfo": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "backend": {
+            "type": "string",
+            "enum": [
+              "cuda",
+              "metal"
+            ],
+            "title": "Backend"
+          },
+          "memory_mb": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Memory Mb",
+            "description": "Dedicated VRAM, or the usable share of unified memory"
+          },
+          "unified_memory": {
+            "type": "boolean",
+            "title": "Unified Memory",
+            "description": "True when the GPU shares system RAM (Apple Silicon)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "backend",
+          "memory_mb",
+          "unified_memory"
+        ],
+        "title": "GpuInfo"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "HardwareProfile": {
+        "properties": {
+          "os": {
+            "type": "string",
+            "title": "Os"
+          },
+          "arch": {
+            "type": "string",
+            "title": "Arch"
+          },
+          "cpu_physical_cores": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Cpu Physical Cores"
+          },
+          "cpu_logical_cores": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Cpu Logical Cores"
+          },
+          "total_ram_mb": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Total Ram Mb"
+          },
+          "available_ram_mb": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Available Ram Mb"
+          },
+          "gpus": {
+            "items": {
+              "$ref": "#/components/schemas/GpuInfo"
+            },
+            "type": "array",
+            "title": "Gpus"
+          }
+        },
+        "type": "object",
+        "required": [
+          "os",
+          "arch",
+          "cpu_physical_cores",
+          "cpu_logical_cores",
+          "total_ram_mb",
+          "available_ram_mb",
+          "gpus"
+        ],
+        "title": "HardwareProfile"
+      },
       "HealthResponse": {
         "properties": {
           "status": {
@@ -57,6 +300,291 @@
           "api_version"
         ],
         "title": "HealthResponse"
+      },
+      "ModelInfo": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "role": {
+            "$ref": "#/components/schemas/ModelRole"
+          },
+          "license": {
+            "type": "string",
+            "title": "License"
+          },
+          "size_bytes": {
+            "type": "integer",
+            "title": "Size Bytes"
+          },
+          "tiers": {
+            "items": {
+              "$ref": "#/components/schemas/Tier"
+            },
+            "type": "array",
+            "title": "Tiers"
+          },
+          "recommended": {
+            "type": "boolean",
+            "title": "Recommended"
+          },
+          "state": {
+            "$ref": "#/components/schemas/ModelState"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "role",
+          "license",
+          "size_bytes",
+          "tiers",
+          "recommended",
+          "state"
+        ],
+        "title": "ModelInfo"
+      },
+      "ModelList": {
+        "properties": {
+          "tier": {
+            "$ref": "#/components/schemas/Tier"
+          },
+          "models": {
+            "items": {
+              "$ref": "#/components/schemas/ModelInfo"
+            },
+            "type": "array",
+            "title": "Models"
+          }
+        },
+        "type": "object",
+        "required": [
+          "tier",
+          "models"
+        ],
+        "title": "ModelList"
+      },
+      "ModelRole": {
+        "type": "string",
+        "enum": [
+          "embedder",
+          "reranker",
+          "nli",
+          "llm"
+        ],
+        "title": "ModelRole"
+      },
+      "ModelState": {
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/ModelStatus"
+          },
+          "downloaded_bytes": {
+            "type": "integer",
+            "title": "Downloaded Bytes"
+          },
+          "total_bytes": {
+            "type": "integer",
+            "title": "Total Bytes"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status",
+          "downloaded_bytes",
+          "total_bytes"
+        ],
+        "title": "ModelState"
+      },
+      "ModelStatus": {
+        "type": "string",
+        "enum": [
+          "not_downloaded",
+          "downloading",
+          "ready",
+          "failed"
+        ],
+        "title": "ModelStatus"
+      },
+      "SystemInfo": {
+        "properties": {
+          "hardware": {
+            "$ref": "#/components/schemas/HardwareProfile"
+          },
+          "tier": {
+            "$ref": "#/components/schemas/TierDecision"
+          },
+          "resident_model_limit": {
+            "type": "integer",
+            "title": "Resident Model Limit"
+          }
+        },
+        "type": "object",
+        "required": [
+          "hardware",
+          "tier",
+          "resident_model_limit"
+        ],
+        "title": "SystemInfo"
+      },
+      "Tier": {
+        "type": "string",
+        "enum": [
+          "lite",
+          "standard",
+          "pro"
+        ],
+        "title": "Tier",
+        "description": "Feature/model scale the engine runs at. Ordered from smallest to largest."
+      },
+      "TierDecision": {
+        "properties": {
+          "detected": {
+            "$ref": "#/components/schemas/Tier"
+          },
+          "effective": {
+            "$ref": "#/components/schemas/Tier"
+          },
+          "override_source": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "user",
+                  "env"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Override Source"
+          },
+          "reasons": {
+            "items": {
+              "$ref": "#/components/schemas/TierReason"
+            },
+            "type": "array",
+            "title": "Reasons"
+          }
+        },
+        "type": "object",
+        "required": [
+          "detected",
+          "effective",
+          "override_source",
+          "reasons"
+        ],
+        "title": "TierDecision"
+      },
+      "TierOverrideRequest": {
+        "properties": {
+          "tier": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Tier"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "null returns to automatic detection"
+          }
+        },
+        "type": "object",
+        "required": [
+          "tier"
+        ],
+        "title": "TierOverrideRequest"
+      },
+      "TierReason": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "enum": [
+              "system_ram",
+              "gpu_memory",
+              "unified_memory",
+              "override_user",
+              "override_env"
+            ],
+            "title": "Code"
+          },
+          "value_gb": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value Gb"
+          }
+        },
+        "type": "object",
+        "required": [
+          "code"
+        ],
+        "title": "TierReason",
+        "description": "A machine-readable reason; the UI turns it into a localized sentence."
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
       }
     },
     "securitySchemes": {
