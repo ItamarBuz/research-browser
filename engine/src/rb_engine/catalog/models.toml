@@ -6,6 +6,8 @@
 #
 # `tiers` lists the tiers a model is recommended for; at most one model per role per tier.
 # An empty list makes the model optional (offered, but never selected automatically).
+# Embedders also need `embedding`: which ONNX file to run, the pooling method and the
+# query/passage prefixes the model was trained with (E5 uses "query: " / "passage: ").
 # `license_source` names the upstream repo whose license applies when `repo` is a
 # conversion (e.g. ONNX exports) that does not declare one itself.
 
@@ -20,6 +22,7 @@ repo = "Xenova/multilingual-e5-small"
 license = "mit"
 license_source = "intfloat/multilingual-e5-small"
 files = ["onnx/model_quantized.onnx", "tokenizer.json", "config.json"]
+embedding = { onnx_file = "onnx/model_quantized.onnx", pooling = "mean", query_prefix = "query: ", passage_prefix = "passage: ", max_tokens = 512 }
 
 [[models]]
 id = "embed-e5-base"
@@ -30,6 +33,7 @@ repo = "Xenova/multilingual-e5-base"
 license = "mit"
 license_source = "intfloat/multilingual-e5-base"
 files = ["onnx/model_quantized.onnx", "tokenizer.json", "config.json"]
+embedding = { onnx_file = "onnx/model_quantized.onnx", pooling = "mean", query_prefix = "query: ", passage_prefix = "passage: ", max_tokens = 512 }
 
 [[models]]
 id = "embed-bge-m3"
@@ -40,6 +44,7 @@ repo = "Xenova/bge-m3"
 license = "mit"
 license_source = "BAAI/bge-m3"
 files = ["onnx/model_quantized.onnx", "tokenizer.json", "config.json"]
+embedding = { onnx_file = "onnx/model_quantized.onnx", pooling = "cls", max_tokens = 1024 }
 
 # --- Reranking (skipped on Lite to save memory) ---
 

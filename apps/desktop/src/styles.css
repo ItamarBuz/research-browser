@@ -117,8 +117,213 @@ button.primary {
   color: var(--bg);
 }
 
-.home > * + * {
-  margin-block-start: 1rem;
+button.danger {
+  background: var(--error);
+  border-color: var(--error);
+  color: var(--bg);
+}
+
+.visually-hidden {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.app__footer {
+  padding-block: 0.5rem 1rem;
+  padding-inline: 1.5rem;
+  font-size: 0.85rem;
+}
+
+.banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin-block: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-inline-start: 3px solid var(--accent);
+  border-radius: 8px;
+}
+
+.badge {
+  display: inline-block;
+  padding-block: 0.05rem;
+  padding-inline: 0.5rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  border: 1px solid var(--border);
+  color: var(--muted);
+}
+
+.badge--ok {
+  color: var(--ok);
+  border-color: var(--ok);
+}
+
+.badge--pending {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+/* --- Search --- */
+
+.search-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-block-end: 1rem;
+}
+
+.search-form input[type="search"] {
+  flex: 1 1 24rem;
+  min-inline-size: 0;
+  padding-block: 0.55rem;
+  padding-inline: 0.8rem;
+  font: inherit;
+  font-size: 1.05rem;
+  color: var(--fg);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.filter-choice {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.25rem;
+  flex-basis: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.filter-choice legend {
+  float: inline-start;
+  margin-inline-end: 0.5rem;
+  color: var(--muted);
+}
+
+.filter-choice label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.hint {
+  flex-basis: 100%;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.results {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.result-card {
+  margin-block-end: 1rem;
+  padding: 1rem 1.25rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.result-title {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.result-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.9rem;
+  margin-block: 0.35rem 0.75rem;
+  font-size: 0.9rem;
+}
+
+.passage {
+  margin-block: 0.5rem 0;
+  margin-inline: 0;
+  padding-inline-start: 0.75rem;
+  border-inline-start: 3px solid var(--border);
+}
+
+.passage p {
+  margin: 0;
+}
+
+.passage footer {
+  font-size: 0.8rem;
+}
+
+/* --- Library --- */
+
+.dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  margin-block-end: 1rem;
+  padding: 1.75rem 1rem;
+  text-align: center;
+  cursor: pointer;
+  border: 2px dashed var(--border);
+  border-radius: 10px;
+}
+
+.dropzone--active,
+.dropzone:focus-within {
+  border-color: var(--accent);
+}
+
+.data-table {
+  inline-size: 100%;
+  border-collapse: collapse;
+}
+
+.data-table th,
+.data-table td {
+  padding-block: 0.55rem;
+  padding-inline: 0.5rem;
+  text-align: start;
+  vertical-align: top;
+  border-block-end: 1px solid var(--border);
+}
+
+.data-table thead th {
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.doc-title {
+  display: block;
+  font-weight: 500;
+}
+
+/* dir="auto" keeps English titles readable; match-parent keeps them aligned with their
+   column in the right-to-left table. */
+.doc-title,
+.doc-file {
+  text-align: match-parent;
+}
+
+.doc-file {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 400;
+}
+
+.row-actions {
+  display: inline-flex;
+  gap: 0.4rem;
 }
 
 /* --- Settings --- */

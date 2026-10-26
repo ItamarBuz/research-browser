@@ -1,6 +1,7 @@
 """Catalog of downloadable local AI models."""
 
 from enum import StrEnum
+from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -17,6 +18,18 @@ class ModelRole(StrEnum):
     RERANKER = "reranker"
     NLI = "nli"
     LLM = "llm"
+
+
+class EmbeddingConfig(BaseModel):
+    """How to run an embedding model; models differ in pooling and expected prefixes."""
+
+    model_config = ConfigDict(frozen=True, extra="forbid")
+
+    onnx_file: str
+    pooling: Literal["mean", "cls"]
+    query_prefix: str = ""
+    passage_prefix: str = ""
+    max_tokens: int = Field(default=512, ge=16, le=8192)
 
 
 class ModelFile(BaseModel):
@@ -42,6 +55,7 @@ class ModelSpec(BaseModel):
     revision: str = Field(pattern=r"^[0-9a-f]{40}$")
     license: str
     files: tuple[ModelFile, ...] = Field(min_length=1)
+    embedding: EmbeddingConfig | None = None
 
     @property
     def size_bytes(self) -> int:

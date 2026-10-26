@@ -14,9 +14,10 @@ def main() -> None:
         raise AssertionError("schema export never starts the app")
 
     app = create_app(EngineSettings(port=1, token="schema-export-only"), no_services)
-    # Windows consoles default to a legacy code page; the schema will carry Hebrew text.
+    # Windows consoles default to a legacy code page and CRLF; the schema carries Hebrew text
+    # and must be byte-identical on every OS (CI checks it for drift).
     if isinstance(sys.stdout, io.TextIOWrapper):
-        sys.stdout.reconfigure(encoding="utf-8")
+        sys.stdout.reconfigure(encoding="utf-8", newline="\n")
     json.dump(app.openapi(), sys.stdout, indent=2, ensure_ascii=False)
     sys.stdout.write("\n")
 

@@ -28,12 +28,15 @@ describe("App", () => {
     expect(connect).toHaveBeenCalledTimes(2);
   });
 
-  it("navigates to settings", async () => {
+  it("opens on search and navigates between views", async () => {
     render(<App connect={healthy} />);
     await screen.findByText("Engine ready");
+    expect(screen.getByRole("heading", { level: 1, name: "Search your library" })).toBeVisible();
 
-    fireEvent.click(screen.getByRole("button", { name: "Set up AI models" }));
+    fireEvent.click(screen.getByRole("button", { name: "Library" }));
+    expect(await screen.findByRole("heading", { level: 1, name: "Library" })).toBeInTheDocument();
 
+    fireEvent.click(screen.getByRole("button", { name: "Settings" }));
     expect(await screen.findByRole("heading", { level: 1, name: "Settings" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Settings" })).toHaveAttribute(
       "aria-current",
@@ -51,7 +54,7 @@ describe("App", () => {
     });
 
     expect(screen.getByText("דפדפן מחקר")).toBeInTheDocument();
-    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("ברוכים הבאים");
+    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("חיפוש בספרייה שלך");
     expect(document.documentElement).toHaveAttribute("dir", "rtl");
     expect(document.documentElement).toHaveAttribute("lang", "he");
   });

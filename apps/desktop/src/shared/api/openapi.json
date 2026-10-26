@@ -175,10 +175,368 @@
           }
         }
       }
+    },
+    "/library": {
+      "get": {
+        "tags": [
+          "library"
+        ],
+        "summary": "Get Library",
+        "operationId": "getLibrary",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LibraryState"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/library/documents": {
+      "post": {
+        "tags": [
+          "library"
+        ],
+        "summary": "Import Documents",
+        "operationId": "importDocuments",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_importDocuments"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ImportResult"
+                  },
+                  "type": "array",
+                  "title": "Response Importdocuments"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/library/documents/{document_id}": {
+      "delete": {
+        "tags": [
+          "library"
+        ],
+        "summary": "Delete Document",
+        "operationId": "deleteDocument",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "document_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Document Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/library/reindex": {
+      "post": {
+        "tags": [
+          "library"
+        ],
+        "summary": "Reindex",
+        "operationId": "reindexLibrary",
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IndexStatus"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/library/search": {
+      "post": {
+        "tags": [
+          "library"
+        ],
+        "summary": "Search",
+        "operationId": "searchLibrary",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SearchRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
     }
   },
   "components": {
     "schemas": {
+      "Body_importDocuments": {
+        "properties": {
+          "files": {
+            "items": {
+              "type": "string",
+              "contentMediaType": "application/octet-stream"
+            },
+            "type": "array",
+            "title": "Files"
+          }
+        },
+        "type": "object",
+        "required": [
+          "files"
+        ],
+        "title": "Body_importDocuments"
+      },
+      "Document": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "description": "SHA-256 of the file, so the same PDF is never stored twice"
+          },
+          "file_name": {
+            "type": "string",
+            "title": "File Name"
+          },
+          "size_bytes": {
+            "type": "integer",
+            "title": "Size Bytes"
+          },
+          "added_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Added At"
+          },
+          "status": {
+            "$ref": "#/components/schemas/DocumentStatus"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error"
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/DocumentMetadata"
+          },
+          "language": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "en",
+                  "he",
+                  "other"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Language"
+          },
+          "page_count": {
+            "type": "integer",
+            "title": "Page Count",
+            "default": 0
+          },
+          "passage_count": {
+            "type": "integer",
+            "title": "Passage Count",
+            "default": 0
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "file_name",
+          "size_bytes",
+          "added_at",
+          "status",
+          "metadata"
+        ],
+        "title": "Document"
+      },
+      "DocumentHit": {
+        "properties": {
+          "document": {
+            "$ref": "#/components/schemas/Document"
+          },
+          "score": {
+            "type": "number",
+            "title": "Score"
+          },
+          "passages": {
+            "items": {
+              "$ref": "#/components/schemas/PassageHit"
+            },
+            "type": "array",
+            "title": "Passages"
+          }
+        },
+        "type": "object",
+        "required": [
+          "document",
+          "score",
+          "passages"
+        ],
+        "title": "DocumentHit"
+      },
+      "DocumentMetadata": {
+        "properties": {
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "authors": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Authors"
+          },
+          "year": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Year"
+          },
+          "doi": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Doi"
+          }
+        },
+        "type": "object",
+        "required": [
+          "title"
+        ],
+        "title": "DocumentMetadata"
+      },
+      "DocumentStatus": {
+        "type": "string",
+        "enum": [
+          "queued",
+          "parsing",
+          "indexing",
+          "ready",
+          "failed"
+        ],
+        "title": "DocumentStatus"
+      },
       "GpuInfo": {
         "properties": {
           "name": {
@@ -301,6 +659,181 @@
         ],
         "title": "HealthResponse"
       },
+      "ImportResult": {
+        "properties": {
+          "file_name": {
+            "type": "string",
+            "title": "File Name"
+          },
+          "document": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Document"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error"
+          }
+        },
+        "type": "object",
+        "required": [
+          "file_name"
+        ],
+        "title": "ImportResult"
+      },
+      "IndexStatus": {
+        "properties": {
+          "embedding_model": {
+            "type": "string",
+            "title": "Embedding Model"
+          },
+          "model_ready": {
+            "type": "boolean",
+            "title": "Model Ready"
+          },
+          "ready_documents": {
+            "type": "integer",
+            "title": "Ready Documents"
+          },
+          "indexed_documents": {
+            "type": "integer",
+            "title": "Indexed Documents"
+          },
+          "pending_documents": {
+            "type": "integer",
+            "title": "Pending Documents",
+            "description": "Parsed documents missing from the active index"
+          },
+          "busy": {
+            "type": "boolean",
+            "title": "Busy",
+            "description": "Documents are being imported or indexed right now"
+          }
+        },
+        "type": "object",
+        "required": [
+          "embedding_model",
+          "model_ready",
+          "ready_documents",
+          "indexed_documents",
+          "pending_documents",
+          "busy"
+        ],
+        "title": "IndexStatus"
+      },
+      "LibraryDocument": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "description": "SHA-256 of the file, so the same PDF is never stored twice"
+          },
+          "file_name": {
+            "type": "string",
+            "title": "File Name"
+          },
+          "size_bytes": {
+            "type": "integer",
+            "title": "Size Bytes"
+          },
+          "added_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Added At"
+          },
+          "status": {
+            "$ref": "#/components/schemas/DocumentStatus"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error"
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/DocumentMetadata"
+          },
+          "language": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "en",
+                  "he",
+                  "other"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Language"
+          },
+          "page_count": {
+            "type": "integer",
+            "title": "Page Count",
+            "default": 0
+          },
+          "passage_count": {
+            "type": "integer",
+            "title": "Passage Count",
+            "default": 0
+          },
+          "searchable": {
+            "type": "boolean",
+            "title": "Searchable",
+            "description": "Indexed with the active embedding model"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "file_name",
+          "size_bytes",
+          "added_at",
+          "status",
+          "metadata",
+          "searchable"
+        ],
+        "title": "LibraryDocument"
+      },
+      "LibraryState": {
+        "properties": {
+          "documents": {
+            "items": {
+              "$ref": "#/components/schemas/LibraryDocument"
+            },
+            "type": "array",
+            "title": "Documents"
+          },
+          "index": {
+            "$ref": "#/components/schemas/IndexStatus"
+          }
+        },
+        "type": "object",
+        "required": [
+          "documents",
+          "index"
+        ],
+        "title": "LibraryState"
+      },
       "ModelInfo": {
         "properties": {
           "id": {
@@ -422,6 +955,108 @@
           "failed"
         ],
         "title": "ModelStatus"
+      },
+      "PassageHit": {
+        "properties": {
+          "passage_id": {
+            "type": "string",
+            "title": "Passage Id"
+          },
+          "page": {
+            "type": "integer",
+            "title": "Page"
+          },
+          "text": {
+            "type": "string",
+            "title": "Text"
+          },
+          "score": {
+            "type": "number",
+            "title": "Score"
+          },
+          "similarity": {
+            "type": "number",
+            "title": "Similarity",
+            "description": "Cosine similarity between query and passage"
+          }
+        },
+        "type": "object",
+        "required": [
+          "passage_id",
+          "page",
+          "text",
+          "score",
+          "similarity"
+        ],
+        "title": "PassageHit"
+      },
+      "SearchRequest": {
+        "properties": {
+          "query": {
+            "type": "string",
+            "maxLength": 2000,
+            "minLength": 1,
+            "title": "Query"
+          },
+          "language": {
+            "type": "string",
+            "enum": [
+              "en",
+              "he",
+              "cross"
+            ],
+            "title": "Language",
+            "default": "cross"
+          },
+          "limit": {
+            "type": "integer",
+            "maximum": 100.0,
+            "minimum": 1.0,
+            "title": "Limit",
+            "default": 20
+          }
+        },
+        "type": "object",
+        "required": [
+          "query"
+        ],
+        "title": "SearchRequest"
+      },
+      "SearchResponse": {
+        "properties": {
+          "query_language": {
+            "type": "string",
+            "enum": [
+              "en",
+              "he",
+              "other"
+            ],
+            "title": "Query Language"
+          },
+          "embedding_model": {
+            "type": "string",
+            "title": "Embedding Model"
+          },
+          "results": {
+            "items": {
+              "$ref": "#/components/schemas/DocumentHit"
+            },
+            "type": "array",
+            "title": "Results"
+          },
+          "took_ms": {
+            "type": "integer",
+            "title": "Took Ms"
+          }
+        },
+        "type": "object",
+        "required": [
+          "query_language",
+          "embedding_model",
+          "results",
+          "took_ms"
+        ],
+        "title": "SearchResponse"
       },
       "SystemInfo": {
         "properties": {

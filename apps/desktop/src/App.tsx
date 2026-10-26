@@ -3,11 +3,10 @@ import { useTranslation } from "react-i18next";
 
 import { EngineGate } from "./features/health/EngineGate";
 import type { ConnectFn } from "./features/health/useEngineHealth";
-import { HomePage } from "./features/home/HomePage";
+import { LibraryPage } from "./features/library/LibraryPage";
+import { SearchPage } from "./features/search/SearchPage";
 import { SettingsPage } from "./features/settings/SettingsPage";
-
-type View = "home" | "settings";
-const VIEWS: readonly View[] = ["home", "settings"];
+import { VIEWS, type View } from "./shared/navigation";
 
 interface AppProps {
   connect?: ConnectFn;
@@ -16,8 +15,9 @@ interface AppProps {
 
 export function App({ connect, pollMs }: AppProps) {
   const { t, i18n } = useTranslation();
-  const [view, setView] = useState<View>("home");
+  const [view, setView] = useState<View>("search");
   const nextLanguage = i18n.language === "he" ? "en" : "he";
+  const poll = pollMs === undefined ? {} : { pollMs };
 
   return (
     <div className="app">
@@ -46,22 +46,21 @@ export function App({ connect, pollMs }: AppProps) {
           {t("app.languageToggle")}
         </button>
       </header>
-      <main className="app__main">
-        <EngineGate {...(connect ? { connect } : {})}>
-          {(health) =>
-            view === "home" ? (
-              <HomePage
-                health={health}
-                onOpenSettings={() => {
-                  setView("settings");
-                }}
-              />
-            ) : (
-              <SettingsPage {...(pollMs === undefined ? {} : { pollMs })} />
-            )
-          }
-        </EngineGate>
-      </main>
+      <EngineGate {...(connect ? { connect } : {})}>
+        {(health) => (
+          <>
+            <main className="app__main">
+              {view === "search" && <SearchPage onNavigate={setView} />}
+              {view === "library" && <LibraryPage onNavigate={setView} {...poll} />}
+              {view === "settings" && <SettingsPage {...poll} />}
+            </main>
+            <footer className="app__footer muted" role="status">
+              {t("engine.ready")} {/* <bdi> keeps the Latin version intact inside Hebrew */}
+              <bdi>v{health.version}</bdi>
+            </footer>
+          </>
+        )}
+      </EngineGate>
     </div>
   );
 }

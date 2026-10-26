@@ -11,6 +11,12 @@ dependencies = [
     "psutil>=6.1",
     "httpx>=0.28",
     "platformdirs>=4.3",
+    "pypdfium2>=5.14.0",
+    "lancedb>=0.40.0",
+    "onnxruntime>=1.31.0",
+    "tokenizers>=0.23.3",
+    "numpy>=2.5.4",
+    "python-multipart>=0.0.32",
 ]
 
 [dependency-groups]
@@ -39,7 +45,12 @@ src = ["src", "tests"]
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "N", "UP", "B", "A", "C4", "SIM", "RUF", "ANN", "PT", "RET", "TRY", "PL"]
-ignore = ["TRY003", "PLR2004"]
+# RUF001-003 flag Hebrew letters as "confusable" with Latin ones; Hebrew text is intended here.
+# SIM905: "a b c".split() reads better than long list literals for word lists.
+ignore = ["TRY003", "PLR2004", "RUF001", "RUF002", "RUF003", "SIM905"]
+
+[tool.ruff.lint.pylint]
+max-args = 7  # composition roots take keyword-only overrides for tests
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**" = ["ANN", "PLR2004"]
@@ -49,6 +60,11 @@ strict = true
 python_version = "3.12"
 mypy_path = "src"
 packages = ["rb_engine"]
+
+[[tool.mypy.overrides]]
+# These libraries ship without type information.
+module = ["pypdfium2", "onnxruntime", "pyarrow"]
+ignore_missing_imports = true
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

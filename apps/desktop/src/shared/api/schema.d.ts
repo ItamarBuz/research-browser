@@ -89,10 +89,157 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/library": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Library */
+        get: operations["getLibrary"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/library/documents": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Import Documents */
+        post: operations["importDocuments"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/library/documents/{document_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Delete Document */
+        delete: operations["deleteDocument"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/library/reindex": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Reindex */
+        post: operations["reindexLibrary"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/library/search": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Search */
+        post: operations["searchLibrary"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        /** Body_importDocuments */
+        Body_importDocuments: {
+            /** Files */
+            files: string[];
+        };
+        /** Document */
+        Document: {
+            /**
+             * Id
+             * @description SHA-256 of the file, so the same PDF is never stored twice
+             */
+            id: string;
+            /** File Name */
+            file_name: string;
+            /** Size Bytes */
+            size_bytes: number;
+            /**
+             * Added At
+             * Format: date-time
+             */
+            added_at: string;
+            status: components["schemas"]["DocumentStatus"];
+            /** Error */
+            error?: string | null;
+            metadata: components["schemas"]["DocumentMetadata"];
+            /** Language */
+            language?: ("en" | "he" | "other") | null;
+            /**
+             * Page Count
+             * @default 0
+             */
+            page_count: number;
+            /**
+             * Passage Count
+             * @default 0
+             */
+            passage_count: number;
+        };
+        /** DocumentHit */
+        DocumentHit: {
+            document: components["schemas"]["Document"];
+            /** Score */
+            score: number;
+            /** Passages */
+            passages: components["schemas"]["PassageHit"][];
+        };
+        /** DocumentMetadata */
+        DocumentMetadata: {
+            /** Title */
+            title: string;
+            /** Authors */
+            authors?: string[];
+            /** Year */
+            year?: number | null;
+            /** Doi */
+            doi?: string | null;
+        };
+        /**
+         * DocumentStatus
+         * @enum {string}
+         */
+        DocumentStatus: "queued" | "parsing" | "indexing" | "ready" | "failed";
         /** GpuInfo */
         GpuInfo: {
             /** Name */
@@ -147,6 +294,79 @@ export interface components {
             /** Api Version */
             api_version: number;
         };
+        /** ImportResult */
+        ImportResult: {
+            /** File Name */
+            file_name: string;
+            document?: components["schemas"]["Document"] | null;
+            /** Error */
+            error?: string | null;
+        };
+        /** IndexStatus */
+        IndexStatus: {
+            /** Embedding Model */
+            embedding_model: string;
+            /** Model Ready */
+            model_ready: boolean;
+            /** Ready Documents */
+            ready_documents: number;
+            /** Indexed Documents */
+            indexed_documents: number;
+            /**
+             * Pending Documents
+             * @description Parsed documents missing from the active index
+             */
+            pending_documents: number;
+            /**
+             * Busy
+             * @description Documents are being imported or indexed right now
+             */
+            busy: boolean;
+        };
+        /** LibraryDocument */
+        LibraryDocument: {
+            /**
+             * Id
+             * @description SHA-256 of the file, so the same PDF is never stored twice
+             */
+            id: string;
+            /** File Name */
+            file_name: string;
+            /** Size Bytes */
+            size_bytes: number;
+            /**
+             * Added At
+             * Format: date-time
+             */
+            added_at: string;
+            status: components["schemas"]["DocumentStatus"];
+            /** Error */
+            error?: string | null;
+            metadata: components["schemas"]["DocumentMetadata"];
+            /** Language */
+            language?: ("en" | "he" | "other") | null;
+            /**
+             * Page Count
+             * @default 0
+             */
+            page_count: number;
+            /**
+             * Passage Count
+             * @default 0
+             */
+            passage_count: number;
+            /**
+             * Searchable
+             * @description Indexed with the active embedding model
+             */
+            searchable: boolean;
+        };
+        /** LibraryState */
+        LibraryState: {
+            /** Documents */
+            documents: components["schemas"]["LibraryDocument"][];
+            index: components["schemas"]["IndexStatus"];
+        };
         /** ModelInfo */
         ModelInfo: {
             /** Id */
@@ -190,6 +410,52 @@ export interface components {
          * @enum {string}
          */
         ModelStatus: "not_downloaded" | "downloading" | "ready" | "failed";
+        /** PassageHit */
+        PassageHit: {
+            /** Passage Id */
+            passage_id: string;
+            /** Page */
+            page: number;
+            /** Text */
+            text: string;
+            /** Score */
+            score: number;
+            /**
+             * Similarity
+             * @description Cosine similarity between query and passage
+             */
+            similarity: number;
+        };
+        /** SearchRequest */
+        SearchRequest: {
+            /** Query */
+            query: string;
+            /**
+             * Language
+             * @default cross
+             * @enum {string}
+             */
+            language: "en" | "he" | "cross";
+            /**
+             * Limit
+             * @default 20
+             */
+            limit: number;
+        };
+        /** SearchResponse */
+        SearchResponse: {
+            /**
+             * Query Language
+             * @enum {string}
+             */
+            query_language: "en" | "he" | "other";
+            /** Embedding Model */
+            embedding_model: string;
+            /** Results */
+            results: components["schemas"]["DocumentHit"][];
+            /** Took Ms */
+            took_ms: number;
+        };
         /** SystemInfo */
         SystemInfo: {
             hardware: components["schemas"]["HardwareProfile"];
@@ -363,6 +629,141 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ModelInfo"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    getLibrary: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LibraryState"];
+                };
+            };
+        };
+    };
+    importDocuments: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "multipart/form-data": components["schemas"]["Body_importDocuments"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ImportResult"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    deleteDocument: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                document_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    reindexLibrary: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["IndexStatus"];
+                };
+            };
+        };
+    };
+    searchLibrary: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SearchRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SearchResponse"];
                 };
             };
             /** @description Validation Error */

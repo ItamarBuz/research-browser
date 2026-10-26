@@ -22,8 +22,31 @@ class DataPaths:
     def preferences(self) -> Path:
         return self.root / "preferences.json"
 
+    @property
+    def library(self) -> Path:
+        return self.root / "library"
+
+    @property
+    def library_db(self) -> Path:
+        return self.library / "library.sqlite3"
+
+    @property
+    def library_files(self) -> Path:
+        """Imported PDFs, stored as <sha256>.pdf so the original may move or be deleted."""
+        return self.library / "files"
+
+    @property
+    def library_incoming(self) -> Path:
+        """Uploads in progress; moved into library_files once complete."""
+        return self.library / "incoming"
+
+    @property
+    def library_index(self) -> Path:
+        return self.library / "index"
+
     def ensure(self) -> "DataPaths":
-        self.models.mkdir(parents=True, exist_ok=True)
+        for directory in (self.models, self.library_files, self.library_incoming):
+            directory.mkdir(parents=True, exist_ok=True)
         return self
 
 

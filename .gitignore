@@ -31,3 +31,6 @@ Thumbs.db
 .idea/
 .vscode/*
 !.vscode/extensions.json
+
+# Third-party test PDFs (downloaded locally, never committed)
+sample-papers/

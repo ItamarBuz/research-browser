@@ -13,6 +13,14 @@ export type TierReason = Schemas["TierReason"];
 export type ModelList = Schemas["ModelList"];
 export type ModelInfo = Schemas["ModelInfo"];
 export type ModelRole = Schemas["ModelRole"];
+export type LibraryState = Schemas["LibraryState"];
+export type LibraryDocument = Schemas["LibraryDocument"];
+export type IndexStatus = Schemas["IndexStatus"];
+export type ImportResult = Schemas["ImportResult"];
+export type SearchRequest = Schemas["SearchRequest"];
+export type SearchResponse = Schemas["SearchResponse"];
+export type DocumentHit = Schemas["DocumentHit"];
+export type LanguageFilter = NonNullable<SearchRequest["language"]>;
 
 /** Where the engine sidecar listens and the per-launch token it expects. */
 export interface EngineConnection {
@@ -87,18 +95,45 @@ export class EngineClient {
     });
   }
 
+  getLibrary(): Promise<LibraryState> {
+    return this.request<LibraryState>("/library");
+  }
+
+  importDocuments(files: readonly File[]): Promise<ImportResult[]> {
+    const form = new FormData();
+    for (const file of files) form.append("files", file, file.name);
+    return this.request<ImportResult[]>("/library/documents", { method: "POST", body: form });
+  }
+
+  async deleteDocument(documentId: string): Promise<void> {
+    await this.request<null>(`/library/documents/${encodeURIComponent(documentId)}`, {
+      method: "DELETE",
+    });
+  }
+
+  reindexLibrary(): Promise<IndexStatus> {
+    return this.request<IndexStatus>("/library/reindex", { method: "POST" });
+  }
+
+  searchLibrary(request: SearchRequest): Promise<SearchResponse> {
+    return this.request<SearchResponse>("/library/search", { method: "POST", body: request });
+  }
+
   private async request<T>(
     path: string,
-    options: { method?: "PUT" | "POST"; body?: unknown } = {},
+    options: { method?: "PUT" | "POST" | "DELETE"; body?: unknown } = {},
   ): Promise<T> {
+    const { body } = options;
+    const isForm = body instanceof FormData;
     const init: RequestInit = {
       headers: {
         Authorization: `Bearer ${this.connection.token}`,
-        ...(options.body === undefined ? {} : { "Content-Type": "application/json" }),
+        // FormData sets its own multipart boundary header.
+        ...(body === undefined || isForm ? {} : { "Content-Type": "application/json" }),
       },
     };
     if (options.method) init.method = options.method;
-    if (options.body !== undefined) init.body = JSON.stringify(options.body);
+    if (body !== undefined) init.body = isForm ? body : JSON.stringify(body);
 
     let response: Response;
     try {
@@ -109,14 +144,26 @@ export class EngineClient {
     if (!response.ok) {
       throw await toRequestError(response);
     }
+    if (response.status === HTTP_NO_CONTENT) return null as T;
     return (await response.json()) as T;
   }
 }
 
+const HTTP_NO_CONTENT = 204;
+
 /** The engine operations the UI uses; tests substitute a fake implementation. */
 export type EngineApi = Pick<
   EngineClient,
-  "getHealth" | "getSystem" | "setTierOverride" | "listModels" | "startModelDownload"
+  | "getHealth"
+  | "getSystem"
+  | "setTierOverride"
+  | "listModels"
+  | "startModelDownload"
+  | "getLibrary"
+  | "importDocuments"
+  | "deleteDocument"
+  | "reindexLibrary"
+  | "searchLibrary"
 >;
 
 async function toRequestError(response: Response): Promise<EngineRequestError> {

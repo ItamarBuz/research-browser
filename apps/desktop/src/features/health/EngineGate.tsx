@@ -19,18 +19,22 @@ export function EngineGate({ connect, children }: EngineGateProps) {
   switch (state.kind) {
     case "connecting":
       return (
-        <p className="status status--pending" role="status">
-          {t("engine.connecting")}
-        </p>
+        <main className="app__main">
+          <p className="status status--pending" role="status">
+            {t("engine.connecting")}
+          </p>
+        </main>
       );
     case "failed":
       return (
-        <div className="status status--error" role="alert">
-          <p>{t("engine.failed", { message: state.message })}</p>
-          <button type="button" onClick={retry}>
-            {t("engine.retry")}
-          </button>
-        </div>
+        <main className="app__main">
+          <div className="status status--error" role="alert">
+            <p>{t("engine.failed", { message: state.message })}</p>
+            <button type="button" onClick={retry}>
+              {t("engine.retry")}
+            </button>
+          </div>
+        </main>
       );
     case "ready":
       return (

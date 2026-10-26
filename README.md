@@ -6,8 +6,9 @@ or English. The app finds peer-reviewed papers and ranks them by a calibrated **
 how other papers cite each one. All AI processing runs on your machine and adapts to its
 hardware. External LLM APIs are optional.
 
-> Status: **M1 runtime**: hardware detection, performance tiers, and verified model downloads,
-> shown on a Settings screen. Search arrives in M2. See the architecture plan for M2–M6.
+> Status: **M2 local library**: import your own PDFs and search them offline, in Hebrew and
+> English, including cross-lingual search. Next is M3 (online academic sources). See the
+> architecture plan for M3–M6.
 
 ## Layout
 
@@ -74,6 +75,32 @@ Downloads resume after interruptions and are verified against the pinned hashes 
 They are stored in the per-user data folder (`%LOCALAPPDATA%\ResearchBrowser`,
 `~/Library/Application Support/ResearchBrowser`, or `~/.local/share/ResearchBrowser`).
 Override the location with `RB_DATA_DIR` or `--data-dir`.
+
+## Local library and search
+
+Import PDFs on the **Library** page by dropping them in or choosing files. Each file is
+copied into the data folder and processed in the background:
+
+1. **Read**: PDFium extracts the text of each page. Running headers, page numbers and
+   end-of-line hyphenation are removed, and every sentence keeps its position in the original
+   page text, ready for highlighting in M4.
+2. **Split**: sentences are grouped into passages of about 120 words. Language is detected per
+   passage and per document.
+3. **Index**: passages are embedded with the tier's multilingual model and stored in LanceDB,
+   next to a keyword index. Hebrew words are indexed with and without their prefixes
+   (ו/ה/ב/כ/ל/מ/ש), so "מחקר" also matches "והמחקר".
+
+Search combines semantic and keyword matches with reciprocal rank fusion. The sources filter
+limits results to English or Hebrew documents, or keeps all languages for cross-lingual
+search (a Hebrew question finds English papers).
+
+Documents imported before the embedding model is downloaded are parsed right away and indexed
+later with **Index now**. Each embedding model has its own index, so changing the performance
+tier asks for a re-index rather than mixing incompatible vectors. Scanned PDFs without a text
+layer are reported as failed, because OCR is not supported yet.
+
+To run the real-model test (it is skipped otherwise), point it at a downloaded E5 model:
+`RB_TEST_EMBEDDER_DIR=<data dir>/models/embed-e5-small/<revision> uv run pytest tests/test_embedder.py`.
 
 ## How the shell and engine connect
 

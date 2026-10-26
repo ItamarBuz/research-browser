@@ -19,7 +19,7 @@ def _entry(**overrides: object) -> SpecEntry:
     fields: dict[str, object] = {
         "id": "m",
         "name": "M",
-        "role": "embedder",
+        "role": "nli",
         "tiers": ["lite"],
         "repo": "org/m",
         "license": "mit",
@@ -72,6 +72,18 @@ def test_rejects_unpinned_entry() -> None:
 def test_rejects_lock_missing_a_file() -> None:
     with pytest.raises(CatalogError, match="missing files"):
         build_catalog([_entry(files=["model.onnx", "tokenizer.json"])], LOCK)
+
+
+def test_embedders_require_embedding_config() -> None:
+    with pytest.raises(ValueError, match=r"need \[embedding\]"):
+        _entry(role="embedder")
+    with pytest.raises(ValueError, match="onnx_file"):
+        _entry(
+            role="embedder",
+            embedding={"onnx_file": "other.onnx", "pooling": "mean"},
+        )
+    entry = _entry(role="embedder", embedding={"onnx_file": "model.onnx", "pooling": "cls"})
+    assert entry.embedding is not None
 
 
 def test_rejects_two_models_for_same_role_and_tier() -> None:

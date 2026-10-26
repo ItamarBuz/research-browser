@@ -6,14 +6,20 @@ from dataclasses import dataclass
 
 import httpx
 
+from rb_engine.adapters.pdf.pdfium_parser import PdfiumParser
+from rb_engine.adapters.store.lancedb_index import LanceIndexStore
+from rb_engine.adapters.store.library_repository import LibraryRepository
 from rb_engine.domain.hardware import HardwareProfile, Tier, TierDecision
+from rb_engine.ports.library import EmbedderResolver
 from rb_engine.runtime.catalog import ModelCatalog, load_bundled_catalog
+from rb_engine.runtime.embedders import CatalogEmbedderResolver
 from rb_engine.runtime.hardware import detect_hardware
 from rb_engine.runtime.model_manager import ModelManager
 from rb_engine.runtime.paths import DataPaths
 from rb_engine.runtime.preferences import PreferencesStore
 from rb_engine.runtime.residency import RESIDENT_LIMITS, ResidencyManager
 from rb_engine.runtime.tier_policy import decide_tier
+from rb_engine.services.library import LibraryService
 
 logger = logging.getLogger(__name__)
 
@@ -33,11 +39,13 @@ def read_env_tier() -> Tier | None:
 
 @dataclass
 class EngineServices:
+    paths: DataPaths
     hardware: HardwareProfile
     preferences: PreferencesStore
     catalog: ModelCatalog
     models: ModelManager
     residency: ResidencyManager
+    library: LibraryService
     env_tier: Tier | None
 
     def tier_decision(self) -> TierDecision:
@@ -47,6 +55,12 @@ class EngineServices:
             env_override=self.env_tier,
         )
 
+    async def start(self) -> None:
+        await self.library.start()
+
+    async def stop(self) -> None:
+        await self.library.stop()
+
 
 def build_services(
     paths: DataPaths,
@@ -55,20 +69,38 @@ def build_services(
     catalog: ModelCatalog | None = None,
     transport: httpx.AsyncBaseTransport | None = None,
     env_tier: Tier | None = None,
+    embedders: EmbedderResolver | None = None,
 ) -> EngineServices:
     paths.ensure()
     hardware = hardware or detect_hardware()
     catalog = catalog or load_bundled_catalog()
     preferences = PreferencesStore(paths.preferences)
-    decision = decide_tier(
-        hardware, user_override=preferences.load().tier_override, env_override=env_tier
+
+    def current_tier() -> Tier:
+        user = preferences.load().tier_override
+        return decide_tier(hardware, user_override=user, env_override=env_tier).effective
+
+    tier = current_tier()
+    logger.info("Effective hardware tier: %s", tier)
+    models = ModelManager(catalog, paths.models, transport=transport)
+    residency = ResidencyManager(RESIDENT_LIMITS[tier])
+    embedders = embedders or CatalogEmbedderResolver(
+        catalog, models, residency, hardware, current_tier
     )
-    logger.info("Hardware tier: detected %s, effective %s", decision.detected, decision.effective)
+    library = LibraryService(
+        LibraryRepository(paths.library_db),
+        paths.library_files,
+        PdfiumParser(),
+        embedders,
+        LanceIndexStore(paths.library_index),
+    )
     return EngineServices(
+        paths=paths,
         hardware=hardware,
         preferences=preferences,
         catalog=catalog,
-        models=ModelManager(catalog, paths.models, transport=transport),
-        residency=ResidencyManager(RESIDENT_LIMITS[decision.effective]),
+        models=models,
+        residency=residency,
+        library=library,
         env_tier=env_tier,
     )

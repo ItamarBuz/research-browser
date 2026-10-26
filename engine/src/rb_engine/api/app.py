@@ -7,7 +7,7 @@ from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from rb_engine import __version__
-from rb_engine.api import health, models_api, system
+from rb_engine.api import health, library_api, models_api, system
 from rb_engine.api.auth import require_token
 from rb_engine.api.problems import register_problem_handlers
 from rb_engine.runtime.container import EngineServices
@@ -22,8 +22,13 @@ def create_app(settings: EngineSettings, services_factory: ServicesFactory) -> F
 
     @asynccontextmanager
     async def lifespan(app: FastAPI) -> AsyncIterator[None]:
-        app.state.services = services_factory()
-        yield
+        services = services_factory()
+        app.state.services = services
+        await services.start()
+        try:
+            yield
+        finally:
+            await services.stop()
 
     app = FastAPI(
         title="Research Browser Engine",
@@ -48,4 +53,5 @@ def create_app(settings: EngineSettings, services_factory: ServicesFactory) -> F
     app.include_router(health.router)
     app.include_router(system.router)
     app.include_router(models_api.router)
+    app.include_router(library_api.router)
     return app

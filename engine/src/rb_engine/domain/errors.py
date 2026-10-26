@@ -59,6 +59,12 @@ class InsufficientDiskSpaceError(EngineError):
     type_slug = "insufficient-disk-space"
 
 
+class DocumentNotFoundError(EngineError):
+    status_code = 404
+    title = "Unknown document"
+    type_slug = "document-not-found"
+
+
 class DocumentParseError(EngineError):
     """A document (e.g. an imported PDF) could not be parsed into text."""
 

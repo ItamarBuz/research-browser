@@ -5,19 +5,16 @@
   },
   "nav": {
     "label": "Main",
-    "home": "Home",
-    "settings": "Settings"
+    "settings": "Settings",
+    "search": "Search",
+    "library": "Library"
   },
   "engine": {
     "connecting": "Starting the research engine…",
     "ready": "Engine ready",
     "failed": "The research engine could not be reached: {{message}}",
-    "retry": "Retry"
-  },
-  "home": {
-    "title": "Welcome",
-    "comingSoon": "Search is coming in the next milestone. Meanwhile, download the AI models for your computer so everything runs locally.",
-    "setUpModels": "Set up AI models"
+    "retry": "Retry",
+    "version": "Engine"
   },
   "settings": {
     "loading": "Loading…",
@@ -82,5 +79,71 @@
         "llm": "Language model"
       }
     }
+  },
+  "languages": {
+    "en": "English",
+    "he": "Hebrew",
+    "other": "Other"
+  },
+  "search": {
+    "title": "Search your library",
+    "placeholder": "Ask a research question, in English or Hebrew",
+    "submit": "Search",
+    "searching": "Searching…",
+    "filterLegend": "Sources",
+    "filters": {
+      "cross": "All languages (cross-lingual)",
+      "en": "English only",
+      "he": "Hebrew only"
+    },
+    "crossHint": "Cross-lingual search finds English papers for a Hebrew question, and the other way around.",
+    "emptyLibrary": "Your library is empty. Import PDFs to search them.",
+    "goToLibrary": "Import PDFs",
+    "pending_one": "{{count}} document is not searchable yet.",
+    "pending_other": "{{count}} documents are not searchable yet.",
+    "noResults": "No matching passages. Try other words, or switch the sources filter to all languages.",
+    "resultCount_one": "{{count}} document · {{ms}} ms",
+    "resultCount_other": "{{count}} documents · {{ms}} ms",
+    "page": "Page {{page}}",
+    "modelMissing": "The semantic search model is not downloaded yet.",
+    "openSettings": "Open settings",
+    "error": "Search failed: {{message}}",
+    "authorsMore": "{{first}} et al."
+  },
+  "library": {
+    "title": "Library",
+    "dropzone": "Drop PDF files here, or click to choose",
+    "dropzoneHint": "Files are copied into the app and processed on this computer.",
+    "uploading": "Uploading…",
+    "importFailed": "{{file}}: {{error}}",
+    "empty": "No documents yet.",
+    "banner": {
+      "modelMissing_one": "{{count}} document is waiting for the semantic search model.",
+      "modelMissing_other": "{{count}} documents are waiting for the semantic search model.",
+      "downloadModel": "Download it in settings",
+      "pending_one": "{{count}} document is not indexed for the current performance tier.",
+      "pending_other": "{{count}} documents are not indexed for the current performance tier.",
+      "indexNow": "Index now",
+      "busy": "Processing documents…"
+    },
+    "columns": {
+      "document": "Document",
+      "language": "Language",
+      "pages": "Pages",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "status": {
+      "queued": "Waiting",
+      "parsing": "Reading PDF…",
+      "indexing": "Indexing…",
+      "searchable": "Searchable",
+      "notIndexed": "Not indexed yet",
+      "failed": "Failed"
+    },
+    "delete": "Delete",
+    "confirmDelete": "Confirm delete",
+    "cancel": "Cancel",
+    "error": "Something went wrong: {{message}}"
   }
 }

@@ -5,9 +5,15 @@ import tomllib
 from collections.abc import Iterable, Mapping
 from importlib import resources
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
-from rb_engine.domain.catalog import ALLOWED_LICENSES, ModelFile, ModelRole, ModelSpec
+from rb_engine.domain.catalog import (
+    ALLOWED_LICENSES,
+    EmbeddingConfig,
+    ModelFile,
+    ModelRole,
+    ModelSpec,
+)
 from rb_engine.domain.errors import ModelNotFoundError
 from rb_engine.domain.hardware import Tier
 
@@ -32,6 +38,15 @@ class SpecEntry(BaseModel):
     license: str
     license_source: str | None = None
     files: tuple[str, ...] = Field(min_length=1)
+    embedding: EmbeddingConfig | None = None
+
+    @model_validator(mode="after")
+    def _embedders_need_config(self) -> "SpecEntry":
+        if (self.role == ModelRole.EMBEDDER) != (self.embedding is not None):
+            raise ValueError(f"{self.id}: embedders (and only embedders) need [embedding]")
+        if self.embedding and self.embedding.onnx_file not in self.files:
+            raise ValueError(f"{self.id}: embedding.onnx_file must be listed in files")
+        return self
 
 
 class LockedFile(BaseModel):
@@ -109,6 +124,7 @@ def build_catalog(spec: Iterable[SpecEntry], lock: Mapping[str, LockedEntry]) ->
                 repo=entry.repo,
                 revision=locked.revision,
                 license=entry.license,
+                embedding=entry.embedding,
                 files=tuple(
                     ModelFile(
                         path=path,
