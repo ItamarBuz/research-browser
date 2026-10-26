@@ -1,6 +1,7 @@
 """Test doubles: fake hardware, a tiny model catalog and an in-memory model host."""
 
 import hashlib
+from collections.abc import AsyncIterator
 from dataclasses import dataclass, field
 
 import httpx
@@ -76,6 +77,9 @@ class FakeModelHost:
     content: dict[str, bytes]
     honour_range: bool = True
     fail_first: int = 0
+    fail_midway: int = 0
+    """Requests that send a slice of the file and then drop the connection."""
+    timeout_first: int = 0
     corrupt: bool = False
     requests: list[httpx.Request] = field(default_factory=list)
 
@@ -92,13 +96,31 @@ class FakeModelHost:
         if self.fail_first > 0:
             self.fail_first -= 1
             raise httpx.ConnectError("connection reset", request=request)
+        if self.timeout_first > 0:
+            self.timeout_first -= 1
+            raise httpx.ReadTimeout("", request=request)  # httpx timeouts often have no text
         body = self.content.get(str(request.url))
         if body is None:
             return httpx.Response(404)
         if self.corrupt:
             body = b"x" * len(body)
         range_header = request.headers.get("Range")
+        start = 0
         if range_header and self.honour_range:
             start = int(range_header.removeprefix("bytes=").rstrip("-"))
-            return httpx.Response(206, content=body[start:])
-        return httpx.Response(200, content=body)
+        status = 206 if start else 200
+        if self.fail_midway > 0:
+            self.fail_midway -= 1
+            return httpx.Response(status, stream=_DroppingStream(body[start : start + 1000]))
+        return httpx.Response(status, content=body[start:])
+
+
+class _DroppingStream(httpx.AsyncByteStream):
+    """Sends some bytes, then fails like a dropped connection."""
+
+    def __init__(self, chunk: bytes) -> None:
+        self._chunk = chunk
+
+    async def __aiter__(self) -> AsyncIterator[bytes]:
+        yield self._chunk
+        raise httpx.ReadError("connection dropped")

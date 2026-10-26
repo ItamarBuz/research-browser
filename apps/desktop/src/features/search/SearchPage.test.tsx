@@ -1,4 +1,4 @@
-import { act, fireEvent, render, screen } from "@testing-library/react";
+import { act, fireEvent, render, screen, within } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
 import { EngineProvider } from "../../shared/api/EngineContext";
@@ -29,6 +29,7 @@ function seeded() {
         authors: ["A", "B", "C", "D"],
         year: 2021,
         doi: null,
+        from_catalog: false,
       },
     }),
     libraryDocument("d2", "שינה וזיכרון", { language: "he" }),
@@ -43,7 +44,8 @@ describe("SearchPage", () => {
 
     search("sleep");
 
-    const results = await screen.findAllByRole("listitem");
+    const library = await screen.findByRole("region", { name: "In your library" });
+    const results = within(library).getAllByRole("listitem");
     expect(results).toHaveLength(1);
     expect(results[0]).toHaveTextContent("Sleep and Memory Consolidation");
     expect(results[0]).toHaveTextContent("A, B, C et al.");

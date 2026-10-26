@@ -141,8 +141,19 @@ class LibraryService:
 
     # --- commands ------------------------------------------------------------------------
 
-    def import_file(self, temp_path: Path, file_name: str, sha256: str, size: int) -> Document:
-        """Take ownership of an uploaded file and queue it for processing."""
+    def import_file(
+        self,
+        temp_path: Path,
+        file_name: str,
+        sha256: str,
+        size: int,
+        metadata: DocumentMetadata | None = None,
+    ) -> Document:
+        """Take ownership of an uploaded file and queue it for processing.
+
+        `metadata` from an academic database (title, authors, ...) is kept in preference to
+        what parsing the PDF finds.
+        """
         existing = self._repo.get_document(sha256)
         if existing is not None:
             temp_path.unlink(missing_ok=True)
@@ -160,7 +171,11 @@ class LibraryService:
             size_bytes=size,
             added_at=datetime.now(UTC),
             status=DocumentStatus.QUEUED,
-            metadata=DocumentMetadata(title=Path(file_name).stem),
+            metadata=(
+                metadata.model_copy(update={"from_catalog": True})
+                if metadata
+                else DocumentMetadata(title=Path(file_name).stem)
+            ),
         )
         self._repo.add_document(document)
         self._enqueue("process", sha256)
@@ -189,6 +204,9 @@ class LibraryService:
             for doc in self._repo.list_documents()
         ]
         return LibraryState(documents=documents, index=self.index_status(indexed))
+
+    def known_dois(self) -> set[str]:
+        return {d.metadata.doi for d in self._repo.list_documents() if d.metadata.doi}
 
     def index_status(self, indexed: set[str] | None = None) -> IndexStatus:
         indexed = self._indexed_ids() if indexed is None else indexed
@@ -290,6 +308,10 @@ class LibraryService:
             logger.exception("Parsing %s failed", document_id)
             self._repo.set_status(document_id, DocumentStatus.FAILED, f"Unexpected error: {exc}")
             return
+        if document.metadata.from_catalog:
+            parsed = parsed.model_copy(
+                update={"metadata": document.metadata.completed_with(parsed.metadata)}
+            )
         self._repo.save_parsed(document_id, parsed)
         # A re-parse (after a schema upgrade, say) makes existing index rows stale.
         await self._unindex(document_id)

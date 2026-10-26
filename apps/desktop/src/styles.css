@@ -467,3 +467,92 @@ button.danger {
   border-color: var(--error);
   color: var(--error);
 }
+
+/* --- Online results --- */
+
+.search h2 {
+  margin-block: 1.5rem 0.5rem;
+  font-size: 1.15rem;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-block: 0 0.5rem;
+}
+
+.chip {
+  padding-block: 0.1rem;
+  padding-inline: 0.6rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  border: 1px solid var(--border);
+}
+
+.chip--ok {
+  color: var(--ok);
+  border-color: var(--ok);
+}
+
+.chip--error {
+  color: var(--error);
+  border-color: var(--error);
+  cursor: help;
+}
+
+.abstract {
+  margin-block: 0 0.6rem;
+}
+
+.abstract--clamped {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* --- Settings: online sources --- */
+
+.toggle {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-block: 0.35rem;
+}
+
+.toggle input {
+  margin-block-start: 0.3rem;
+}
+
+.source-list {
+  margin-block: 0.5rem 1rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.field {
+  margin-block: 0.75rem;
+}
+
+.field label {
+  display: block;
+  font-weight: 500;
+}
+
+.field input {
+  min-inline-size: 18rem;
+  padding-block: 0.35rem;
+  padding-inline: 0.6rem;
+  font: inherit;
+  color: var(--fg);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+
+.settings-section h3 {
+  margin-block: 1.25rem 0.25rem;
+  font-size: 1rem;
+}

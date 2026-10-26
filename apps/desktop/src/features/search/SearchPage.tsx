@@ -4,12 +4,14 @@ import { useTranslation } from "react-i18next";
 import { useEngine } from "../../shared/api/EngineContext";
 import {
   EngineRequestError,
+  type DiscoveryResponse,
   type DocumentHit,
   type LanguageFilter,
   type SearchResponse,
 } from "../../shared/api/engine";
 import { useAsyncResource } from "../../shared/hooks/useAsyncResource";
 import type { View } from "../../shared/navigation";
+import { OnlineResults } from "./OnlineResults";
 
 const FILTERS: readonly LanguageFilter[] = ["cross", "en", "he"];
 const MAX_AUTHORS = 3;
@@ -22,6 +24,14 @@ type SearchState =
   | { kind: "done"; response: SearchResponse }
   | { kind: "modelMissing" }
   | { kind: "failed"; message: string };
+
+type OnlineState =
+  | { kind: "off" }
+  | { kind: "searching" }
+  | { kind: "done"; response: DiscoveryResponse }
+  | { kind: "failed"; message: string };
+
+const messageOf = (error: unknown) => (error instanceof Error ? error.message : String(error));
 
 function Authors({ authors }: { authors: string[] }) {
   const { t } = useTranslation();
@@ -39,9 +49,9 @@ function ResultCard({ hit }: { hit: DocumentHit }) {
   const { metadata } = document;
   return (
     <li className="result-card">
-      <h2 className="result-title" dir="auto">
+      <h3 className="result-title" dir="auto">
         {metadata.title}
-      </h2>
+      </h3>
       <p className="result-meta muted">
         <Authors authors={metadata.authors ?? []} />
         {metadata.year != null && <span>{metadata.year}</span>}
@@ -65,15 +75,38 @@ export function SearchPage({ onNavigate }: { onNavigate: (view: View) => void })
   const library = useAsyncResource(loadLibrary);
   const [query, setQuery] = useState("");
   const [language, setLanguage] = useState<LanguageFilter>("cross");
+  const loadOnlineSettings = useCallback(() => api.getOnlineSettings(), [api]);
+  const onlineSettings = useAsyncResource(loadOnlineSettings);
   const [state, setState] = useState<SearchState>({ kind: "idle" });
+  const [online, setOnline] = useState<OnlineState>({ kind: "off" });
 
-  async function search(event: FormEvent) {
+  async function searchOnline(text: string) {
+    if (!onlineSettings.data?.enabled) {
+      setOnline({ kind: "off" });
+      return;
+    }
+    setOnline({ kind: "searching" });
+    try {
+      const response = await api.discover({ query: text, language, limit: RESULT_LIMIT });
+      setOnline({ kind: "done", response });
+    } catch (error) {
+      setOnline({ kind: "failed", message: messageOf(error) });
+    }
+  }
+
+  function search(event: FormEvent) {
     event.preventDefault();
-    if (!query.trim()) return;
+    const text = query.trim();
+    if (!text) return;
+    void searchLibrary(text);
+    void searchOnline(text);
+  }
+
+  async function searchLibrary(text: string) {
     setState({ kind: "searching" });
     try {
       const response = await api.searchLibrary({
-        query: query.trim(),
+        query: text,
         language,
         limit: RESULT_LIMIT,
       });
@@ -82,10 +115,7 @@ export function SearchPage({ onNavigate }: { onNavigate: (view: View) => void })
       if (error instanceof EngineRequestError && error.status === HTTP_SERVICE_UNAVAILABLE) {
         setState({ kind: "modelMissing" });
       } else {
-        setState({
-          kind: "failed",
-          message: error instanceof Error ? error.message : String(error),
-        });
+        setState({ kind: "failed", message: messageOf(error) });
       }
     }
   }
@@ -97,7 +127,7 @@ export function SearchPage({ onNavigate }: { onNavigate: (view: View) => void })
     <div className="search">
       <h1 className="page-title">{t("search.title")}</h1>
 
-      <form className="search-form" onSubmit={(event) => void search(event)}>
+      <form className="search-form" onSubmit={search}>
         <input
           type="search"
           dir="auto"
@@ -180,7 +210,8 @@ export function SearchPage({ onNavigate }: { onNavigate: (view: View) => void })
         (state.response.results.length === 0 ? (
           <p className="muted">{t("search.noResults")}</p>
         ) : (
-          <section aria-label={t("search.title")}>
+          <section aria-label={t("search.libraryTitle")}>
+            <h2>{t("search.libraryTitle")}</h2>
             <p className="muted" role="status">
               {t("search.resultCount", {
                 count: state.response.results.length,
@@ -194,6 +225,20 @@ export function SearchPage({ onNavigate }: { onNavigate: (view: View) => void })
             </ol>
           </section>
         ))}
+
+      {online.kind === "searching" && (
+        <p className="status status--pending" role="status">
+          {t("online.searching")}
+        </p>
+      )}
+      {online.kind === "failed" && (
+        <p className="status status--error" role="alert">
+          {t("online.error", { message: online.message })}
+        </p>
+      )}
+      {online.kind === "done" && (
+        <OnlineResults response={online.response} onNavigate={onNavigate} />
+      )}
     </div>
   );
 }

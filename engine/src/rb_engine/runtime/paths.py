@@ -44,6 +44,11 @@ class DataPaths:
     def library_index(self) -> Path:
         return self.library / "index"
 
+    @property
+    def http_cache(self) -> Path:
+        """Responses from online academic sources, for speed and offline use."""
+        return self.root / "cache" / "http.sqlite3"
+
     def ensure(self) -> "DataPaths":
         for directory in (self.models, self.library_files, self.library_incoming):
             directory.mkdir(parents=True, exist_ok=True)

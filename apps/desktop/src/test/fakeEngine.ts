@@ -2,6 +2,7 @@ import { vi } from "vitest";
 
 import {
   EngineRequestError,
+  type DiscoveryResponse,
   type DocumentHit,
   type EngineApi,
   type HealthResponse,
@@ -10,10 +11,13 @@ import {
   type LibraryState,
   type ModelInfo,
   type ModelList,
+  type OnlineSettingsUpdate,
+  type OnlineSettingsView,
   type SearchRequest,
   type SearchResponse,
   type SystemInfo,
   type Tier,
+  type WorkHit,
 } from "../shared/api/engine";
 
 export const HEALTH: HealthResponse = { status: "ok", version: "0.1.0", api_version: 1 };
@@ -77,6 +81,7 @@ function model(
 export function fakeEngine(initial: SystemInfo = systemInfo()) {
   let system = initial;
   const library = fakeLibrary();
+  const online = fakeOnline();
   const models: ModelInfo[] = [
     model("embed-e5-base", "Multilingual E5 Base", "embedder", ["standard"], 0.3),
     model("llm-qwen3-8b", "Qwen3 8B", "llm", ["standard"], 4.7),
@@ -138,11 +143,13 @@ export function fakeEngine(initial: SystemInfo = systemInfo()) {
       return Promise.resolve({ ...target });
     }),
     ...library.api,
+    ...online.api,
   } satisfies EngineApi;
 
   return {
     api,
     library,
+    online,
     failDownload(id: string, error: string): void {
       const target = models.find((m) => m.id === id);
       if (target) target.state = { ...target.state, status: "failed", error };
@@ -162,7 +169,7 @@ export function libraryDocument(
     added_at: "2026-10-25T10:00:00Z",
     status: "ready",
     error: null,
-    metadata: { title, authors: ["Ada Lovelace"], year: 2021, doi: null },
+    metadata: { title, authors: ["Ada Lovelace"], year: 2021, doi: null, from_catalog: false },
     language: "en",
     page_count: 3,
     passage_count: 3,
@@ -270,6 +277,97 @@ function fakeLibrary() {
     },
     setModelReady(ready: boolean): void {
       modelReady = ready;
+    },
+  };
+}
+
+export function onlineHit(title: string, overrides: Partial<WorkHit["work"]> = {}): WorkHit {
+  return {
+    work: {
+      ids: { doi: `10.1/${String(title.length)}` },
+      title,
+      abstract: `An abstract about ${title}.`,
+      authors: ["Ruth Cohen"],
+      year: 2022,
+      venue: "Journal of Tests",
+      language: "en",
+      citation_count: 12,
+      pdf_url: "https://example.org/paper.pdf",
+      landing_url: "https://doi.org/10.1/x",
+      sources: ["openalex"],
+      ...overrides,
+    },
+    score: 0.8,
+    similarity: 0.8,
+    in_library: false,
+  };
+}
+
+/** Online discovery with scripted results; settings are kept in memory. */
+function fakeOnline() {
+  let settings: OnlineSettingsView = {
+    enabled: true,
+    sources: { openalex: true, semantic_scholar: true, arxiv: true, europe_pmc: true },
+    contact_email: null,
+    has_openalex_key: false,
+    has_semantic_scholar_key: false,
+    secure_storage_available: true,
+  };
+  let response: DiscoveryResponse = {
+    query_language: "en",
+    queries: { en: "sleep memory" },
+    translation_missing: false,
+    sources: [
+      { source: "openalex", ok: true, count: 2, from_cache: false, error: null },
+      {
+        source: "semantic_scholar",
+        ok: false,
+        count: 0,
+        from_cache: false,
+        error: "semantic_scholar: rate limited",
+      },
+    ],
+    results: [
+      onlineHit("Sleep and memory online"),
+      onlineHit("Paywalled study", { pdf_url: null }),
+    ],
+    took_ms: 800,
+  };
+
+  const api = {
+    discover: vi.fn(() => Promise.resolve(response)),
+    getOnlineSettings: vi.fn(() => Promise.resolve(settings)),
+    updateOnlineSettings: vi.fn((update: Partial<OnlineSettingsUpdate>) => {
+      settings = {
+        ...settings,
+        sources: { ...settings.sources, ...(update.sources ?? {}) },
+        enabled: update.enabled ?? settings.enabled,
+        contact_email: update.clear_contact_email
+          ? null
+          : (update.contact_email ?? settings.contact_email),
+        has_openalex_key:
+          typeof update.openalex_api_key === "string"
+            ? update.openalex_api_key !== ""
+            : settings.has_openalex_key,
+      };
+      return Promise.resolve(settings);
+    }),
+    importDocumentFromUrl: vi.fn((url: string) =>
+      Promise.resolve<ImportResult>(
+        url.includes("landing")
+          ? { file_name: "landing.pdf", error: "The link leads to a web page, not a PDF" }
+          : { file_name: "paper.pdf", document: null, error: null },
+      ),
+    ),
+  } satisfies Partial<EngineApi>;
+
+  return {
+    api,
+    setResponse(next: Partial<DiscoveryResponse>): void {
+      response = { ...response, ...next };
+    },
+    setEnabled(enabled: boolean): void {
+      settings = { ...settings, enabled };
     },
   };
 }

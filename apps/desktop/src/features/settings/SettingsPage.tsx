@@ -6,6 +6,7 @@ import type { Tier } from "../../shared/api/engine";
 import { useAsyncResource } from "../../shared/hooks/useAsyncResource";
 import { HardwareSection } from "./HardwareSection";
 import { ModelsSection } from "./ModelsSection";
+import { OnlineSourcesSection } from "./OnlineSourcesSection";
 import { TierSection } from "./TierSection";
 import { useModels } from "./useModels";
 
@@ -53,6 +54,7 @@ export function SettingsPage({ pollMs }: { pollMs?: number }) {
         !loadError && <p role="status">{t("settings.loading")}</p>
       )}
       {models.data && <ModelsSection list={models.data} onDownload={download} />}
+      <OnlineSourcesSection />
     </div>
   );
 }

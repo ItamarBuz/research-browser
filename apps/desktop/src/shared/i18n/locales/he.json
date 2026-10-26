@@ -77,7 +77,9 @@
         "embedder": "חיפוש סמנטי",
         "reranker": "דירוג תוצאות",
         "nli": "ניתוח ביקורת",
-        "llm": "מודל שפה"
+        "llm": "מודל שפה",
+        "translator_he_en": "תרגום שאילתות (עברית ← אנגלית)",
+        "translator_en_he": "תרגום שאילתות (אנגלית ← עברית)"
       }
     }
   },
@@ -111,7 +113,8 @@
     "modelMissing": "מודל החיפוש הסמנטי עדיין לא הורד.",
     "openSettings": "פתיחת ההגדרות",
     "error": "החיפוש נכשל: {{message}}",
-    "authorsMore": "{{first}} ואחרים"
+    "authorsMore": "{{first}} ואחרים",
+    "libraryTitle": "בספרייה שלך"
   },
   "library": {
     "title": "ספרייה",
@@ -150,5 +153,63 @@
     "confirmDelete": "אישור מחיקה",
     "cancel": "ביטול",
     "error": "משהו השתבש: {{message}}"
+  },
+  "online": {
+    "title": "נמצא ברשת",
+    "searching": "מחפש ב-OpenAlex, Semantic Scholar, arXiv ו-Europe PMC…",
+    "error": "החיפוש ברשת נכשל: {{message}}",
+    "noResults": "לא נמצאו מאמרים ברשת לשאלה הזו.",
+    "translatedAs": "חיפוש ברשת בוצע כ־",
+    "translationMissing": "הורידו את מודלי התרגום בהגדרות כדי למצוא מאמרים שנכתבו בשפה האחרת.",
+    "status": {
+      "failed": "לא זמין",
+      "cached": "תוצאות שמורות"
+    },
+    "citations_one": "ציטוט אחד",
+    "citations_two": "{{count}} ציטוטים",
+    "citations_other": "{{count}} ציטוטים",
+    "showMore": "הצגת התקציר",
+    "showLess": "הסתרת התקציר",
+    "open": "פתיחה",
+    "addToLibrary": "הוספה לספרייה",
+    "adding": "מוסיף…",
+    "inLibrary": "בספרייה שלך",
+    "noFreePdf": "לא נמצא PDF חופשי",
+    "sources": {
+      "openalex": {
+        "name": "OpenAlex",
+        "description": "כ-250 מיליון פרסומים בכל התחומים"
+      },
+      "semantic_scholar": {
+        "name": "Semantic Scholar",
+        "description": "מאמרים עם הקשרי ציטוט; עמוס לעיתים קרובות ללא מפתח API"
+      },
+      "arxiv": {
+        "name": "arXiv",
+        "description": "טרום-פרסומים בפיזיקה, מתמטיקה, מדעי המחשב וביולוגיה"
+      },
+      "europe_pmc": {
+        "name": "Europe PMC",
+        "description": "מדעי החיים ורפואה"
+      }
+    },
+    "settings": {
+      "title": "מקורות מקוונים",
+      "intro": "חיפוש במאגרים אקדמיים חופשיים לצד הספרייה שלך. רק מילות החיפוש נשלחות; המסמכים שלך לא יוצאים מהמחשב.",
+      "enabled": "חיפוש במקורות אקדמיים מקוונים",
+      "sourcesLegend": "מקורות",
+      "email": "כתובת דוא\"ל ליצירת קשר (רשות)",
+      "emailHint": "OpenAlex מעניק שירות מהיר ואמין יותר לבקשות הכוללות כתובת ליצירת קשר."
+    },
+    "keys": {
+      "title": "מפתחות API (רשות)",
+      "intro": "מפתחות חינמיים מעלים את מגבלות הבקשות. הם נשמרים במאגר האישורים המאובטח של המערכת.",
+      "unavailable": "אין במערכת הזו מאגר אישורים מאובטח, ולכן לא ניתן לשמור מפתחות API.",
+      "openalex_api_key": "מפתח API של OpenAlex",
+      "semantic_scholar_api_key": "מפתח API של Semantic Scholar",
+      "storedPlaceholder": "נשמר",
+      "save": "שמירה",
+      "remove": "הסרה"
+    }
   }
 }

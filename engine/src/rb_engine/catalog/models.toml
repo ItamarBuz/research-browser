@@ -70,6 +70,32 @@ license = "mit"
 license_source = "MoritzLaurer/mDeBERTa-v3-base-xnli-multilingual-nli-2mil7"
 files = ["onnx/model_quantized.onnx", "tokenizer.json", "config.json"]
 
+# --- Query translation (OPUS-MT, int8 ONNX) ---
+# Remote academic search APIs match keywords, so a Hebrew question must be translated to
+# find English papers (and vice versa for the Hebrew-only filter). These are community ONNX
+# exports of Helsinki-NLP's models; the hashes below pin the exact files.
+
+[[models]]
+id = "translate-he-en"
+name = "OPUS-MT Hebrew to English (big)"
+role = "translator_he_en"
+tiers = ["lite", "standard", "pro"]
+repo = "TigreGotico/opus-mt-tc-big-he-en-onnx"
+license = "cc-by-4.0"
+files = ["int8/encoder_model.onnx", "int8/decoder_model.onnx", "int8/source.spm", "int8/target.spm", "int8/vocab.json", "int8/config.json"]
+translation = { directory = "int8" }
+
+[[models]]
+id = "translate-en-he"
+name = "OPUS-MT English to Hebrew"
+role = "translator_en_he"
+tiers = ["lite", "standard", "pro"]
+repo = "TigreGotico/opus-mt-en-he-onnx"
+license = "apache-2.0"
+license_source = "Helsinki-NLP/opus-mt-en-he"
+files = ["int8/encoder_model.onnx", "int8/decoder_model.onnx", "int8/source.spm", "int8/target.spm", "int8/vocab.json", "int8/config.json"]
+translation = { directory = "int8" }
+
 # --- Local LLMs (GGUF, Q4_K_M) ---
 
 [[models]]

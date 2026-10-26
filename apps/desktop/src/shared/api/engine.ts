@@ -21,6 +21,15 @@ export type SearchRequest = Schemas["SearchRequest"];
 export type SearchResponse = Schemas["SearchResponse"];
 export type DocumentHit = Schemas["DocumentHit"];
 export type LanguageFilter = NonNullable<SearchRequest["language"]>;
+export type DiscoveryRequest = Schemas["DiscoveryRequest"];
+export type DiscoveryResponse = Schemas["DiscoveryResponse"];
+export type WorkHit = Schemas["WorkHit"];
+export type Work = Schemas["Work"];
+export type SourceName = Schemas["SourceName"];
+export type SourceStatus = Schemas["SourceStatus"];
+export type OnlineSettingsView = Schemas["OnlineSettingsView"];
+export type OnlineSettingsUpdate = Schemas["OnlineSettingsUpdate"];
+export type DocumentMetadata = Schemas["DocumentMetadata"];
 
 /** Where the engine sidecar listens and the per-launch token it expects. */
 export interface EngineConnection {
@@ -119,6 +128,25 @@ export class EngineClient {
     return this.request<SearchResponse>("/library/search", { method: "POST", body: request });
   }
 
+  discover(request: DiscoveryRequest): Promise<DiscoveryResponse> {
+    return this.request<DiscoveryResponse>("/discover", { method: "POST", body: request });
+  }
+
+  getOnlineSettings(): Promise<OnlineSettingsView> {
+    return this.request<OnlineSettingsView>("/settings/online");
+  }
+
+  updateOnlineSettings(update: Partial<OnlineSettingsUpdate>): Promise<OnlineSettingsView> {
+    return this.request<OnlineSettingsView>("/settings/online", { method: "PUT", body: update });
+  }
+
+  importDocumentFromUrl(url: string, metadata: DocumentMetadata | null): Promise<ImportResult> {
+    return this.request<ImportResult>("/library/documents/from-url", {
+      method: "POST",
+      body: { url, metadata },
+    });
+  }
+
   private async request<T>(
     path: string,
     options: { method?: "PUT" | "POST" | "DELETE"; body?: unknown } = {},
@@ -164,6 +192,10 @@ export type EngineApi = Pick<
   | "deleteDocument"
   | "reindexLibrary"
   | "searchLibrary"
+  | "discover"
+  | "getOnlineSettings"
+  | "updateOnlineSettings"
+  | "importDocumentFromUrl"
 >;
 
 async function toRequestError(response: Response): Promise<EngineRequestError> {

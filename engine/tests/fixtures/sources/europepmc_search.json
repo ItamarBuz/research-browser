@@ -1,0 +1,399 @@
+{
+ "version": "6.9",
+ "hitCount": 11378,
+ "nextCursorMark": "AoIIQMTYUCg1NjQ0ODA3OA==",
+ "nextPageUrl": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=sleep+deprivation+working+memory&cursorMark=AoIIQMTYUCg1NjQ0ODA3OA%3D%3D&resultType=core&pageSize=3&format=json",
+ "request": {
+  "queryString": "sleep deprivation working memory",
+  "resultType": "core",
+  "cursorMark": "*",
+  "pageSize": 3,
+  "sort": "",
+  "synonym": false
+ },
+ "resultList": {
+  "result": [
+   {
+    "id": "42440885",
+    "source": "MED",
+    "pmid": "42440885",
+    "pmcid": "PMC13333692",
+    "doi": "10.3389/fnhum.2026.1832731",
+    "title": "Caffeine and modafinil counteract sleep deprivation through distinct neurocognitive pathways: an ERP study of object working memory.",
+    "authorString": "Shao Y, Xu L, An X, Zhang J, Xie H, Gong J, Duan H, Huang Y.",
+    "authorList": {
+     "author": [
+      {
+       "fullName": "Shao Y",
+       "lastName": "Shao",
+       "firstName": "Yongcong",
+       "initials": "Y",
+       "authorAffiliationDetailsList": {
+        "authorAffiliation": [
+         {
+          "affiliation": "School of Psychology, Beijing Sport University, Beijing, China."
+         },
+         {
+          "affiliation": "Laboratory of Sports Stress and Adaptation of General Administration of Sport, Beijing, China."
+         }
+        ]
+       }
+      },
+      {
+       "fullName": "Xu L",
+       "lastName": "Xu",
+       "firstName": "Lin",
+       "initials": "L",
+       "authorAffiliationDetailsList": {
+        "authorAffiliation": [
+         {
+          "affiliation": "School of Psychology, Beijing Sport University, Beijing, China."
+         },
+         {
+          "affiliation": "Laboratory of Sports Stress and Adaptation of General Administration of Sport, Beijing, China."
+         }
+        ]
+       }
+      },
+      {
+       "fullName": "An X",
+       "lastName": "An",
+       "firstName": "Xin",
+       "initials": "X",
+       "authorAffiliationDetailsList": {
+        "authorAffiliation": [
+         {
+          "affiliation": "School of Psychology, Beijing Sport University, Beijing, China."
+         },
+         {
+          "affiliation": "Laboratory of Sports Stress and Adaptation of General Administration of Sport, Beijing, China."
+         }
+        ]
+       }
+      },
+      {
+       "fullName": "Zhang J",
+       "lastName": "Zhang",
+       "firstName": "Jingwei",
+       "initials": "J",
+       "authorAffiliationDetailsList": {
+        "authorAffiliation": [
+         {
+          "affiliation": "School of Psychology, Beijing Sport University, Beijing, China."
+         },
+         {
+          "affiliation": "Laboratory of Sports Stress and Adaptation of General Administration of Sport, Beijing, China."
+         }
+        ]
+       }
+      }
+     ]
+    },
+    "journalInfo": {
+     "volume": "20",
+     "journalIssueId": 4118134,
+     "dateOfPublication": "2026 ",
+     "monthOfPublication": 0,
+     "yearOfPublication": 2026,
+     "journal": {
+      "medlineAbbreviation": "Front Hum Neurosci",
+      "title": "Frontiers in human neuroscience",
+      "essn": "1662-5161",
+      "issn": "1662-5161",
+      "isoabbreviation": "Front Hum Neurosci",
+      "nlmid": "101477954"
+     },
+     "printPublicationDate": "2026-01-01"
+    },
+    "pubYear": "2026",
+    "abstractText": "<h4>Background</h4>Sleep deprivation impairs core cognitive functions, such as working memory. Previous studies focused on global working memory performance, and direct comparisons of how different cognitive enhancers mitigate sleep deprivation-induced deficits in object working memory remain limited, particularly regarding the underlying neurophysiological mechanisms. This study compared the counteractive effects of caffeine and modafinil after 36 h of total sleep deprivation and elucidated their stage-specific neural mechanisms during object working memory processing.<h4>Methods</h4>A randomized, double-blind, crossover design was used with 14 healthy male participants. Participants completed a 2-back object working memory task at baseline and after 36 h of sleep deprivation under caffeine and modafinil conditions. Event-related potentials were recorded to assess key component changes, including P2, N2, P3, and LPC.<h4>Results</h4>Behaviorally, modafinil significantly improved accuracy after sleep deprivation, surpassing baseline performance, with an exploratory trend toward shorter reaction times. In contrast, caffeine maintained behavioral performance at baseline levels without significant change. Neurophysiologically, caffeine markedly increased P2 amplitude but significantly decreased LPC amplitude after sleep deprivation, reflecting enhanced early perceptual processing alongside a decline in late-stage cognitive maintenance resources. However, modafinil stabilized P2 and LPC responses, suggesting improved neural efficiency and sustained top-down cognitive control during stimulus evaluation.<h4>Conclusion</h4>Although caffeine and modafinil mitigate sleep deprivation induced decline in object working memory, they operate through distinct neural mechanisms. Caffeine relies on generalized compensatory arousal mechanisms, whereas modafinil exerts a more efficient and targeted enhancement of executive control. These findings provide electrophysiological evidence supporting the differential application of cognitive enhancers under extreme sleep loss.",
+    "language": "eng",
+    "pubTypeList": {
+     "pubType": [
+      "research-article",
+      "Journal Article"
+     ]
+    },
+    "fullTextUrlList": {
+     "fullTextUrl": [
+      {
+       "availability": "Subscription required",
+       "availabilityCode": "S",
+       "documentStyle": "doi",
+       "site": "DOI",
+       "url": "https://doi.org/10.3389/fnhum.2026.1832731"
+      },
+      {
+       "availability": "Open access",
+       "availabilityCode": "OA",
+       "documentStyle": "html",
+       "site": "Europe_PMC",
+       "url": "https://europepmc.org/articles/PMC13333692"
+      },
+      {
+       "availability": "Open access",
+       "availabilityCode": "OA",
+       "documentStyle": "pdf",
+       "site": "Europe_PMC",
+       "url": "https://europepmc.org/articles/PMC13333692?pdf=render"
+      }
+     ]
+    },
+    "isOpenAccess": "Y",
+    "inEPMC": "Y",
+    "citedByCount": 0
+   },
+   {
+    "id": "42477887",
+    "source": "MED",
+    "pmid": "42477887",
+    "pmcid": "PMC13658277",
+    "doi": "10.1093/sleep/zsag201",
+    "title": "Functional brain network stability reflects individual resilience during sleep deprivation.",
+    "authorString": "Cha J, Negelspach D, Huskey A, Kennedy KER, Katz J, Forger DB, Killgore WDS.",
+    "authorList": {
+     "author": [
+      {
+       "fullName": "Cha J",
+       "lastName": "Cha",
+       "firstName": "Jungwon",
+       "initials": "J",
+       "authorId": {
+        "type": "ORCID",
+        "value": "0000-0002-7321-7281"
+       },
+       "authorAffiliationDetailsList": {
+        "authorAffiliation": [
+         {
+          "affiliation": "Social, Cognitive, and Affective Neuroscience (SCAN) Laboratory, Department of Psychiatry, University of Arizona College of Medicine - Tucson, 1501 N. Campbell Avenue, Tucson, AZ, United States."
+         }
+        ]
+       }
+      },
+      {
+       "fullName": "Negelspach D",
+       "lastName": "Negelspach",
+       "firstName": "David",
+       "initials": "D",
+       "authorId": {
+        "type": "ORCID",
+        "value": "0009-0005-1144-0743"
+       },
+       "authorAffiliationDetailsList": {
+        "authorAffiliation": [
+         {
+          "affiliation": "Social, Cognitive, and Affective Neuroscience (SCAN) Laboratory, Department of Psychiatry, University of Arizona College of Medicine - Tucson, 1501 N. Campbell Avenue, Tucson, AZ, United States."
+         }
+        ]
+       }
+      },
+      {
+       "fullName": "Huskey A",
+       "lastName": "Huskey",
+       "firstName": "Alisa",
+       "initials": "A",
+       "authorAffiliationDetailsList": {
+        "authorAffiliation": [
+         {
+          "affiliation": "Social, Cognitive, and Affective Neuroscience (SCAN) Laboratory, Department of Psychiatry, University of Arizona College of Medicine - Tucson, 1501 N. Campbell Avenue, Tucson, AZ, United States."
+         }
+        ]
+       }
+      },
+      {
+       "fullName": "Kennedy KER",
+       "lastName": "Kennedy",
+       "firstName": "Kathryn E R",
+       "initials": "KER",
+       "authorId": {
+        "type": "ORCID",
+        "value": "0000-0001-5087-3780"
+       },
+       "authorAffiliationDetailsList": {
+        "authorAffiliation": [
+         {
+          "affiliation": "Social, Cognitive, and Affective Neuroscience (SCAN) Laboratory, Department of Psychiatry, University of Arizona College of Medicine - Tucson, 1501 N. Campbell Avenue, Tucson, AZ, United States."
+         }
+        ]
+       }
+      }
+     ]
+    },
+    "journalInfo": {
+     "issue": "10",
+     "volume": "49",
+     "journalIssueId": 4291342,
+     "dateOfPublication": "2026 Oct",
+     "monthOfPublication": 10,
+     "yearOfPublication": 2026,
+     "journal": {
+      "medlineAbbreviation": "Sleep",
+      "title": "Sleep",
+      "essn": "1550-9109",
+      "issn": "0161-8105",
+      "isoabbreviation": "Sleep",
+      "nlmid": "7809084"
+     },
+     "printPublicationDate": "2026-10-01"
+    },
+    "pubYear": "2026",
+    "abstractText": "<h4>Study objectives</h4>Sleep deprivation is known to impair cognitive performance, but individuals differ in their ability to maintain function under sleep loss. This study examined the neural mechanisms that support such resilience by tracking changes in resting-state functional connectivity during prolonged wakefulness.<h4>Materials and methods</h4>Six resting-state fMRI sessions obtained during approximately the first 32 hours of a 39-hour total sleep deprivation protocol were analyzed in 16 healthy adults, enabling unusually dense longitudinal sampling of brain network dynamics during prolonged wakefulness. Functional connectivity changes were analyzed using network-based statistics as the primary approach for analyzing pairwise functional connectivity, with nodal strength used as a secondary node-level follow-up analysis in relation to a behavioral resilience index derived from psychomotor vigilance performance.<h4>Results</h4>Two NBS-defined subnetworks, referred to here as the thalamocortical and perceptual-memory subnetworks, showed significant interactions between time awake and resilience, indicating that the trajectory of functional connectivity across prolonged wakefulness differed as a function of behavioral resilience. Participants with higher resilience showed less negative connectivity trajectories within these networks, particularly in the thalamus, globus pallidus, and visual cortex. In contrast, participants with lower resilience exhibited progressive declines in connectivity.<h4>Conclusion</h4>The ability to withstand the cognitive effects of sleep deprivation appears to be associated with less negative connectivity trajectories within thalamocortical and perceptual-memory subnetworks. These patterns may represent state-dependent neural correlates of resilience during sleep deprivation and may be relevant to future fatigue-state monitoring. Statement of Significance People differ widely in how well they stay alert and perform when they lose sleep, but the brain basis of this resilience is still not well understood. By repeatedly measuring brain activity during extended wakefulness, we found that people who performed better also showed stronger connectivity in brain systems linked to alertness and higher-level visual processing. Those who remained more resilient kept these brain systems working together more effectively, while those who were more vulnerable showed a greater loss of coordination and poorer performance over time. These findings contribute to understanding why some people maintain performance better than others during sleep loss and may support future efforts to monitor fatigue and protect performance in high-demand settings.",
+    "language": "eng",
+    "pubTypeList": {
+     "pubType": [
+      "research-article",
+      "Research Support, U.S. Gov't, Non-P.H.S.",
+      "Journal Article"
+     ]
+    },
+    "fullTextUrlList": {
+     "fullTextUrl": [
+      {
+       "availability": "Subscription required",
+       "availabilityCode": "S",
+       "documentStyle": "doi",
+       "site": "DOI",
+       "url": "https://doi.org/10.1093/sleep/zsag201"
+      },
+      {
+       "availability": "Open access",
+       "availabilityCode": "OA",
+       "documentStyle": "html",
+       "site": "Europe_PMC",
+       "url": "https://europepmc.org/articles/PMC13658277"
+      },
+      {
+       "availability": "Open access",
+       "availabilityCode": "OA",
+       "documentStyle": "pdf",
+       "site": "Europe_PMC",
+       "url": "https://europepmc.org/articles/PMC13658277?pdf=render"
+      }
+     ]
+    },
+    "isOpenAccess": "Y",
+    "inEPMC": "Y",
+    "citedByCount": 0
+   },
+   {
+    "id": "42754928",
+    "source": "MED",
+    "pmid": "42754928",
+    "pmcid": "PMC13587488",
+    "doi": "10.1186/s40359-026-05342-3",
+    "title": "Effects of sleep quality on the offline storage state of visual working memory.",
+    "authorString": "Gong L, Chen J, Li X, Liu Q.",
+    "authorList": {
+     "author": [
+      {
+       "fullName": "Gong L",
+       "lastName": "Gong",
+       "firstName": "Li",
+       "initials": "L",
+       "authorAffiliationDetailsList": {
+        "authorAffiliation": [
+         {
+          "affiliation": "School of Education, Anyang Normal University, Anyang, 455000, Henan, China."
+         }
+        ]
+       }
+      },
+      {
+       "fullName": "Chen J",
+       "lastName": "Chen",
+       "firstName": "Jinghan",
+       "initials": "J",
+       "authorAffiliationDetailsList": {
+        "authorAffiliation": [
+         {
+          "affiliation": "School of Education, Anyang Normal University, Anyang, 455000, Henan, China."
+         }
+        ]
+       }
+      },
+      {
+       "fullName": "Li X",
+       "lastName": "Li",
+       "firstName": "Xiaojing",
+       "initials": "X",
+       "authorAffiliationDetailsList": {
+        "authorAffiliation": [
+         {
+          "affiliation": "School of Education, Anyang Normal University, Anyang, 455000, Henan, China."
+         }
+        ]
+       }
+      },
+      {
+       "fullName": "Liu Q",
+       "lastName": "Liu",
+       "firstName": "Qiang",
+       "initials": "Q",
+       "authorAffiliationDetailsList": {
+        "authorAffiliation": [
+         {
+          "affiliation": "Institute of Brain and Psychological Sciences, Sichuan Normal University, Chengdu, 610000, Sichuan, China. lq780614@163.com."
+         }
+        ]
+       }
+      }
+     ]
+    },
+    "journalInfo": {
+     "issue": "1",
+     "volume": "14",
+     "journalIssueId": 4238129,
+     "dateOfPublication": "2026 Aug",
+     "monthOfPublication": 8,
+     "yearOfPublication": 2026,
+     "journal": {
+      "medlineAbbreviation": "BMC Psychol",
+      "title": "BMC psychology",
+      "essn": "2050-7283",
+      "issn": "2050-7283",
+      "isoabbreviation": "BMC Psychol",
+      "nlmid": "101627676"
+     },
+     "printPublicationDate": "2026-08-01"
+    },
+    "pubYear": "2026",
+    "abstractText": "<h4>Objective</h4>Visual working memory (VWM) is a core cognitive function in humans, which enables flexible and efficient storage of visual information from complex contexts into either online or offline states in accordance with current task demands. Among these two states, the offline state demonstrates greater advantages in resisting interference and stabilizing stored information. Previous research has demonstrated that an individual's sleep quality can predict performance in VWM tasks. However, these studies have primarily focused on the online storage state of VWM. To date, there remains unclear whether sleep quality affects the offline storage state, and whether its influence differs between the two distinct storage states. This study aimed to clarify the behavioral association between sleep quality and VWM online and offline storage performance.<h4>Methods</h4>The present study employed a mixed experimental design, combining the Pittsburgh Sleep Quality Index with a sequential presentation retrieval paradigm to examine the effects of sleep quality on different storage states of VWM. Valid data were obtained from 76 volunteers (mean age = 19.95 ± 1.72 years, male proportion = 27.63%). All participants completed the standard Pittsburgh Sleep Quality Index assessment to obtain comprehensive subjective sleep quality scores, which were adopted as the core predictive indicator for subsequent behavioral correlation analysis.<h4>Results</h4>The experimental results showed that the total score of participants' sleep quality was significantly negatively correlated with VWM accuracy in both online and offline states. In addition, for VWM accuracy, the main effects of sleep quality and VWM storage state were significant, and a significant interaction effect between sleep quality and storage state was also observed. Simple effect analyses further revealed that participants with higher sleep quality exhibited significantly higher VWM accuracy in the offline state compared with those with lower sleep quality. For VWM reaction time, only a significant main effect of VWM storage state was identified.<h4>Conclusions</h4>These behavioral findings indicate that sleep quality exerts differential influences on distinct VWM storage states. Specifically, poor sleep quality imposes a more pronounced detrimental effect on VWM offline accuracy relative to the online state. This study provides empirical behavioral evidence supporting the differentiation between online and offline VWM storage states and supplements existing research on the association between sleep quality and VWM performance.",
+    "language": "eng",
+    "pubTypeList": {
+     "pubType": [
+      "research-article",
+      "Journal Article"
+     ]
+    },
+    "fullTextUrlList": {
+     "fullTextUrl": [
+      {
+       "availability": "Subscription required",
+       "availabilityCode": "S",
+       "documentStyle": "doi",
+       "site": "DOI",
+       "url": "https://doi.org/10.1186/s40359-026-05342-3"
+      },
+      {
+       "availability": "Open access",
+       "availabilityCode": "OA",
+       "documentStyle": "html",
+       "site": "Europe_PMC",
+       "url": "https://europepmc.org/articles/PMC13587488"
+      },
+      {
+       "availability": "Open access",
+       "availabilityCode": "OA",
+       "documentStyle": "pdf",
+       "site": "Europe_PMC",
+       "url": "https://europepmc.org/articles/PMC13587488?pdf=render"
+      }
+     ]
+    },
+    "isOpenAccess": "Y",
+    "inEPMC": "Y",
+    "citedByCount": 0
+   }
+  ]
+ }
+}

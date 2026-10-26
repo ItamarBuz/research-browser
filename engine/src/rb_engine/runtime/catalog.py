@@ -9,10 +9,13 @@ from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from rb_engine.domain.catalog import (
     ALLOWED_LICENSES,
+    TRANSLATION_FILES,
+    TRANSLATOR_ROLES,
     EmbeddingConfig,
     ModelFile,
     ModelRole,
     ModelSpec,
+    TranslationConfig,
 )
 from rb_engine.domain.errors import ModelNotFoundError
 from rb_engine.domain.hardware import Tier
@@ -39,6 +42,7 @@ class SpecEntry(BaseModel):
     license_source: str | None = None
     files: tuple[str, ...] = Field(min_length=1)
     embedding: EmbeddingConfig | None = None
+    translation: TranslationConfig | None = None
 
     @model_validator(mode="after")
     def _embedders_need_config(self) -> "SpecEntry":
@@ -46,6 +50,14 @@ class SpecEntry(BaseModel):
             raise ValueError(f"{self.id}: embedders (and only embedders) need [embedding]")
         if self.embedding and self.embedding.onnx_file not in self.files:
             raise ValueError(f"{self.id}: embedding.onnx_file must be listed in files")
+        if (self.role in TRANSLATOR_ROLES) != (self.translation is not None):
+            raise ValueError(f"{self.id}: translators (and only translators) need [translation]")
+        if self.translation:
+            missing = [
+                f for f in map(self.translation.file, TRANSLATION_FILES) if f not in self.files
+            ]
+            if missing:
+                raise ValueError(f"{self.id}: translation files missing from files: {missing}")
         return self
 
 
@@ -125,6 +137,7 @@ def build_catalog(spec: Iterable[SpecEntry], lock: Mapping[str, LockedEntry]) ->
                 revision=locked.revision,
                 license=entry.license,
                 embedding=entry.embedding,
+                translation=entry.translation,
                 files=tuple(
                     ModelFile(
                         path=path,

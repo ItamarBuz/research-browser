@@ -8,8 +8,18 @@ from pathlib import Path
 from pydantic import BaseModel, ConfigDict, ValidationError
 
 from rb_engine.domain.hardware import Tier
+from rb_engine.domain.works import SourceName
 
 logger = logging.getLogger(__name__)
+
+
+class OnlineSettings(BaseModel):
+    model_config = ConfigDict(extra="ignore", frozen=True)
+
+    enabled: bool = True
+    disabled_sources: tuple[SourceName, ...] = ()
+    contact_email: str | None = None
+    """Sent to OpenAlex as `mailto` (its "polite pool"); never required."""
 
 
 class UserPreferences(BaseModel):
@@ -17,6 +27,7 @@ class UserPreferences(BaseModel):
     model_config = ConfigDict(extra="ignore", frozen=True)
 
     tier_override: Tier | None = None
+    online: OnlineSettings = OnlineSettings()
 
 
 class PreferencesStore:

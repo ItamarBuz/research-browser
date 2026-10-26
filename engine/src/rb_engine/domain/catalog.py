@@ -7,8 +7,9 @@ from pydantic import BaseModel, ConfigDict, Field
 
 from rb_engine.domain.hardware import Tier
 
-ALLOWED_LICENSES = frozenset({"apache-2.0", "mit", "bsd-2-clause", "bsd-3-clause"})
-"""Permissive licenses only, so the app can be redistributed and used for any purpose."""
+ALLOWED_LICENSES = frozenset({"apache-2.0", "mit", "bsd-2-clause", "bsd-3-clause", "cc-by-4.0"})
+"""Permissive licenses only, so the app can be redistributed and used for any purpose.
+CC-BY-4.0 (some translation models) only requires attribution, given in the README."""
 
 HF_BASE_URL = "https://huggingface.co"
 
@@ -18,6 +19,11 @@ class ModelRole(StrEnum):
     RERANKER = "reranker"
     NLI = "nli"
     LLM = "llm"
+    TRANSLATOR_HE_EN = "translator_he_en"
+    TRANSLATOR_EN_HE = "translator_en_he"
+
+
+TRANSLATOR_ROLES = frozenset({ModelRole.TRANSLATOR_HE_EN, ModelRole.TRANSLATOR_EN_HE})
 
 
 class EmbeddingConfig(BaseModel):
@@ -30,6 +36,29 @@ class EmbeddingConfig(BaseModel):
     query_prefix: str = ""
     passage_prefix: str = ""
     max_tokens: int = Field(default=512, ge=16, le=8192)
+
+
+class TranslationConfig(BaseModel):
+    """A Marian (OPUS-MT) model exported to ONNX: encoder + decoder graphs, SentencePiece
+    models for each side and the shared vocabulary, all in `directory`."""
+
+    model_config = ConfigDict(frozen=True, extra="forbid")
+
+    directory: str = ""
+    max_new_tokens: int = Field(default=96, ge=8, le=512)
+
+    def file(self, name: str) -> str:
+        return f"{self.directory}/{name}" if self.directory else name
+
+
+TRANSLATION_FILES = (
+    "encoder_model.onnx",
+    "decoder_model.onnx",
+    "source.spm",
+    "target.spm",
+    "vocab.json",
+    "config.json",
+)
 
 
 class ModelFile(BaseModel):
@@ -56,6 +85,7 @@ class ModelSpec(BaseModel):
     license: str
     files: tuple[ModelFile, ...] = Field(min_length=1)
     embedding: EmbeddingConfig | None = None
+    translation: TranslationConfig | None = None
 
     @property
     def size_bytes(self) -> int:

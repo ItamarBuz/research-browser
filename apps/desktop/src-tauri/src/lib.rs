@@ -28,6 +28,7 @@ fn engine_connection(state: State<'_, EngineState>) -> Result<EngineConnection, 
 /// Panics if the Tauri runtime cannot be initialised (e.g. no webview available).
 pub fn run() {
     tauri::Builder::default()
+        .plugin(tauri_plugin_opener::init())
         .setup(|app| {
             let process = EngineProcess::spawn().map_err(|err| {
                 log::error!("{err}");

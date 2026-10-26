@@ -119,5 +119,63 @@
         "size_bytes": 848
       }
     }
+  },
+  "translate-en-he": {
+    "revision": "9e2f963dffb5d04170a819ba5888f9898ff1f894",
+    "files": {
+      "int8/encoder_model.onnx": {
+        "sha256": "e533a19cfb7b65f6a9e7598553d258ecc56ff1818f5831893105ff2db9ac49c5",
+        "size_bytes": 53150473
+      },
+      "int8/decoder_model.onnx": {
+        "sha256": "ee04e860827b6e2a9c05f939a42c0c0a2c81a5b2fc9fd1519e4eea3dc7bb72f3",
+        "size_bytes": 59989840
+      },
+      "int8/source.spm": {
+        "sha256": "d390d1e87cfdc0f22eeb61aa787992cd4d622bbf8f5b9ae53eef3e9fda478967",
+        "size_bytes": 799290
+      },
+      "int8/target.spm": {
+        "sha256": "fc2027ba8b1dfda75e44d91c87d203551731c56872c12b0af9b7e1b5de6cd69d",
+        "size_bytes": 890322
+      },
+      "int8/vocab.json": {
+        "sha256": "89133153ba25b6e818fa06c49682565ce8d62f17122c2b9a747691f174d3df3f",
+        "size_bytes": 2285475
+      },
+      "int8/config.json": {
+        "sha256": "9ab6522942d36619903663fd7d4127e9a8f9d4eb6fca554f257e35da726da8bd",
+        "size_bytes": 1298
+      }
+    }
+  },
+  "translate-he-en": {
+    "revision": "7e4fa5edaff93d47d9f06ffd96626e81f90749d8",
+    "files": {
+      "int8/encoder_model.onnx": {
+        "sha256": "d70e542a9ef186953e64151ec11c17b9e8f775feabcf7eebec7bbdd2caef2493",
+        "size_bytes": 138724329
+      },
+      "int8/decoder_model.onnx": {
+        "sha256": "7a3145d5e4e44470dcf37c99ebb2c548a5f913cb355b9e3b8bfab0b678447310",
+        "size_bytes": 226205388
+      },
+      "int8/source.spm": {
+        "sha256": "13dabf370542066abcfd660e72887d0ce1296a04e15913d2ec47793656434257",
+        "size_bytes": 881489
+      },
+      "int8/target.spm": {
+        "sha256": "da28ecbe4e59653b716708410b78edbd9fd639978f01002e2a8bc9319b1ee933",
+        "size_bytes": 799154
+      },
+      "int8/vocab.json": {
+        "sha256": "abe93c914993f4dd8c10a7ff9cd97e813fcd1dd28dafb539504b509d8ad6183f",
+        "size_bytes": 2072892
+      },
+      "int8/config.json": {
+        "sha256": "ed3bfdb55358f54eaf7f13266c7742b47ed282a041c78ae1e610289dd6d41125",
+        "size_bytes": 1018
+      }
+    }
   }
 }

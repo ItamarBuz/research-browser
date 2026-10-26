@@ -363,6 +363,168 @@
           }
         ]
       }
+    },
+    "/settings/online": {
+      "get": {
+        "tags": [
+          "online"
+        ],
+        "summary": "Get Online Settings",
+        "operationId": "getOnlineSettings",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OnlineSettingsView"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "online"
+        ],
+        "summary": "Update Online Settings",
+        "operationId": "updateOnlineSettings",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OnlineSettingsUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OnlineSettingsView"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/discover": {
+      "post": {
+        "tags": [
+          "online"
+        ],
+        "summary": "Discover",
+        "operationId": "discover",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DiscoveryRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DiscoveryResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/library/documents/from-url": {
+      "post": {
+        "tags": [
+          "online"
+        ],
+        "summary": "Import From Url",
+        "operationId": "importDocumentFromUrl",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImportFromUrlRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImportResult"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
     }
   },
   "components": {
@@ -383,6 +545,98 @@
           "files"
         ],
         "title": "Body_importDocuments"
+      },
+      "DiscoveryRequest": {
+        "properties": {
+          "query": {
+            "type": "string",
+            "maxLength": 2000,
+            "minLength": 1,
+            "title": "Query"
+          },
+          "language": {
+            "type": "string",
+            "enum": [
+              "en",
+              "he",
+              "cross"
+            ],
+            "title": "Language",
+            "default": "cross"
+          },
+          "limit": {
+            "type": "integer",
+            "maximum": 50.0,
+            "minimum": 1.0,
+            "title": "Limit",
+            "default": 20
+          }
+        },
+        "type": "object",
+        "required": [
+          "query"
+        ],
+        "title": "DiscoveryRequest"
+      },
+      "DiscoveryResponse": {
+        "properties": {
+          "query_language": {
+            "type": "string",
+            "enum": [
+              "en",
+              "he",
+              "other"
+            ],
+            "title": "Query Language"
+          },
+          "queries": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "propertyNames": {
+              "enum": [
+                "en",
+                "he"
+              ]
+            },
+            "type": "object",
+            "title": "Queries",
+            "description": "The query text sent per language"
+          },
+          "translation_missing": {
+            "type": "boolean",
+            "title": "Translation Missing",
+            "description": "A translation would have helped but the translation model is not ready"
+          },
+          "sources": {
+            "items": {
+              "$ref": "#/components/schemas/SourceStatus"
+            },
+            "type": "array",
+            "title": "Sources"
+          },
+          "results": {
+            "items": {
+              "$ref": "#/components/schemas/WorkHit"
+            },
+            "type": "array",
+            "title": "Results"
+          },
+          "took_ms": {
+            "type": "integer",
+            "title": "Took Ms"
+          }
+        },
+        "type": "object",
+        "required": [
+          "query_language",
+          "queries",
+          "translation_missing",
+          "sources",
+          "results",
+          "took_ms"
+        ],
+        "title": "DiscoveryResponse"
       },
       "Document": {
         "properties": {
@@ -518,6 +772,12 @@
               }
             ],
             "title": "Doi"
+          },
+          "from_catalog": {
+            "type": "boolean",
+            "title": "From Catalog",
+            "description": "Came from an academic database; preferred over what the PDF suggests",
+            "default": false
           }
         },
         "type": "object",
@@ -536,6 +796,80 @@
           "failed"
         ],
         "title": "DocumentStatus"
+      },
+      "ExternalIds": {
+        "properties": {
+          "doi": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Doi",
+            "description": "Lowercase, without https://doi.org/"
+          },
+          "openalex": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Openalex"
+          },
+          "semantic_scholar": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Semantic Scholar"
+          },
+          "arxiv": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Arxiv",
+            "description": "Without version suffix, e.g. 1706.03762"
+          },
+          "pmid": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pmid"
+          },
+          "pmcid": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pmcid"
+          }
+        },
+        "type": "object",
+        "title": "ExternalIds"
       },
       "GpuInfo": {
         "properties": {
@@ -658,6 +992,30 @@
           "api_version"
         ],
         "title": "HealthResponse"
+      },
+      "ImportFromUrlRequest": {
+        "properties": {
+          "url": {
+            "type": "string",
+            "maxLength": 2000,
+            "title": "Url"
+          },
+          "metadata": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DocumentMetadata"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "url"
+        ],
+        "title": "ImportFromUrlRequest"
       },
       "ImportResult": {
         "properties": {
@@ -909,7 +1267,9 @@
           "embedder",
           "reranker",
           "nli",
-          "llm"
+          "llm",
+          "translator_he_en",
+          "translator_en_he"
         ],
         "title": "ModelRole"
       },
@@ -955,6 +1315,134 @@
           "failed"
         ],
         "title": "ModelStatus"
+      },
+      "OnlineSettingsUpdate": {
+        "properties": {
+          "enabled": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Enabled"
+          },
+          "sources": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "boolean"
+                },
+                "propertyNames": {
+                  "$ref": "#/components/schemas/SourceName"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sources"
+          },
+          "contact_email": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 254,
+                "pattern": "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Contact Email"
+          },
+          "clear_contact_email": {
+            "type": "boolean",
+            "title": "Clear Contact Email",
+            "default": false
+          },
+          "openalex_api_key": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 200
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Openalex Api Key"
+          },
+          "semantic_scholar_api_key": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 200
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Semantic Scholar Api Key"
+          }
+        },
+        "type": "object",
+        "title": "OnlineSettingsUpdate",
+        "description": "Fields left out stay unchanged. An empty string removes a stored API key."
+      },
+      "OnlineSettingsView": {
+        "properties": {
+          "enabled": {
+            "type": "boolean",
+            "title": "Enabled"
+          },
+          "sources": {
+            "additionalProperties": {
+              "type": "boolean"
+            },
+            "propertyNames": {
+              "$ref": "#/components/schemas/SourceName"
+            },
+            "type": "object",
+            "title": "Sources"
+          },
+          "contact_email": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Contact Email"
+          },
+          "has_openalex_key": {
+            "type": "boolean",
+            "title": "Has Openalex Key"
+          },
+          "has_semantic_scholar_key": {
+            "type": "boolean",
+            "title": "Has Semantic Scholar Key"
+          },
+          "secure_storage_available": {
+            "type": "boolean",
+            "title": "Secure Storage Available"
+          }
+        },
+        "type": "object",
+        "required": [
+          "enabled",
+          "sources",
+          "contact_email",
+          "has_openalex_key",
+          "has_semantic_scholar_key",
+          "secure_storage_available"
+        ],
+        "title": "OnlineSettingsView"
       },
       "PassageHit": {
         "properties": {
@@ -1057,6 +1545,54 @@
           "took_ms"
         ],
         "title": "SearchResponse"
+      },
+      "SourceName": {
+        "type": "string",
+        "enum": [
+          "openalex",
+          "semantic_scholar",
+          "arxiv",
+          "europe_pmc"
+        ],
+        "title": "SourceName"
+      },
+      "SourceStatus": {
+        "properties": {
+          "source": {
+            "$ref": "#/components/schemas/SourceName"
+          },
+          "ok": {
+            "type": "boolean",
+            "title": "Ok"
+          },
+          "count": {
+            "type": "integer",
+            "title": "Count",
+            "default": 0
+          },
+          "from_cache": {
+            "type": "boolean",
+            "title": "From Cache",
+            "default": false
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error"
+          }
+        },
+        "type": "object",
+        "required": [
+          "source",
+          "ok"
+        ],
+        "title": "SourceStatus"
       },
       "SystemInfo": {
         "properties": {
@@ -1220,6 +1756,156 @@
           "type"
         ],
         "title": "ValidationError"
+      },
+      "Work": {
+        "properties": {
+          "ids": {
+            "$ref": "#/components/schemas/ExternalIds"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "abstract": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Abstract"
+          },
+          "authors": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Authors"
+          },
+          "year": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Year"
+          },
+          "venue": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Venue"
+          },
+          "language": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "en",
+                  "he",
+                  "other"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Language"
+          },
+          "citation_count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Citation Count"
+          },
+          "pdf_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pdf Url",
+            "description": "A legal open-access PDF, if known"
+          },
+          "landing_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Landing Url"
+          },
+          "sources": {
+            "items": {
+              "$ref": "#/components/schemas/SourceName"
+            },
+            "type": "array",
+            "title": "Sources"
+          }
+        },
+        "type": "object",
+        "required": [
+          "ids",
+          "title",
+          "sources"
+        ],
+        "title": "Work"
+      },
+      "WorkHit": {
+        "properties": {
+          "work": {
+            "$ref": "#/components/schemas/Work"
+          },
+          "score": {
+            "type": "number",
+            "title": "Score"
+          },
+          "similarity": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Similarity",
+            "description": "Cosine similarity of question and title+abstract; None without a model"
+          },
+          "in_library": {
+            "type": "boolean",
+            "title": "In Library",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "work",
+          "score",
+          "similarity"
+        ],
+        "title": "WorkHit"
       }
     },
     "securitySchemes": {

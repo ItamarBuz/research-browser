@@ -1,0 +1,132 @@
+{
+ "total": 6581,
+ "offset": 0,
+ "next": 3,
+ "data": [
+  {
+   "paperId": "8f30aa09f97ef5667c4cb09796e147fdf57e573b",
+   "externalIds": {
+    "DOI": "10.1016/j.sleep.2025.106665",
+    "CorpusId": 280179300,
+    "PubMed": "40684751"
+   },
+   "url": "https://www.semanticscholar.org/paper/8f30aa09f97ef5667c4cb09796e147fdf57e573b",
+   "title": "Dynamic reconfiguration of functional brain networks after acute sleep deprivation: Implications for spatial working memory impairment.",
+   "venue": "Sleep Medicine",
+   "year": 2025,
+   "citationCount": 4,
+   "openAccessPdf": {
+    "url": "",
+    "status": null,
+    "license": null,
+    "disclaimer": "Notice: Paper or abstract available at https://api.unpaywall.org/v2/10.1016/j.sleep.2025.106665?email=<INSERT_YOUR_EMAIL> or https://doi.org/10.1016/j.sleep.2025.106665, which is subject to the license by the author or copyright owner provided with this content. Please go to the source to verify the license and copyright information for your use."
+   },
+   "authors": [
+    {
+     "authorId": "2339979567",
+     "name": "Lili Xu"
+    },
+    {
+     "authorId": "2332593813",
+     "name": "Haoyuan Zhang"
+    },
+    {
+     "authorId": "2424041622",
+     "name": "Jin-Han Zhang"
+    },
+    {
+     "authorId": "2268123008",
+     "name": "Xiang-Zi Zhang"
+    },
+    {
+     "authorId": "2257097128",
+     "name": "Jing Zhang"
+    }
+   ],
+   "abstract": "BACKGROUND\nAcute sleep deprivation (ASD) impairs cognitive functions, particularly spatial working memory (SWM), which is highly sensitive to fatigue. However, its dynamic neural underpinnings remain unclear. Existing studies on dynamic functional network connectivity (dFNC) in the context of ASD vary considerably in sample size and state extraction parameters, which limits the comparability across studies. Emerging evidence suggests that ASD may induce reorganization of brain network topology, yet its temporal dynamics remain underexplored. This study systematically investigates ASD-induced alterations in the temporal and topological dynamics of dFNC and their association with SWM performance.\n\n\nMETHODS\nFifty healthy adult males underwent magnetic resonance imaging scanning and cognitive assessment both before and after ASD. To characterize dynamic brain connectivity, a sliding-window-based dFNC approach was employed to identify connectivity states and temporal features. Graph-theoretical metrics were calculated to quantify the coefficient of variation (CV) at both global and nodal levels. Additionally, correlations between the above measures and performance on the 1-back SWM task were examined.\n\n\nRESULTS\nThree dFNC states were identified. Among them, State 1 exhibited high integration within and between the sensorimotor, auditory, and visual networks, with participants showing a greater tendency to dwell in this state after ASD. Dynamic topological analysis revealed that ASD significantly altered the CV in several global and nodal metrics. The CV of the nodal clustering coefficient in independent component 94, which belongs to the salience network, was positively correlated with the false alarm rate in the 1-back SWM task.\n\n\nCONCLUSION\nASD induces abnormal state transitions and changes the temporal flexibility of brain network topology. These findings suggest a potential compensatory reorganization mechanism in the brain following ASD and offer new dynamic neural insights into ASD-related SWM impairments."
+  },
+  {
+   "paperId": "a232d70623b3b661cf920ab541ff06f741799925",
+   "externalIds": {
+    "DOI": "10.1093/sleep/zsaf090.0122",
+    "CorpusId": 278766669
+   },
+   "url": "https://www.semanticscholar.org/paper/a232d70623b3b661cf920ab541ff06f741799925",
+   "title": "0122 Total Sleep Deprivation Disrupts Working Memory Updating",
+   "venue": "Sleep",
+   "year": 2025,
+   "citationCount": 0,
+   "openAccessPdf": {
+    "url": "",
+    "status": null,
+    "license": null,
+    "disclaimer": "Notice: Paper or abstract available at https://api.unpaywall.org/v2/10.1093/sleep/zsaf090.0122?email=<INSERT_YOUR_EMAIL> or https://doi.org/10.1093/sleep/zsaf090.0122, which is subject to the license by the author or copyright owner provided with this content. Please go to the source to verify the license and copyright information for your use."
+   },
+   "authors": [
+    {
+     "authorId": "46254944",
+     "name": "C. Kurinec"
+    },
+    {
+     "authorId": "2125425727",
+     "name": "A. Stenson"
+    },
+    {
+     "authorId": "38976526",
+     "name": "J. Hinson"
+    },
+    {
+     "authorId": "2297700250",
+     "name": "Paul Whitney"
+    }
+   ],
+   "abstract": "\n \n \n Total sleep deprivation (TSD) leaves the ability to maintain information in working memory (WM), i.e., the focus of attention, relatively unaffected. However, its effect on the ability to update information into and out of WM is less clear, in part because many of the tasks used to assess WM updating do not differentiate between maintenance and updating processes. Using a task designed to isolate WM updating from WM maintenance, we anticipated that TSD disruptions to WM updating would impair the ability to flexibly adapt to environmental demands to maintain up-to-date information in the focus of attention.\n \n \n \n N=16 healthy adults completed a 4-day (3-night) in-laboratory study. After a baseline night with a 9h sleep opportunity, participants were randomly assigned to either 39h TSD (n=9) or well-rested control (WRC; n=7). Participants completed a modified delayed match-to-sample (DMS) task approximately 15 minutes after a sham stress test at baseline (session 1) and again 24h later (session 2). On each trial of the DMS, participants encoded an initial pair of figures. They were then shown a second pair of figures and instructed to either begin maintaining the second pair instead or ignore it and continue maintaining the first pair. After a short delay, they saw a single probe figure and had to determine if it matched what should be held in WM.\n \n \n \n Mixed-effects ANOVA on instruction (update or ignore), session (1 or 2), condition (TSD or WRC), and their interactions revealed a significant session by condition interaction (p=0.006) and a significant effect of instruction (p=0.013). TSD participants had poorer accuracy in session 2, when sleep-deprived, than WRC participants (p=0.034) and their own rested baseline (p=0.002). In general, participants had better probe accuracy when they had to maintain the second versus first pair in WM (p=0.013).\n \n \n \n TSD impaired the ability to recognize to-be-maintained information in WM when told to update or ignore the new pair, indicating that TSD disrupts the ability to appropriately update information. As WM updating is critical in a number of settings, TSD may compromise the ability to maintain situational awareness in both laboratory and real-world tasks (e.g., driving).\n \n \n \n W81XWH-20-1-0442\n"
+  },
+  {
+   "paperId": "611d396b4899093a01e5f1f49e5862edc28f5f52",
+   "externalIds": {
+    "DOI": "10.31083/jin36443",
+    "CorpusId": 279872957,
+    "PubMed": "40613377"
+   },
+   "url": "https://www.semanticscholar.org/paper/611d396b4899093a01e5f1f49e5862edc28f5f52",
+   "title": "Altered Cerebro-Cerebellar Functional Connectivity Associated With Working Memory Decline After Sleep Deprivation.",
+   "venue": "Journal of Integrative Neuroscience",
+   "year": 2025,
+   "citationCount": 3,
+   "openAccessPdf": {
+    "url": "https://www.imrpress.com/journal/JIN/24/6/10.31083/JIN36443/pdf",
+    "status": "GOLD",
+    "license": "CCBY",
+    "disclaimer": "Notice: Paper or abstract available at https://api.unpaywall.org/v2/10.31083/jin36443?email=<INSERT_YOUR_EMAIL> or https://doi.org/10.31083/jin36443, which is subject to the license by the author or copyright owner provided with this content. Please go to the source to verify the license and copyright information for your use."
+   },
+   "authors": [
+    {
+     "authorId": "2262084535",
+     "name": "Ziyao Wu"
+    },
+    {
+     "authorId": "3078190",
+     "name": "Si-Tong Feng"
+    },
+    {
+     "authorId": "2148276459",
+     "name": "Si-Si Zheng"
+    },
+    {
+     "authorId": "2179181850",
+     "name": "Linrui Dong"
+    },
+    {
+     "authorId": "5651149",
+     "name": "Hong-Xiao Jia"
+    },
+    {
+     "authorId": "5426319",
+     "name": "Yan-Zhe Ning"
+    }
+   ],
+   "abstract": "BACKGROUND\nIt has been demonstrated that the cerebellum plays a critical role not only in motor function but also in cognitive function. Numerous studies have revealed that acute sleep deprivation (SD) alters the functional connectivity (FC) in the cerebral cortex associated with declining working memory (WM). However, the relationship between the altered cerebro-cerebellar FC and white matter damage following acute sleep deprivation remains elusive.\n\n\nMETHODS\nIn this study, 26 healthy participants with regular sleep conducted an n-back task and had resting-state functional magnetic resonance imaging (fMRI) scans before and after 24 h of SD. The FC between the cerebrum and cerebellum and its relationship with WM function were analyzed in recruited participants.\n\n\nRESULTS\nOur results showed a significantly longer RT for the 1-back and 2-back tasks and lower accuracy of the 2-back task after SD. We found a marked reduction in FC between ten pairs of regions in the cerebellum and cerebrum after SD. Furthermore, a decline in WM performance was positively correlated with the changed FC between the left precentral gyrus and the right lobule X of the cerebellum.\n\n\nCONCLUSION\nOur findings indicate that the impaired FC between the cerebellum and cortical areas may contribute to the decline in WM after acute SD.\n\n\nCLINICAL TRIAL REGISTRATION\nNo: ChiCTR2000039858. Registered 12 November, 2020, https://www.chictr.org.cn/showproj.html?proj=63916."
+  }
+ ]
+}

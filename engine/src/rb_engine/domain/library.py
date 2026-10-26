@@ -27,6 +27,20 @@ class DocumentMetadata(BaseModel):
     authors: list[str] = Field(default_factory=list)
     year: int | None = None
     doi: str | None = None
+    from_catalog: bool = Field(
+        default=False,
+        description="Came from an academic database; preferred over what the PDF suggests",
+    )
+
+    def completed_with(self, parsed: "DocumentMetadata") -> "DocumentMetadata":
+        """Catalog metadata wins; the PDF only fills in what the catalog lacked."""
+        return self.model_copy(
+            update={
+                "authors": self.authors or parsed.authors,
+                "year": self.year or parsed.year,
+                "doi": self.doi or parsed.doi,
+            }
+        )
 
 
 class Document(BaseModel):

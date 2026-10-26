@@ -17,6 +17,9 @@ dependencies = [
     "tokenizers>=0.23.3",
     "numpy>=2.5.4",
     "python-multipart>=0.0.32",
+    "defusedxml>=0.7.1",
+    "sentencepiece>=0.2.2",
+    "keyring>=25.7.0",
 ]
 
 [dependency-groups]
@@ -25,6 +28,7 @@ dev = [
     "mypy>=1.13",
     "pytest>=8.3",
     "ruff>=0.8",
+    "types-defusedxml>=0.7.0.20260504",
     "types-psutil>=6.1",
 ]
 
@@ -50,7 +54,7 @@ select = ["E", "F", "W", "I", "N", "UP", "B", "A", "C4", "SIM", "RUF", "ANN", "P
 ignore = ["TRY003", "PLR2004", "RUF001", "RUF002", "RUF003", "SIM905"]
 
 [tool.ruff.lint.pylint]
-max-args = 7  # composition roots take keyword-only overrides for tests
+max-args = 10  # composition roots take keyword-only overrides for tests
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**" = ["ANN", "PLR2004"]

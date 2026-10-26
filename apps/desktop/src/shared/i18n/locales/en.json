@@ -76,7 +76,9 @@
         "embedder": "Semantic search",
         "reranker": "Result ranking",
         "nli": "Criticism analysis",
-        "llm": "Language model"
+        "llm": "Language model",
+        "translator_he_en": "Query translation (Hebrew → English)",
+        "translator_en_he": "Query translation (English → Hebrew)"
       }
     }
   },
@@ -108,7 +110,8 @@
     "modelMissing": "The semantic search model is not downloaded yet.",
     "openSettings": "Open settings",
     "error": "Search failed: {{message}}",
-    "authorsMore": "{{first}} et al."
+    "authorsMore": "{{first}} et al.",
+    "libraryTitle": "In your library"
   },
   "library": {
     "title": "Library",
@@ -145,5 +148,62 @@
     "confirmDelete": "Confirm delete",
     "cancel": "Cancel",
     "error": "Something went wrong: {{message}}"
+  },
+  "online": {
+    "title": "Found online",
+    "searching": "Searching OpenAlex, Semantic Scholar, arXiv and Europe PMC…",
+    "error": "Online search failed: {{message}}",
+    "noResults": "No papers found online for this question.",
+    "translatedAs": "Searched online as",
+    "translationMissing": "Download the translation models in Settings to find papers written in the other language.",
+    "status": {
+      "failed": "unavailable",
+      "cached": "saved results"
+    },
+    "citations_one": "{{count}} citation",
+    "citations_other": "{{count}} citations",
+    "showMore": "Show abstract",
+    "showLess": "Hide abstract",
+    "open": "Open",
+    "addToLibrary": "Add to library",
+    "adding": "Adding…",
+    "inLibrary": "In your library",
+    "noFreePdf": "No free PDF found",
+    "sources": {
+      "openalex": {
+        "name": "OpenAlex",
+        "description": "about 250 million works in every field"
+      },
+      "semantic_scholar": {
+        "name": "Semantic Scholar",
+        "description": "papers with citation context; often busy without an API key"
+      },
+      "arxiv": {
+        "name": "arXiv",
+        "description": "preprints in physics, mathematics, computer science and biology"
+      },
+      "europe_pmc": {
+        "name": "Europe PMC",
+        "description": "life sciences and medicine"
+      }
+    },
+    "settings": {
+      "title": "Online sources",
+      "intro": "Searches free academic databases alongside your library. Only your search terms are sent; your documents never leave this computer.",
+      "enabled": "Search online academic sources",
+      "sourcesLegend": "Sources",
+      "email": "Contact email (optional)",
+      "emailHint": "OpenAlex gives faster, more reliable service to requests that include a contact address."
+    },
+    "keys": {
+      "title": "API keys (optional)",
+      "intro": "Free keys raise the request limits. They are stored in your system's secure credential store.",
+      "unavailable": "This system has no secure credential store, so API keys cannot be saved.",
+      "openalex_api_key": "OpenAlex API key",
+      "semantic_scholar_api_key": "Semantic Scholar API key",
+      "storedPlaceholder": "Saved",
+      "save": "Save",
+      "remove": "Remove"
+    }
   }
 }

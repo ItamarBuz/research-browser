@@ -1,0 +1,1805 @@
+{
+ "meta": {
+  "notice": "No API key, so this request shares one free daily budget ($0.10) with everyone on your network's IP address. Get a free key with its own $1/day at https://openalex.org/settings/api and add api_key=YOUR_KEY to your requests. An AI agent can get one for its user in one call: POST https://api.openalex.org/api-keys with {\"email\": \"<your user's email>\"}; we email them a link, and the key works once they click it. Docs for agents: https://help.openalex.org/llms.txt",
+  "count": 42511,
+  "db_response_time_ms": 105,
+  "page": 1,
+  "per_page": 3,
+  "groups_count": null,
+  "x_query": {
+   "oql": "get works with (sleep deprivation working memory) in the full text where it's not paratext and language is [English](en)",
+   "x_new_oql": "get works with (sleep deprivation working memory) in the full text where it's not paratext and language is [English](en)",
+   "oqo": {
+    "get_rows": "works",
+    "filter_rows": [
+     {
+      "column_id": "fulltext.search",
+      "value": "sleep deprivation working memory",
+      "operator": "has"
+     },
+     {
+      "column_id": "is_paratext",
+      "value": false
+     },
+     {
+      "column_id": "language",
+      "value": "en"
+     }
+    ]
+   },
+   "url": "/works?filter=fulltext.search:sleep deprivation working memory,is_paratext:false,language:en&per_page=3",
+   "order": "best matches first",
+   "order_default": true
+  },
+  "cost_usd": 0.001
+ },
+ "results": [
+  {
+   "id": "https://openalex.org/W2552980158",
+   "doi": "https://doi.org/10.1016/j.jarmac.2016.10.001",
+   "display_name": "Sleep less, think worse: The effect of sleep deprivation on working memory.",
+   "publication_year": 2016,
+   "language": "en",
+   "cited_by_count": 100,
+   "authorships": [
+    {
+     "author_position": "first",
+     "author": {
+      "id": "https://openalex.org/A5035316334",
+      "display_name": "Steven J. Frenda",
+      "orcid": "https://orcid.org/0000-0001-7689-7414",
+      "observed_orcids": [
+       "https://orcid.org/0000-0001-7689-7414"
+      ]
+     },
+     "institutions": [],
+     "countries": [],
+     "is_corresponding": false,
+     "raw_author_name": "Steven J. Frenda",
+     "raw_affiliation_strings": [],
+     "raw_orcid": null,
+     "affiliations": []
+    },
+    {
+     "author_position": "last",
+     "author": {
+      "id": "https://openalex.org/A5064650819",
+      "display_name": "Kimberly M. Fenn",
+      "orcid": "https://orcid.org/0000-0002-2411-0568",
+      "observed_orcids": [
+       "https://orcid.org/0000-0002-2411-0568"
+      ]
+     },
+     "institutions": [],
+     "countries": [],
+     "is_corresponding": false,
+     "raw_author_name": "Kimberly M. Fenn",
+     "raw_affiliation_strings": [],
+     "raw_orcid": null,
+     "affiliations": []
+    }
+   ],
+   "abstract_inverted_index": {
+    "Sleep": [
+     0,
+     41
+    ],
+    "deprivation": [
+     1,
+     42,
+     87
+    ],
+    "is": [
+     2,
+     36,
+     83,
+     107
+    ],
+    "increasingly": [
+     3
+    ],
+    "common": [
+     4
+    ],
+    "and": [
+     5,
+     46,
+     49,
+     55,
+     120
+    ],
+    "poses": [
+     6
+    ],
+    "serious": [
+     7
+    ],
+    "problems": [
+     8
+    ],
+    "for": [
+     9,
+     25,
+     38,
+     60,
+     99
+    ],
+    "optimal": [
+     10
+    ],
+    "cognitive": [
+     11
+    ],
+    "functioning.": [
+     12
+    ],
+    "Here": [
+     13
+    ],
+    "we": [
+     14
+    ],
+    "review": [
+     15
+    ],
+    "the": [
+     16,
+     20,
+     31,
+     110,
+     116
+    ],
+    "empirical": [
+     17
+    ],
+    "literature": [
+     18
+    ],
+    "on": [
+     19
+    ],
+    "consequences": [
+     21
+    ],
+    "of": [
+     22,
+     30,
+     78,
+     112,
+     118
+    ],
+    "sleep": [
+     23,
+     35,
+     79
+    ],
+    "loss": [
+     24
+    ],
+    "working": [
+     26,
+     39,
+     61
+    ],
+    "memory.": [
+     27,
+     40,
+     62
+    ],
+    "The": [
+     28
+    ],
+    "bulk": [
+     29
+    ],
+    "research": [
+     32
+    ],
+    "suggests": [
+     33
+    ],
+    "that": [
+     34,
+     86
+    ],
+    "essential": [
+     37
+    ],
+    "inhibits": [
+     43
+    ],
+    "general": [
+     44
+    ],
+    "attentional": [
+     45
+    ],
+    "mnemonic": [
+     47
+    ],
+    "abilities": [
+     48
+    ],
+    "influences": [
+     50
+    ],
+    "neural": [
+     51
+    ],
+    "activation": [
+     52,
+     72,
+     93
+    ],
+    "in": [
+     53,
+     64,
+     73,
+     92
+    ],
+    "frontal": [
+     54
+    ],
+    "parietal": [
+     56
+    ],
+    "cortices,": [
+     57
+    ],
+    "areas": [
+     58,
+     75
+    ],
+    "critical": [
+     59
+    ],
+    "Decreases": [
+     63
+    ],
+    "task": [
+     65
+    ],
+    "performance": [
+     66
+    ],
+    "are": [
+     67
+    ],
+    "typically": [
+     68
+    ],
+    "accompanied": [
+     69
+    ],
+    "by": [
+     70,
+     104
+    ],
+    "decreased": [
+     71
+    ],
+    "task-relevant": [
+     74
+    ],
+    "under": [
+     76
+    ],
+    "conditions": [
+     77
+    ],
+    "deprivation.": [
+     80
+    ],
+    "However,": [
+     81
+    ],
+    "there": [
+     82
+    ],
+    "some": [
+     84
+    ],
+    "evidence": [
+     85
+    ],
+    "can": [
+     88
+    ],
+    "lead": [
+     89
+    ],
+    "to": [
+     90
+    ],
+    "increases": [
+     91
+    ],
+    "as": [
+     94
+    ],
+    "a": [
+     95
+    ],
+    "compensatory": [
+     96
+    ],
+    "mechanism": [
+     97
+    ],
+    "allowing": [
+     98
+    ],
+    "maintained": [
+     100
+    ],
+    "performance.": [
+     101
+    ],
+    "We": [
+     102
+    ],
+    "conclude": [
+     103
+    ],
+    "discussing": [
+     105
+    ],
+    "what": [
+     106
+    ],
+    "known": [
+     108
+    ],
+    "about": [
+     109
+    ],
+    "remediation": [
+     111
+    ],
+    "these": [
+     113
+    ],
+    "impairments": [
+     114
+    ],
+    "through": [
+     115
+    ],
+    "use": [
+     117
+    ],
+    "caffeine": [
+     119
+    ],
+    "other": [
+     121
+    ],
+    "stimulants.": [
+     122
+    ]
+   },
+   "best_oa_location": null,
+   "primary_location": {
+    "id": "doi:10.1016/j.jarmac.2016.10.001",
+    "doi": "https://doi.org/10.1016/j.jarmac.2016.10.001",
+    "is_oa": false,
+    "landing_page_url": "https://doi.org/10.1016/j.jarmac.2016.10.001",
+    "pdf_url": null,
+    "source": {
+     "id": "https://openalex.org/S2764634622",
+     "display_name": "Journal of Applied Research in Memory and Cognition",
+     "issn_l": "2211-3681",
+     "issn": [
+      "2211-3681",
+      "2211-369X"
+     ],
+     "is_oa": false,
+     "is_in_doaj": false,
+     "is_core": true,
+     "listed_in": [
+      "cwts-core",
+      "dongbi-b",
+      "erih-plus",
+      "jufo-1",
+      "norway-1",
+      "poland-100",
+      "russia-white-list-1",
+      "vabb-shw"
+     ],
+     "host_organization": "https://openalex.org/P4310320990",
+     "host_organization_name": "Elsevier BV",
+     "host_organization_lineage": [
+      "https://openalex.org/P4310320990"
+     ],
+     "host_organization_lineage_names": [
+      "Elsevier BV"
+     ],
+     "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "Journal of Applied Research in Memory and Cognition",
+    "raw_type": "journal-article"
+   },
+   "ids": {
+    "openalex": "https://openalex.org/W2552980158",
+    "doi": "https://doi.org/10.1016/j.jarmac.2016.10.001",
+    "mag": "2552980158"
+   },
+   "type": "article"
+  },
+  {
+   "id": "https://openalex.org/W2089696953",
+   "doi": "https://doi.org/10.1016/j.neuroimage.2004.11.029",
+   "display_name": "Dissociation of cortical regions modulated by both working memory load and sleep deprivation and by sleep deprivation alone",
+   "publication_year": 2005,
+   "language": "en",
+   "cited_by_count": 203,
+   "authorships": [
+    {
+     "author_position": "first",
+     "author": {
+      "id": "https://openalex.org/A5110190997",
+      "display_name": "W. C. Choo",
+      "orcid": null,
+      "observed_orcids": []
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I157582758",
+       "display_name": "SingHealth",
+       "ror": "https://ror.org/04me94w47",
+       "country_code": "SG",
+       "type": "healthcare",
+       "lineage": [
+        "https://openalex.org/I157582758"
+       ]
+      },
+      {
+       "id": "https://openalex.org/I165932596",
+       "display_name": "National University of Singapore",
+       "ror": "https://ror.org/01tgyzw49",
+       "country_code": "SG",
+       "type": "education",
+       "lineage": [
+        "https://openalex.org/I165932596"
+       ]
+      },
+      {
+       "id": "https://openalex.org/I4210126319",
+       "display_name": "Duke-NUS Medical School",
+       "ror": "https://ror.org/02j1m6098",
+       "country_code": "SG",
+       "type": "education",
+       "lineage": [
+        "https://openalex.org/I165932596",
+        "https://openalex.org/I170897317",
+        "https://openalex.org/I4210126319"
+       ]
+      }
+     ],
+     "countries": [
+      "SG"
+     ],
+     "is_corresponding": false,
+     "raw_author_name": "Wei-Chieh Choo",
+     "raw_affiliation_strings": [
+      "Cognitive Neuroscience Laboratory, SingHealth Research Laboratories, Singapore 169611, Singapore",
+      "Duke – NUS Graduate Medical School, Singapore"
+     ],
+     "raw_orcid": null,
+     "affiliations": [
+      {
+       "raw_affiliation_string": "Cognitive Neuroscience Laboratory, SingHealth Research Laboratories, Singapore 169611, Singapore",
+       "institution_ids": [
+        "https://openalex.org/I157582758"
+       ]
+      },
+      {
+       "raw_affiliation_string": "Duke – NUS Graduate Medical School, Singapore",
+       "institution_ids": [
+        "https://openalex.org/I165932596",
+        "https://openalex.org/I4210126319"
+       ]
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5002091269",
+      "display_name": "Wei-Wei Lee",
+      "orcid": null,
+      "observed_orcids": []
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I165932596",
+       "display_name": "National University of Singapore",
+       "ror": "https://ror.org/01tgyzw49",
+       "country_code": "SG",
+       "type": "education",
+       "lineage": [
+        "https://openalex.org/I165932596"
+       ]
+      }
+     ],
+     "countries": [
+      "SG"
+     ],
+     "is_corresponding": false,
+     "raw_author_name": "Wei-Wei Lee",
+     "raw_affiliation_strings": [
+      "Department of Biological Sciences, National University of Singapore, Singapore 117543, Singapore",
+      "The University Scholars Program, National University of Singapore, Singapore 117543, Singapore",
+      "NATIONAL UNIVERSITY OF SINGAPORE (NUS)"
+     ],
+     "raw_orcid": null,
+     "affiliations": [
+      {
+       "raw_affiliation_string": "Department of Biological Sciences, National University of Singapore, Singapore 117543, Singapore",
+       "institution_ids": [
+        "https://openalex.org/I165932596"
+       ]
+      },
+      {
+       "raw_affiliation_string": "The University Scholars Program, National University of Singapore, Singapore 117543, Singapore",
+       "institution_ids": [
+        "https://openalex.org/I165932596"
+       ]
+      },
+      {
+       "raw_affiliation_string": "NATIONAL UNIVERSITY OF SINGAPORE (NUS)",
+       "institution_ids": [
+        "https://openalex.org/I165932596"
+       ]
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5065292053",
+      "display_name": "Vinod Venkatraman",
+      "orcid": "https://orcid.org/0000-0002-8705-2916",
+      "observed_orcids": [
+       "https://orcid.org/0000-0002-8705-2916"
+      ]
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I157582758",
+       "display_name": "SingHealth",
+       "ror": "https://ror.org/04me94w47",
+       "country_code": "SG",
+       "type": "healthcare",
+       "lineage": [
+        "https://openalex.org/I157582758"
+       ]
+      },
+      {
+       "id": "https://openalex.org/I84392919",
+       "display_name": "Temple University",
+       "ror": "https://ror.org/00kx1jb78",
+       "country_code": "US",
+       "type": "education",
+       "lineage": [
+        "https://openalex.org/I84392919"
+       ]
+      }
+     ],
+     "countries": [
+      "SG",
+      "US"
+     ],
+     "is_corresponding": false,
+     "raw_author_name": "Vinod Venkatraman",
+     "raw_affiliation_strings": [
+      "Cognitive Neuroscience Laboratory, SingHealth Research Laboratories, Singapore 169611, Singapore",
+      "Temple University - Department of Marketing and Supply Chain Management"
+     ],
+     "raw_orcid": null,
+     "affiliations": [
+      {
+       "raw_affiliation_string": "Cognitive Neuroscience Laboratory, SingHealth Research Laboratories, Singapore 169611, Singapore",
+       "institution_ids": [
+        "https://openalex.org/I157582758"
+       ]
+      },
+      {
+       "raw_affiliation_string": "Temple University - Department of Marketing and Supply Chain Management",
+       "institution_ids": [
+        "https://openalex.org/I84392919"
+       ]
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5111768690",
+      "display_name": "Fwu‐Shan Sheu",
+      "orcid": null,
+      "observed_orcids": []
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I165932596",
+       "display_name": "National University of Singapore",
+       "ror": "https://ror.org/01tgyzw49",
+       "country_code": "SG",
+       "type": "education",
+       "lineage": [
+        "https://openalex.org/I165932596"
+       ]
+      }
+     ],
+     "countries": [
+      "SG"
+     ],
+     "is_corresponding": false,
+     "raw_author_name": "Fwu-Shan Sheu",
+     "raw_affiliation_strings": [
+      "Department of Biological Sciences, National University of Singapore, Singapore 117543, Singapore",
+      "The University Scholars Program, National University of Singapore, Singapore 117543, Singapore",
+      "NATIONAL UNIVERSITY OF SINGAPORE (NUS)"
+     ],
+     "raw_orcid": null,
+     "affiliations": [
+      {
+       "raw_affiliation_string": "Department of Biological Sciences, National University of Singapore, Singapore 117543, Singapore",
+       "institution_ids": [
+        "https://openalex.org/I165932596"
+       ]
+      },
+      {
+       "raw_affiliation_string": "The University Scholars Program, National University of Singapore, Singapore 117543, Singapore",
+       "institution_ids": [
+        "https://openalex.org/I165932596"
+       ]
+      },
+      {
+       "raw_affiliation_string": "NATIONAL UNIVERSITY OF SINGAPORE (NUS)",
+       "institution_ids": [
+        "https://openalex.org/I165932596"
+       ]
+      }
+     ]
+    },
+    {
+     "author_position": "last",
+     "author": {
+      "id": "https://openalex.org/A5102945746",
+      "display_name": "Michael W.L. Chee",
+      "orcid": "https://orcid.org/0000-0002-6087-0548",
+      "observed_orcids": [
+       "https://orcid.org/0000-0002-6087-0548"
+      ]
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I157582758",
+       "display_name": "SingHealth",
+       "ror": "https://ror.org/04me94w47",
+       "country_code": "SG",
+       "type": "healthcare",
+       "lineage": [
+        "https://openalex.org/I157582758"
+       ]
+      },
+      {
+       "id": "https://openalex.org/I165932596",
+       "display_name": "National University of Singapore",
+       "ror": "https://ror.org/01tgyzw49",
+       "country_code": "SG",
+       "type": "education",
+       "lineage": [
+        "https://openalex.org/I165932596"
+       ]
+      },
+      {
+       "id": "https://openalex.org/I4210126319",
+       "display_name": "Duke-NUS Medical School",
+       "ror": "https://ror.org/02j1m6098",
+       "country_code": "SG",
+       "type": "education",
+       "lineage": [
+        "https://openalex.org/I165932596",
+        "https://openalex.org/I170897317",
+        "https://openalex.org/I4210126319"
+       ]
+      }
+     ],
+     "countries": [
+      "SG"
+     ],
+     "is_corresponding": true,
+     "raw_author_name": "Michael W.L. Chee",
+     "raw_affiliation_strings": [
+      "Cognitive Neuroscience Laboratory, SingHealth Research Laboratories, Singapore 169611, Singapore",
+      "Department of Biological Sciences, National University of Singapore, Singapore 117543, Singapore",
+      "Duke – NUS Graduate Medical School, Singapore"
+     ],
+     "raw_orcid": null,
+     "affiliations": [
+      {
+       "raw_affiliation_string": "Cognitive Neuroscience Laboratory, SingHealth Research Laboratories, Singapore 169611, Singapore",
+       "institution_ids": [
+        "https://openalex.org/I157582758"
+       ]
+      },
+      {
+       "raw_affiliation_string": "Department of Biological Sciences, National University of Singapore, Singapore 117543, Singapore",
+       "institution_ids": [
+        "https://openalex.org/I165932596"
+       ]
+      },
+      {
+       "raw_affiliation_string": "Duke – NUS Graduate Medical School, Singapore",
+       "institution_ids": [
+        "https://openalex.org/I165932596",
+        "https://openalex.org/I4210126319"
+       ]
+      }
+     ]
+    }
+   ],
+   "abstract_inverted_index": null,
+   "best_oa_location": {
+    "id": "mag:2089696953",
+    "doi": null,
+    "is_oa": true,
+    "landing_page_url": "https://autopapers.ssrn.com/sol3/papers.cfm?abstract_id=2430358",
+    "pdf_url": null,
+    "source": {
+     "id": "https://openalex.org/S4210172589",
+     "display_name": "SSRN Electronic Journal",
+     "issn_l": "1556-5068",
+     "issn": [
+      "1556-5068"
+     ],
+     "is_oa": true,
+     "is_in_doaj": false,
+     "is_core": false,
+     "listed_in": [],
+     "host_organization": "https://openalex.org/I1318003438",
+     "host_organization_name": "RELX Group (Netherlands)",
+     "host_organization_lineage": [
+      "https://openalex.org/I1318003438"
+     ],
+     "host_organization_lineage_names": [],
+     "type": "repository"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "submittedVersion",
+    "is_accepted": false,
+    "is_published": false,
+    "raw_source_name": "SSRN Electronic Journal",
+    "raw_type": null
+   },
+   "primary_location": {
+    "id": "doi:10.1016/j.neuroimage.2004.11.029",
+    "doi": "https://doi.org/10.1016/j.neuroimage.2004.11.029",
+    "is_oa": false,
+    "landing_page_url": "https://doi.org/10.1016/j.neuroimage.2004.11.029",
+    "pdf_url": null,
+    "source": {
+     "id": "https://openalex.org/S103225281",
+     "display_name": "NeuroImage",
+     "issn_l": "1053-8119",
+     "issn": [
+      "1053-8119",
+      "1095-9572"
+     ],
+     "is_oa": false,
+     "is_in_doaj": true,
+     "is_core": true,
+     "listed_in": [
+      "anvur-scientific",
+      "cwts-core",
+      "doaj",
+      "dongbi-a",
+      "doyens",
+      "jufo-3",
+      "ki-jl-1",
+      "medline",
+      "norway-2",
+      "poland-140",
+      "vabb-shw"
+     ],
+     "host_organization": "https://openalex.org/P4310320990",
+     "host_organization_name": "Elsevier BV",
+     "host_organization_lineage": [
+      "https://openalex.org/P4310320990"
+     ],
+     "host_organization_lineage_names": [
+      "Elsevier BV"
+     ],
+     "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "NeuroImage",
+    "raw_type": "journal-article"
+   },
+   "ids": {
+    "openalex": "https://openalex.org/W2089696953",
+    "doi": "https://doi.org/10.1016/j.neuroimage.2004.11.029",
+    "mag": "2089696953",
+    "pmid": "https://pubmed.ncbi.nlm.nih.gov/15784437"
+   },
+   "type": "article"
+  },
+  {
+   "id": "https://openalex.org/W2887676316",
+   "doi": "https://doi.org/10.1111/jsr.12744",
+   "display_name": "Effect of sleep deprivation on emotional working memory",
+   "publication_year": 2018,
+   "language": "en",
+   "cited_by_count": 60,
+   "authorships": [
+    {
+     "author_position": "first",
+     "author": {
+      "id": "https://openalex.org/A5051698455",
+      "display_name": "Andreas Gerhardsson",
+      "orcid": "https://orcid.org/0000-0002-1087-5519",
+      "observed_orcids": [
+       "https://orcid.org/0000-0002-1087-5519"
+      ]
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I161593684",
+       "display_name": "Stockholm University",
+       "ror": "https://ror.org/05f0yaq80",
+       "country_code": "SE",
+       "type": "education",
+       "lineage": [
+        "https://openalex.org/I161593684"
+       ]
+      }
+     ],
+     "countries": [
+      "SE"
+     ],
+     "is_corresponding": true,
+     "raw_author_name": "Andreas Gerhardsson",
+     "raw_affiliation_strings": [
+      "Department of Psychology Stockholm University Stockholm Sweden",
+      "Stress Research Institute, Stockholm University Stockholm Sweden",
+      "Department of Psychology, Stockholm University, Stockholm, Sweden",
+      "Stress Research Institute, Stockholm University, Stockholm, Sweden"
+     ],
+     "raw_orcid": "https://orcid.org/0000-0002-1087-5519",
+     "affiliations": [
+      {
+       "raw_affiliation_string": "Department of Psychology Stockholm University Stockholm Sweden",
+       "institution_ids": [
+        "https://openalex.org/I161593684"
+       ]
+      },
+      {
+       "raw_affiliation_string": "Stress Research Institute, Stockholm University Stockholm Sweden",
+       "institution_ids": [
+        "https://openalex.org/I161593684"
+       ]
+      },
+      {
+       "raw_affiliation_string": "Department of Psychology, Stockholm University, Stockholm, Sweden",
+       "institution_ids": [
+        "https://openalex.org/I161593684"
+       ]
+      },
+      {
+       "raw_affiliation_string": "Stress Research Institute, Stockholm University, Stockholm, Sweden",
+       "institution_ids": [
+        "https://openalex.org/I161593684"
+       ]
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5091600688",
+      "display_name": "Torbjörn Åkerstedt",
+      "orcid": "https://orcid.org/0000-0001-8049-8504",
+      "observed_orcids": [
+       "https://orcid.org/0000-0001-8049-8504"
+      ]
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I161593684",
+       "display_name": "Stockholm University",
+       "ror": "https://ror.org/05f0yaq80",
+       "country_code": "SE",
+       "type": "education",
+       "lineage": [
+        "https://openalex.org/I161593684"
+       ]
+      },
+      {
+       "id": "https://openalex.org/I28166907",
+       "display_name": "Karolinska Institutet",
+       "ror": "https://ror.org/056d84691",
+       "country_code": "SE",
+       "type": "education",
+       "lineage": [
+        "https://openalex.org/I28166907"
+       ]
+      }
+     ],
+     "countries": [
+      "SE"
+     ],
+     "is_corresponding": false,
+     "raw_author_name": "Torbjörn Åkerstedt",
+     "raw_affiliation_strings": [
+      "Department of Clinical Neuroscience Karolinska Institute Stockholm Sweden",
+      "Stress Research Institute, Stockholm University Stockholm Sweden",
+      "Department of Clinical Neuroscience, Karolinska Institute, Stockholm, Sweden",
+      "Stress Research Institute, Stockholm University, Stockholm, Sweden"
+     ],
+     "raw_orcid": "https://orcid.org/0000-0001-8049-8504",
+     "affiliations": [
+      {
+       "raw_affiliation_string": "Department of Clinical Neuroscience Karolinska Institute Stockholm Sweden",
+       "institution_ids": [
+        "https://openalex.org/I28166907"
+       ]
+      },
+      {
+       "raw_affiliation_string": "Stress Research Institute, Stockholm University Stockholm Sweden",
+       "institution_ids": [
+        "https://openalex.org/I161593684"
+       ]
+      },
+      {
+       "raw_affiliation_string": "Department of Clinical Neuroscience, Karolinska Institute, Stockholm, Sweden",
+       "institution_ids": [
+        "https://openalex.org/I28166907"
+       ]
+      },
+      {
+       "raw_affiliation_string": "Stress Research Institute, Stockholm University, Stockholm, Sweden",
+       "institution_ids": [
+        "https://openalex.org/I161593684"
+       ]
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5002672967",
+      "display_name": "John Axelsson",
+      "orcid": "https://orcid.org/0000-0003-3932-7310",
+      "observed_orcids": [
+       "https://orcid.org/0000-0003-3932-7310"
+      ]
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I161593684",
+       "display_name": "Stockholm University",
+       "ror": "https://ror.org/05f0yaq80",
+       "country_code": "SE",
+       "type": "education",
+       "lineage": [
+        "https://openalex.org/I161593684"
+       ]
+      },
+      {
+       "id": "https://openalex.org/I28166907",
+       "display_name": "Karolinska Institutet",
+       "ror": "https://ror.org/056d84691",
+       "country_code": "SE",
+       "type": "education",
+       "lineage": [
+        "https://openalex.org/I28166907"
+       ]
+      }
+     ],
+     "countries": [
+      "SE"
+     ],
+     "is_corresponding": false,
+     "raw_author_name": "John Axelsson",
+     "raw_affiliation_strings": [
+      "Department of Clinical Neuroscience Karolinska Institute Stockholm Sweden",
+      "Stress Research Institute, Stockholm University Stockholm Sweden",
+      "Department of Clinical Neuroscience, Karolinska Institute, Stockholm, Sweden",
+      "Stress Research Institute, Stockholm University, Stockholm, Sweden"
+     ],
+     "raw_orcid": null,
+     "affiliations": [
+      {
+       "raw_affiliation_string": "Department of Clinical Neuroscience Karolinska Institute Stockholm Sweden",
+       "institution_ids": [
+        "https://openalex.org/I28166907"
+       ]
+      },
+      {
+       "raw_affiliation_string": "Stress Research Institute, Stockholm University Stockholm Sweden",
+       "institution_ids": [
+        "https://openalex.org/I161593684"
+       ]
+      },
+      {
+       "raw_affiliation_string": "Department of Clinical Neuroscience, Karolinska Institute, Stockholm, Sweden",
+       "institution_ids": [
+        "https://openalex.org/I28166907"
+       ]
+      },
+      {
+       "raw_affiliation_string": "Stress Research Institute, Stockholm University, Stockholm, Sweden",
+       "institution_ids": [
+        "https://openalex.org/I161593684"
+       ]
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5072191940",
+      "display_name": "Håkan Fischer",
+      "orcid": "https://orcid.org/0000-0001-6710-1744",
+      "observed_orcids": [
+       "https://orcid.org/0000-0001-6710-1744"
+      ]
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I161593684",
+       "display_name": "Stockholm University",
+       "ror": "https://ror.org/05f0yaq80",
+       "country_code": "SE",
+       "type": "education",
+       "lineage": [
+        "https://openalex.org/I161593684"
+       ]
+      }
+     ],
+     "countries": [
+      "SE"
+     ],
+     "is_corresponding": false,
+     "raw_author_name": "Håkan Fischer",
+     "raw_affiliation_strings": [
+      "Department of Psychology Stockholm University Stockholm Sweden",
+      "Department of Psychology, Stockholm University, Stockholm, Sweden"
+     ],
+     "raw_orcid": null,
+     "affiliations": [
+      {
+       "raw_affiliation_string": "Department of Psychology Stockholm University Stockholm Sweden",
+       "institution_ids": [
+        "https://openalex.org/I161593684"
+       ]
+      },
+      {
+       "raw_affiliation_string": "Department of Psychology, Stockholm University, Stockholm, Sweden",
+       "institution_ids": [
+        "https://openalex.org/I161593684"
+       ]
+      }
+     ]
+    },
+    {
+     "author_position": "middle",
+     "author": {
+      "id": "https://openalex.org/A5073745780",
+      "display_name": "Mats Lekander",
+      "orcid": "https://orcid.org/0000-0003-3998-1494",
+      "observed_orcids": [
+       "https://orcid.org/0000-0003-3998-1494"
+      ]
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I161593684",
+       "display_name": "Stockholm University",
+       "ror": "https://ror.org/05f0yaq80",
+       "country_code": "SE",
+       "type": "education",
+       "lineage": [
+        "https://openalex.org/I161593684"
+       ]
+      },
+      {
+       "id": "https://openalex.org/I28166907",
+       "display_name": "Karolinska Institutet",
+       "ror": "https://ror.org/056d84691",
+       "country_code": "SE",
+       "type": "education",
+       "lineage": [
+        "https://openalex.org/I28166907"
+       ]
+      }
+     ],
+     "countries": [
+      "SE"
+     ],
+     "is_corresponding": false,
+     "raw_author_name": "Mats Lekander",
+     "raw_affiliation_strings": [
+      "Department of Clinical Neuroscience Karolinska Institute Stockholm Sweden",
+      "Stress Research Institute, Stockholm University Stockholm Sweden",
+      "Department of Clinical Neuroscience, Karolinska Institute, Stockholm, Sweden",
+      "Stress Research Institute, Stockholm University, Stockholm, Sweden"
+     ],
+     "raw_orcid": null,
+     "affiliations": [
+      {
+       "raw_affiliation_string": "Department of Clinical Neuroscience Karolinska Institute Stockholm Sweden",
+       "institution_ids": [
+        "https://openalex.org/I28166907"
+       ]
+      },
+      {
+       "raw_affiliation_string": "Stress Research Institute, Stockholm University Stockholm Sweden",
+       "institution_ids": [
+        "https://openalex.org/I161593684"
+       ]
+      },
+      {
+       "raw_affiliation_string": "Department of Clinical Neuroscience, Karolinska Institute, Stockholm, Sweden",
+       "institution_ids": [
+        "https://openalex.org/I28166907"
+       ]
+      },
+      {
+       "raw_affiliation_string": "Stress Research Institute, Stockholm University, Stockholm, Sweden",
+       "institution_ids": [
+        "https://openalex.org/I161593684"
+       ]
+      }
+     ]
+    },
+    {
+     "author_position": "last",
+     "author": {
+      "id": "https://openalex.org/A5005526525",
+      "display_name": "Johanna Schwarz",
+      "orcid": "https://orcid.org/0000-0001-9873-2506",
+      "observed_orcids": [
+       "https://orcid.org/0000-0001-9873-2506"
+      ]
+     },
+     "institutions": [
+      {
+       "id": "https://openalex.org/I161593684",
+       "display_name": "Stockholm University",
+       "ror": "https://ror.org/05f0yaq80",
+       "country_code": "SE",
+       "type": "education",
+       "lineage": [
+        "https://openalex.org/I161593684"
+       ]
+      }
+     ],
+     "countries": [
+      "SE"
+     ],
+     "is_corresponding": false,
+     "raw_author_name": "Johanna Schwarz",
+     "raw_affiliation_strings": [
+      "Stress Research Institute, Stockholm University Stockholm Sweden",
+      "Stress Research Institute, Stockholm University, Stockholm, Sweden"
+     ],
+     "raw_orcid": null,
+     "affiliations": [
+      {
+       "raw_affiliation_string": "Stress Research Institute, Stockholm University Stockholm Sweden",
+       "institution_ids": [
+        "https://openalex.org/I161593684"
+       ]
+      },
+      {
+       "raw_affiliation_string": "Stress Research Institute, Stockholm University, Stockholm, Sweden",
+       "institution_ids": [
+        "https://openalex.org/I161593684"
+       ]
+      }
+     ]
+    }
+   ],
+   "abstract_inverted_index": {
+    "The": [
+     0,
+     58,
+     143,
+     160,
+     175
+    ],
+    "emotional": [
+     1,
+     40,
+     76,
+     135
+    ],
+    "dysregulation": [
+     2
+    ],
+    "and": [
+     3,
+     25,
+     49,
+     118,
+     123,
+     157,
+     170
+    ],
+    "impaired": [
+     4,
+     134
+    ],
+    "working": [
+     5,
+     77,
+     114,
+     136,
+     172,
+     190,
+     203
+    ],
+    "memory": [
+     6,
+     115,
+     137,
+     173,
+     191,
+     204
+    ],
+    "found": [
+     7
+    ],
+    "after": [
+     8,
+     207
+    ],
+    "sleep": [
+     9,
+     36,
+     56,
+     73,
+     88,
+     101,
+     163,
+     185,
+     208
+    ],
+    "loss": [
+     10
+    ],
+    "can": [
+     11
+    ],
+    "have": [
+     12
+    ],
+    "severe": [
+     13
+    ],
+    "implications": [
+     14,
+     34
+    ],
+    "for": [
+     15,
+     90,
+     167
+    ],
+    "our": [
+     16,
+     195
+    ],
+    "daily": [
+     17
+    ],
+    "functioning.": [
+     18
+    ],
+    "Considering": [
+     19
+    ],
+    "the": [
+     20,
+     61,
+     67,
+     148
+    ],
+    "intertwined": [
+     21
+    ],
+    "relationship": [
+     22
+    ],
+    "between": [
+     23,
+     47
+    ],
+    "emotion": [
+     24,
+     48
+    ],
+    "cognition": [
+     26
+    ],
+    "in": [
+     27,
+     38,
+     55,
+     181
+    ],
+    "stimuli": [
+     28,
+     200
+    ],
+    "processing,": [
+     29
+    ],
+    "there": [
+     30
+    ],
+    "could": [
+     31
+    ],
+    "be": [
+     32
+    ],
+    "further": [
+     33
+    ],
+    "of": [
+     35,
+     60,
+     69,
+     72,
+     113,
+     162,
+     183
+    ],
+    "deprivation": [
+     37,
+     74,
+     164,
+     186
+    ],
+    "high-complex": [
+     39
+    ],
+    "situations.": [
+     41
+    ],
+    "Although": [
+     42
+    ],
+    "studied": [
+     43
+    ],
+    "separately,": [
+     44
+    ],
+    "this": [
+     45
+    ],
+    "interaction": [
+     46
+    ],
+    "cognitive": [
+     50
+    ],
+    "processes": [
+     51
+    ],
+    "has": [
+     52
+    ],
+    "been": [
+     53
+    ],
+    "neglected": [
+     54
+    ],
+    "research.": [
+     57
+    ],
+    "aim": [
+     59
+    ],
+    "present": [
+     62
+    ],
+    "study": [
+     63
+    ],
+    "was": [
+     64,
+     165
+    ],
+    "to": [
+     65,
+     152,
+     155
+    ],
+    "investigate": [
+     66
+    ],
+    "effect": [
+     68,
+     161
+    ],
+    "1": [
+     70,
+     91
+    ],
+    "night": [
+     71,
+     92,
+     132
+    ],
+    "on": [
+     75
+    ],
+    "memory.": [
+     78
+    ],
+    "Sixty-one": [
+     79
+    ],
+    "healthy": [
+     80
+    ],
+    "participants": [
+     81
+    ],
+    "(mean": [
+     82
+    ],
+    "age:": [
+     83
+    ],
+    "23.4": [
+     84
+    ],
+    "years)": [
+     85
+    ],
+    "were": [
+     86
+    ],
+    "either": [
+     87
+    ],
+    "deprived": [
+     89
+    ],
+    "(n": [
+     93,
+     102
+    ],
+    "=": [
+     94,
+     103
+    ],
+    "30)": [
+     95
+    ],
+    "or": [
+     96
+    ],
+    "had": [
+     97
+    ],
+    "a": [
+     98
+    ],
+    "normal": [
+     99
+    ],
+    "night's": [
+     100
+    ],
+    "31).": [
+     104
+    ],
+    "They": [
+     105
+    ],
+    "performed": [
+     106
+    ],
+    "an": [
+     107
+    ],
+    "N-back": [
+     108
+    ],
+    "task": [
+     109
+    ],
+    "with": [
+     110,
+     130
+    ],
+    "two": [
+     111
+    ],
+    "levels": [
+     112
+    ],
+    "load": [
+     116
+    ],
+    "(1-back": [
+     117
+    ],
+    "3-back)": [
+     119
+    ],
+    "using": [
+     120
+    ],
+    "positive,": [
+     121
+    ],
+    "neutral": [
+     122,
+     158
+    ],
+    "negative": [
+     124,
+     156
+    ],
+    "picture": [
+     125
+    ],
+    "scenes.": [
+     126
+    ],
+    "Sleep": [
+     127
+    ],
+    "deprivation,": [
+     128
+    ],
+    "compared": [
+     129
+    ],
+    "full": [
+     131
+    ],
+    "sleep,": [
+     133
+    ],
+    "accuracy,": [
+     138,
+     184
+    ],
+    "but": [
+     139,
+     146
+    ],
+    "not": [
+     140,
+     147,
+     188
+    ],
+    "reaction": [
+     141
+    ],
+    "times.": [
+     142
+    ],
+    "sleep-deprived": [
+     144
+    ],
+    "participants,": [
+     145
+    ],
+    "controls,": [
+     149
+    ],
+    "responded": [
+     150
+    ],
+    "faster": [
+     151
+    ],
+    "positive": [
+     153,
+     199
+    ],
+    "than": [
+     154
+    ],
+    "pictures.": [
+     159
+    ],
+    "similar": [
+     166
+    ],
+    "both": [
+     168
+    ],
+    "high": [
+     169
+    ],
+    "low": [
+     171
+    ],
+    "loads.": [
+     174
+    ],
+    "results": [
+     176
+    ],
+    "showed": [
+     177
+    ],
+    "that": [
+     178,
+     198
+    ],
+    "although": [
+     179
+    ],
+    "detrimental": [
+     180
+    ],
+    "terms": [
+     182
+    ],
+    "did": [
+     187
+    ],
+    "impair": [
+     189
+    ],
+    "speed.": [
+     192
+    ],
+    "In": [
+     193
+    ],
+    "fact,": [
+     194
+    ],
+    "findings": [
+     196
+    ],
+    "indicate": [
+     197
+    ],
+    "may": [
+     201
+    ],
+    "facilitate": [
+     202
+    ],
+    "processing": [
+     205
+    ],
+    "speed": [
+     206
+    ],
+    "deprivation.": [
+     209
+    ]
+   },
+   "best_oa_location": {
+    "id": "doi:10.1111/jsr.12744",
+    "doi": "https://doi.org/10.1111/jsr.12744",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1111/jsr.12744",
+    "pdf_url": "https://onlinelibrary.wiley.com/doi/pdfdirect/10.1111/jsr.12744",
+    "source": {
+     "id": "https://openalex.org/S123151105",
+     "display_name": "Journal of Sleep Research",
+     "issn_l": "0962-1105",
+     "issn": [
+      "0962-1105",
+      "1365-2869"
+     ],
+     "is_oa": false,
+     "is_in_doaj": false,
+     "is_core": true,
+     "listed_in": [
+      "cwts-core",
+      "dongbi-b",
+      "doyens",
+      "jufo-1",
+      "ki-jl-1",
+      "medline",
+      "norway-1",
+      "poland-100",
+      "russia-white-list-1",
+      "vabb-shw"
+     ],
+     "host_organization": "https://openalex.org/P4310320595",
+     "host_organization_name": "Wiley",
+     "host_organization_lineage": [
+      "https://openalex.org/P4310320595"
+     ],
+     "host_organization_lineage_names": [
+      "Wiley"
+     ],
+     "type": "journal"
+    },
+    "license": "cc-by-nc",
+    "license_id": "https://openalex.org/licenses/cc-by-nc",
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "Journal of Sleep Research",
+    "raw_type": "journal-article"
+   },
+   "primary_location": {
+    "id": "doi:10.1111/jsr.12744",
+    "doi": "https://doi.org/10.1111/jsr.12744",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1111/jsr.12744",
+    "pdf_url": "https://onlinelibrary.wiley.com/doi/pdfdirect/10.1111/jsr.12744",
+    "source": {
+     "id": "https://openalex.org/S123151105",
+     "display_name": "Journal of Sleep Research",
+     "issn_l": "0962-1105",
+     "issn": [
+      "0962-1105",
+      "1365-2869"
+     ],
+     "is_oa": false,
+     "is_in_doaj": false,
+     "is_core": true,
+     "listed_in": [
+      "cwts-core",
+      "dongbi-b",
+      "doyens",
+      "jufo-1",
+      "ki-jl-1",
+      "medline",
+      "norway-1",
+      "poland-100",
+      "russia-white-list-1",
+      "vabb-shw"
+     ],
+     "host_organization": "https://openalex.org/P4310320595",
+     "host_organization_name": "Wiley",
+     "host_organization_lineage": [
+      "https://openalex.org/P4310320595"
+     ],
+     "host_organization_lineage_names": [
+      "Wiley"
+     ],
+     "type": "journal"
+    },
+    "license": "cc-by-nc",
+    "license_id": "https://openalex.org/licenses/cc-by-nc",
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "Journal of Sleep Research",
+    "raw_type": "journal-article"
+   },
+   "ids": {
+    "openalex": "https://openalex.org/W2887676316",
+    "doi": "https://doi.org/10.1111/jsr.12744",
+    "mag": "2887676316",
+    "pmid": "https://pubmed.ncbi.nlm.nih.gov/30091275"
+   },
+   "type": "article"
+  }
+ ],
+ "group_by": []
+}

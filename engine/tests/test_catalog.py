@@ -39,7 +39,13 @@ def test_bundled_catalog_covers_every_tier() -> None:
     catalog = load_bundled_catalog()
     for tier in Tier:
         roles = {m.role for m in catalog.recommended_for(tier)}
-        expected = {ModelRole.EMBEDDER, ModelRole.NLI, ModelRole.LLM}
+        expected = {
+            ModelRole.EMBEDDER,
+            ModelRole.NLI,
+            ModelRole.LLM,
+            ModelRole.TRANSLATOR_HE_EN,
+            ModelRole.TRANSLATOR_EN_HE,
+        }
         if tier != Tier.LITE:
             expected.add(ModelRole.RERANKER)
         assert roles == expected, tier

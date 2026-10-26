@@ -32,6 +32,8 @@ MARKER_NAME = ".verified"
 DISK_HEADROOM_BYTES = 512 * 1024 * 1024
 CHUNK_BYTES = 1024 * 1024
 MAX_ATTEMPTS = 4
+"""Consecutive attempts without any progress before a download is given up."""
+MAX_RETRY_DELAY_S = 30.0
 HTTP_PARTIAL_CONTENT = 206
 
 
@@ -187,15 +189,26 @@ class ModelManager:
         part.parent.mkdir(parents=True, exist_ok=True)
         url = spec.download_url(file)
 
-        for attempt in range(1, MAX_ATTEMPTS + 1):
+        # Only attempts that make no progress count: on a slow, flaky connection every retry
+        # resumes from the .part file, so a large model still completes eventually.
+        stalled = 0
+        while True:
+            before = part.stat().st_size if part.is_file() else 0
             try:
                 await self._stream_to_part(client, url, part, spec.id, done_before)
                 break
             except httpx.TransportError as exc:
-                if attempt == MAX_ATTEMPTS:
-                    raise SourceUnavailableError(f"Download of {file.path} failed: {exc}") from exc
-                logger.warning("Retrying %s after %s (attempt %d)", file.path, exc, attempt)
-                await asyncio.sleep(self._retry_delay_s * attempt)
+                reason = str(exc) or type(exc).__name__  # timeouts stringify to ""
+                after = part.stat().st_size if part.is_file() else 0
+                stalled = 0 if after > before else stalled + 1
+                if stalled >= MAX_ATTEMPTS:
+                    raise SourceUnavailableError(
+                        f"Download of {file.path} failed: {reason}"
+                    ) from exc
+                logger.warning(
+                    "Retrying %s after %s (%d without progress)", file.path, reason, stalled
+                )
+                await asyncio.sleep(min(self._retry_delay_s * 2**stalled, MAX_RETRY_DELAY_S))
 
         digest = await asyncio.to_thread(_sha256_of, part)
         if digest != file.sha256:
@@ -220,7 +233,8 @@ class ModelManager:
                 offset = 0  # server ignored the Range header; start over
             with part.open("ab" if offset else "wb") as out:
                 written = offset
-                async for chunk in response.aiter_bytes(CHUNK_BYTES):
+                # Unbuffered: whatever arrived is on disk even if the connection drops.
+                async for chunk in response.aiter_bytes():
                     out.write(chunk)
                     written += len(chunk)
                     self._progress[model_id] = done_before + written

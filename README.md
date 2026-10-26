@@ -6,9 +6,9 @@ or English. The app finds peer-reviewed papers and ranks them by a calibrated **
 how other papers cite each one. All AI processing runs on your machine and adapts to its
 hardware. External LLM APIs are optional.
 
-> Status: **M2 local library**: import your own PDFs and search them offline, in Hebrew and
-> English, including cross-lingual search. Next is M3 (online academic sources). See the
-> architecture plan for M3–M6.
+> Status: **M3 online sources**: search OpenAlex, Semantic Scholar, arXiv and Europe PMC
+> alongside your own PDFs, with Hebrew↔English query translation. Next is M4 (calibrated
+> match % and answer highlighting). See the architecture plan for M4–M6.
 
 ## Layout
 
@@ -103,6 +103,41 @@ layer are reported as failed, because OCR is not supported yet.
 
 To run the real-model test (it is skipped otherwise), point it at a downloaded E5 model:
 `RB_TEST_EMBEDDER_DIR=<data dir>/models/embed-e5-small/<revision> uv run pytest tests/test_embedder.py`.
+
+## Online academic sources
+
+When **Search online academic sources** is on (Settings), each search also queries:
+
+| Source | Coverage | Notes |
+|---|---|---|
+| [OpenAlex](https://openalex.org) | ~250M works, every field | Open-access PDF links come from Unpaywall data. Anonymous use is metered (about 100 searches a day); a free API key raises this. |
+| [Semantic Scholar](https://www.semanticscholar.org) | All fields | Anonymous requests share a busy global limit and are often refused; a free API key helps. |
+| [arXiv](https://arxiv.org) | Physics, maths, CS, biology preprints | Every result has a free PDF. The API can be slow. |
+| [Europe PMC](https://europepmc.org) | Life sciences, medicine | Includes abstracts and open-access full texts. |
+
+Only the search terms leave your computer; your documents never do. Results are
+de-duplicated across sources (DOI, arXiv id, PMID, then title and year) and ranked by
+semantic similarity to your question. Responses are cached for a day, and a stale cached
+answer is used when a source is down or you are offline. Papers with a legal free PDF can be
+added to your library in one click; their metadata comes from the database, not from guessing
+at the PDF.
+
+**Hebrew and English.** These APIs match keywords, so a Hebrew question is translated to
+English before it is sent, and the Hebrew-only filter translates English questions to Hebrew.
+Translation runs locally with OPUS-MT models (about 490 MB in total, downloaded in Settings).
+Without them, the original question is sent.
+
+**API keys** are optional and stored in the operating system's credential store (Windows
+Credential Manager, macOS Keychain, Secret Service), never in plain-text files.
+
+### Model attributions
+
+- Hebrew→English translation: [OPUS-MT tc-big he-en](https://huggingface.co/Helsinki-NLP/opus-mt-tc-big-he-en)
+  by the Language Technology Research Group at the University of Helsinki, licensed
+  [CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/). The app uses an ONNX export,
+  [TigreGotico/opus-mt-tc-big-he-en-onnx](https://huggingface.co/TigreGotico/opus-mt-tc-big-he-en-onnx).
+- English→Hebrew translation: [OPUS-MT en-he](https://huggingface.co/Helsinki-NLP/opus-mt-en-he)
+  (Apache-2.0), via [TigreGotico/opus-mt-en-he-onnx](https://huggingface.co/TigreGotico/opus-mt-en-he-onnx).
 
 ## How the shell and engine connect
 

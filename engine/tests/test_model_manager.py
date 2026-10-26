@@ -10,6 +10,7 @@ from rb_engine.domain.errors import (
     InsufficientDiskSpaceError,
     ModelIntegrityError,
     ModelNotReadyError,
+    SourceUnavailableError,
 )
 from rb_engine.runtime.model_manager import (
     MARKER_NAME,
@@ -155,3 +156,22 @@ async def test_concurrent_requests_share_one_download(tmp_path: Path, host: Fake
     await asyncio.gather(*(manager.ensure("llm-test") for _ in range(5)))
 
     assert len(host.requests) == 1
+
+
+async def test_keeps_retrying_while_each_attempt_makes_progress(
+    tmp_path: Path, host: FakeModelHost
+) -> None:
+    host.fail_midway = 6  # more drops than MAX_ATTEMPTS, but every one moves forward
+    manager = _manager(tmp_path, host)
+
+    await manager.ensure("llm-test")
+
+    assert manager.state("llm-test").status == ModelStatus.READY
+
+
+async def test_failure_message_names_silent_timeouts(tmp_path: Path, host: FakeModelHost) -> None:
+    host.timeout_first = 10
+    manager = _manager(tmp_path, host)
+
+    with pytest.raises(SourceUnavailableError, match="ReadTimeout"):
+        await manager.ensure("llm-test")

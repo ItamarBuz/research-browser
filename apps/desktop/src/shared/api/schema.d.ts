@@ -174,6 +174,58 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/settings/online": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Online Settings */
+        get: operations["getOnlineSettings"];
+        /** Update Online Settings */
+        put: operations["updateOnlineSettings"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/discover": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Discover */
+        post: operations["discover"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/library/documents/from-url": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Import From Url */
+        post: operations["importDocumentFromUrl"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -182,6 +234,48 @@ export interface components {
         Body_importDocuments: {
             /** Files */
             files: string[];
+        };
+        /** DiscoveryRequest */
+        DiscoveryRequest: {
+            /** Query */
+            query: string;
+            /**
+             * Language
+             * @default cross
+             * @enum {string}
+             */
+            language: "en" | "he" | "cross";
+            /**
+             * Limit
+             * @default 20
+             */
+            limit: number;
+        };
+        /** DiscoveryResponse */
+        DiscoveryResponse: {
+            /**
+             * Query Language
+             * @enum {string}
+             */
+            query_language: "en" | "he" | "other";
+            /**
+             * Queries
+             * @description The query text sent per language
+             */
+            queries: {
+                [key: string]: string;
+            };
+            /**
+             * Translation Missing
+             * @description A translation would have helped but the translation model is not ready
+             */
+            translation_missing: boolean;
+            /** Sources */
+            sources: components["schemas"]["SourceStatus"][];
+            /** Results */
+            results: components["schemas"]["WorkHit"][];
+            /** Took Ms */
+            took_ms: number;
         };
         /** Document */
         Document: {
@@ -234,12 +328,39 @@ export interface components {
             year?: number | null;
             /** Doi */
             doi?: string | null;
+            /**
+             * From Catalog
+             * @description Came from an academic database; preferred over what the PDF suggests
+             * @default false
+             */
+            from_catalog: boolean;
         };
         /**
          * DocumentStatus
          * @enum {string}
          */
         DocumentStatus: "queued" | "parsing" | "indexing" | "ready" | "failed";
+        /** ExternalIds */
+        ExternalIds: {
+            /**
+             * Doi
+             * @description Lowercase, without https://doi.org/
+             */
+            doi?: string | null;
+            /** Openalex */
+            openalex?: string | null;
+            /** Semantic Scholar */
+            semantic_scholar?: string | null;
+            /**
+             * Arxiv
+             * @description Without version suffix, e.g. 1706.03762
+             */
+            arxiv?: string | null;
+            /** Pmid */
+            pmid?: string | null;
+            /** Pmcid */
+            pmcid?: string | null;
+        };
         /** GpuInfo */
         GpuInfo: {
             /** Name */
@@ -293,6 +414,12 @@ export interface components {
             version: string;
             /** Api Version */
             api_version: number;
+        };
+        /** ImportFromUrlRequest */
+        ImportFromUrlRequest: {
+            /** Url */
+            url: string;
+            metadata?: components["schemas"]["DocumentMetadata"] | null;
         };
         /** ImportResult */
         ImportResult: {
@@ -394,7 +521,7 @@ export interface components {
          * ModelRole
          * @enum {string}
          */
-        ModelRole: "embedder" | "reranker" | "nli" | "llm";
+        ModelRole: "embedder" | "reranker" | "nli" | "llm" | "translator_he_en" | "translator_en_he";
         /** ModelState */
         ModelState: {
             status: components["schemas"]["ModelStatus"];
@@ -410,6 +537,46 @@ export interface components {
          * @enum {string}
          */
         ModelStatus: "not_downloaded" | "downloading" | "ready" | "failed";
+        /**
+         * OnlineSettingsUpdate
+         * @description Fields left out stay unchanged. An empty string removes a stored API key.
+         */
+        OnlineSettingsUpdate: {
+            /** Enabled */
+            enabled?: boolean | null;
+            /** Sources */
+            sources?: {
+                [key: string]: boolean;
+            } | null;
+            /** Contact Email */
+            contact_email?: string | null;
+            /**
+             * Clear Contact Email
+             * @default false
+             */
+            clear_contact_email: boolean;
+            /** Openalex Api Key */
+            openalex_api_key?: string | null;
+            /** Semantic Scholar Api Key */
+            semantic_scholar_api_key?: string | null;
+        };
+        /** OnlineSettingsView */
+        OnlineSettingsView: {
+            /** Enabled */
+            enabled: boolean;
+            /** Sources */
+            sources: {
+                [key: string]: boolean;
+            };
+            /** Contact Email */
+            contact_email: string | null;
+            /** Has Openalex Key */
+            has_openalex_key: boolean;
+            /** Has Semantic Scholar Key */
+            has_semantic_scholar_key: boolean;
+            /** Secure Storage Available */
+            secure_storage_available: boolean;
+        };
         /** PassageHit */
         PassageHit: {
             /** Passage Id */
@@ -455,6 +622,29 @@ export interface components {
             results: components["schemas"]["DocumentHit"][];
             /** Took Ms */
             took_ms: number;
+        };
+        /**
+         * SourceName
+         * @enum {string}
+         */
+        SourceName: "openalex" | "semantic_scholar" | "arxiv" | "europe_pmc";
+        /** SourceStatus */
+        SourceStatus: {
+            source: components["schemas"]["SourceName"];
+            /** Ok */
+            ok: boolean;
+            /**
+             * Count
+             * @default 0
+             */
+            count: number;
+            /**
+             * From Cache
+             * @default false
+             */
+            from_cache: boolean;
+            /** Error */
+            error?: string | null;
         };
         /** SystemInfo */
         SystemInfo: {
@@ -508,6 +698,49 @@ export interface components {
             input?: unknown;
             /** Context */
             ctx?: Record<string, never>;
+        };
+        /** Work */
+        Work: {
+            ids: components["schemas"]["ExternalIds"];
+            /** Title */
+            title: string;
+            /** Abstract */
+            abstract?: string | null;
+            /** Authors */
+            authors?: string[];
+            /** Year */
+            year?: number | null;
+            /** Venue */
+            venue?: string | null;
+            /** Language */
+            language?: ("en" | "he" | "other") | null;
+            /** Citation Count */
+            citation_count?: number | null;
+            /**
+             * Pdf Url
+             * @description A legal open-access PDF, if known
+             */
+            pdf_url?: string | null;
+            /** Landing Url */
+            landing_url?: string | null;
+            /** Sources */
+            sources: components["schemas"]["SourceName"][];
+        };
+        /** WorkHit */
+        WorkHit: {
+            work: components["schemas"]["Work"];
+            /** Score */
+            score: number;
+            /**
+             * Similarity
+             * @description Cosine similarity of question and title+abstract; None without a model
+             */
+            similarity: number | null;
+            /**
+             * In Library
+             * @default false
+             */
+            in_library: boolean;
         };
     };
     responses: never;
@@ -764,6 +997,125 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["SearchResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    getOnlineSettings: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OnlineSettingsView"];
+                };
+            };
+        };
+    };
+    updateOnlineSettings: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["OnlineSettingsUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OnlineSettingsView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    discover: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["DiscoveryRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DiscoveryResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    importDocumentFromUrl: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ImportFromUrlRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ImportResult"];
                 };
             };
             /** @description Validation Error */
