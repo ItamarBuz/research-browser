@@ -85,9 +85,11 @@ copied into the data folder and processed in the background:
    end-of-line hyphenation are removed, and every sentence keeps its position in the original
    page text, ready for highlighting in M4.
 2. **Split**: sentences are grouped into passages of about 120 words. Language is detected per
-   passage and per document.
-3. **Index**: passages are embedded with the tier's multilingual model and stored in LanceDB,
-   next to a keyword index. Hebrew words are indexed with and without their prefixes
+   passage and per document. Reference lists ("References", "מקורות") and author or
+   affiliation lists are recognised by cheap text rules and kept in the library, but left out
+   of the search index, so they never crowd out the paper's own text.
+3. **Index**: body passages are embedded with the tier's multilingual model and stored in
+   LanceDB, next to a keyword index. Hebrew words are indexed with and without their prefixes
    (ו/ה/ב/כ/ל/מ/ש), so "מחקר" also matches "והמחקר".
 
 Search combines semantic and keyword matches with reciprocal rank fusion. The sources filter

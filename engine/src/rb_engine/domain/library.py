@@ -6,6 +6,7 @@ from typing import Literal
 
 from pydantic import BaseModel, Field
 
+from rb_engine.text.boilerplate import PassageKind
 from rb_engine.text.language import SourceLanguage
 
 LanguageFilter = Literal["en", "he", "cross"]
@@ -74,6 +75,9 @@ class Passage(BaseModel):
     text: str
     language: SourceLanguage
     sentences: list[SentenceSpan]
+    kind: PassageKind = Field(
+        default="body", description="Only body passages are indexed for search"
+    )
 
 
 class ParsedDocument(BaseModel):

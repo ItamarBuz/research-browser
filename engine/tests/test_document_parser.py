@@ -1,3 +1,4 @@
+import textwrap
 from pathlib import Path
 
 import pytest
@@ -6,6 +7,12 @@ from rb_engine.adapters.pdf.pdfium_parser import PdfiumParser
 from rb_engine.domain.errors import DocumentParseError
 from rb_engine.ports.library import RawPdf
 from rb_engine.services.document_parser import find_doi, parse_document
+from tests.boilerplate_samples import (
+    APA_REFERENCES,
+    HEBREW_PROSE,
+    LIGO_AUTHOR_LIST,
+    LIGO_REFERENCES,
+)
 from tests.pdfs import SLEEP_PAPER_PAGES, make_pdf
 
 
@@ -111,3 +118,23 @@ def test_title_falls_back_to_file_name() -> None:
 )
 def test_find_doi(text: str, doi: str | None) -> None:
     assert find_doi(text) == doi
+
+
+def test_reference_list_is_marked_and_kept(tmp_path: Path) -> None:
+    path = tmp_path / "paper.pdf"
+    references_page = ["References", *textwrap.wrap(LIGO_REFERENCES, 90)]
+    path.write_bytes(make_pdf([*SLEEP_PAPER_PAGES, references_page]))
+
+    parsed = parse_document(PdfiumParser().extract(path), "doc1", "paper.pdf")
+
+    kinds = {(p.page, p.kind) for p in parsed.passages}
+    assert kinds == {(1, "body"), (2, "body"), (3, "body"), (4, "references")}
+    assert "Bolton" in next(p.text for p in parsed.passages if p.page == 4)
+
+
+def test_reference_and_author_lists_do_not_vote_on_the_language() -> None:
+    # A Hebrew paper whose author and reference lists are in English is still Hebrew.
+    raw = RawPdf(pages=[HEBREW_PROSE, LIGO_AUTHOR_LIST, LIGO_REFERENCES, APA_REFERENCES], info={})
+    parsed = parse_document(raw, "doc", "hebrew.pdf")
+    assert [p.kind for p in parsed.passages] == ["body", "author_list", "references", "references"]
+    assert parsed.language == "he"

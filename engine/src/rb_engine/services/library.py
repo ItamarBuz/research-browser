@@ -56,6 +56,16 @@ and calibrated match % replace it."""
 JobKind = Literal["process", "index"]
 
 
+def searchable_passages(passages: Sequence[Passage]) -> list[Passage]:
+    """The passages to index: body text, without reference and author lists.
+
+    A document with no body passages at all (say, a PDF that is only a bibliography) is
+    indexed whole, so it can still be found.
+    """
+    body = [p for p in passages if p.kind == "body"]
+    return body or list(passages)
+
+
 def group_hits(
     hits: Sequence[IndexHit],
     documents: Mapping[str, Document],
@@ -166,10 +176,7 @@ class LibraryService:
 
     async def delete(self, document_id: str) -> bool:
         removed = self._repo.delete_document(document_id)
-        for model_id in self._embedders.known_model_ids():
-            index = self._indexes.open(model_id)
-            if index is not None:
-                await asyncio.to_thread(index.delete_document, document_id)
+        await self._unindex(document_id)
         self._file_path(document_id).unlink(missing_ok=True)
         return removed
 
@@ -234,6 +241,13 @@ class LibraryService:
             raise RuntimeError(f"could not create the index for {model_id}")
         return index
 
+    async def _unindex(self, document_id: str) -> None:
+        """Remove a document's rows from every model's index."""
+        for model_id in self._embedders.known_model_ids():
+            index = self._indexes.open(model_id)
+            if index is not None:
+                await asyncio.to_thread(index.delete_document, document_id)
+
     def _indexed_ids(self) -> set[str]:
         index = self._indexes.open(self._embedders.active_model_id())
         return index.document_ids() if index is not None else set()
@@ -277,6 +291,8 @@ class LibraryService:
             self._repo.set_status(document_id, DocumentStatus.FAILED, f"Unexpected error: {exc}")
             return
         self._repo.save_parsed(document_id, parsed)
+        # A re-parse (after a schema upgrade, say) makes existing index rows stale.
+        await self._unindex(document_id)
         self._repo.set_status(document_id, DocumentStatus.READY)
         if self._embedders.is_ready():
             await self._index(document_id)
@@ -285,7 +301,7 @@ class LibraryService:
         document = self._repo.get_document(document_id)
         if document is None or document.status != DocumentStatus.READY:
             return
-        passages = self._repo.passages_for_document(document_id)
+        passages = searchable_passages(self._repo.passages_for_document(document_id))
         model_id = self._embedders.active_model_id()
         self._repo.set_status(document_id, DocumentStatus.INDEXING)
         try:

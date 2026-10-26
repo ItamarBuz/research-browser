@@ -8,6 +8,7 @@ from collections.abc import Sequence
 from rb_engine.domain.errors import DocumentParseError
 from rb_engine.domain.library import DocumentMetadata, ParsedDocument, Passage, SentenceSpan
 from rb_engine.ports.library import RawPdf, SizedLine
+from rb_engine.text.boilerplate import classify_passages
 from rb_engine.text.clean import MappedText, clean_page_text, find_repeated_lines
 from rb_engine.text.language import SourceLanguage, detect_language
 from rb_engine.text.segment import build_passages, split_sentences
@@ -141,10 +142,14 @@ def parse_document(raw: RawPdf, document_id: str, file_name: str) -> ParsedDocum
     passages: list[Passage] = []
     for page_number, page in enumerate(cleaned, start=1):
         passages.extend(_page_passages(document_id, page_number, page, len(passages)))
+    kinds = classify_passages([p.text for p in passages])
+    passages = [
+        p.model_copy(update={"kind": kind}) for p, kind in zip(passages, kinds, strict=True)
+    ]
 
     # The language most prose passages are in wins (a Hebrew paper with an English abstract
-    # is Hebrew); reference lists and tables ("other") do not get a vote.
-    prose = Counter(p.language for p in passages if p.language != "other")
+    # is Hebrew); reference lists, author lists and tables ("other") do not get a vote.
+    prose = Counter(p.language for p in passages if p.kind == "body" and p.language != "other")
     language = (
         prose.most_common(1)[0][0] if prose else _document_language([p.text for p in cleaned])
     )

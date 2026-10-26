@@ -20,7 +20,7 @@ from rb_engine.domain.library import (
     SentenceSpan,
 )
 
-SCHEMA_VERSION = 1
+SCHEMA_VERSION = 2
 SCHEMA = """
 CREATE TABLE documents (
     id TEXT PRIMARY KEY,
@@ -47,10 +47,21 @@ CREATE TABLE passages (
     page INTEGER NOT NULL,
     text TEXT NOT NULL,
     language TEXT NOT NULL,
-    sentences TEXT NOT NULL
+    sentences TEXT NOT NULL,
+    kind TEXT NOT NULL DEFAULT 'body'
 );
 CREATE INDEX passages_by_document ON passages (document_id, idx);
 """
+MIGRATIONS = {
+    # Passages get a kind. Documents parsed before it are queued to be parsed again, so their
+    # reference and author lists are classified and dropped from the search index.
+    2: f"""
+ALTER TABLE passages ADD COLUMN kind TEXT NOT NULL DEFAULT 'body';
+UPDATE documents SET status = '{DocumentStatus.QUEUED}'
+    WHERE status IN ('{DocumentStatus.READY}', '{DocumentStatus.INDEXING}');
+""",
+}
+"""Scripts that upgrade the database from the previous version to the key's version."""
 
 _DOCUMENT_COLUMNS = (
     "id, file_name, size_bytes, added_at, status, error, metadata, language, page_count, "
@@ -82,6 +93,7 @@ def _passage_from_row(row: sqlite3.Row) -> Passage:
         text=row["text"],
         language=row["language"],
         sentences=[SentenceSpan(start=s, end=e) for s, e in json.loads(row["sentences"])],
+        kind=row["kind"],
     )
 
 
@@ -97,10 +109,14 @@ class LibraryRepository:
             self._conn.execute("PRAGMA foreign_keys = ON")
             version = self._conn.execute("PRAGMA user_version").fetchone()[0]
             if version == 0:
-                # executescript() commits implicitly, so the transaction lives in the script.
-                self._conn.executescript(
-                    f"BEGIN;\n{SCHEMA}\nPRAGMA user_version = {SCHEMA_VERSION};\nCOMMIT;"
-                )
+                self._run_script(SCHEMA, SCHEMA_VERSION)
+            else:
+                for target in range(version + 1, SCHEMA_VERSION + 1):
+                    self._run_script(MIGRATIONS[target], target)
+
+    def _run_script(self, script: str, version: int) -> None:
+        # executescript() commits implicitly, so the transaction lives in the script.
+        self._conn.executescript(f"BEGIN;\n{script}\nPRAGMA user_version = {version};\nCOMMIT;")
 
     def close(self) -> None:
         with self._lock:
@@ -187,8 +203,9 @@ class LibraryRepository:
                 [(document_id, n, text) for n, text in enumerate(parsed.pages, start=1)],
             )
             conn.executemany(
-                "INSERT INTO passages (id, document_id, idx, page, text, language, sentences) "
-                "VALUES (?, ?, ?, ?, ?, ?, ?)",
+                "INSERT INTO passages "
+                "(id, document_id, idx, page, text, language, sentences, kind) "
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
                 [
                     (
                         p.id,
@@ -198,6 +215,7 @@ class LibraryRepository:
                         p.text,
                         p.language,
                         json.dumps([[s.start, s.end] for s in p.sentences]),
+                        p.kind,
                     )
                     for p in parsed.passages
                 ],

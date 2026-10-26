@@ -1,4 +1,5 @@
 import hashlib
+import textwrap
 from collections.abc import AsyncIterator
 from pathlib import Path
 
@@ -16,14 +17,19 @@ from rb_engine.domain.library import (
     SearchRequest,
 )
 from rb_engine.ports.library import IndexHit
-from rb_engine.services.library import LibraryService, group_hits
-from tests.fake_embedder import FakeEmbedderResolver
+from rb_engine.services.library import LibraryService, group_hits, searchable_passages
+from rb_engine.text.search_form import search_form
+from tests.boilerplate_samples import LIGO_REFERENCES
+from tests.fake_embedder import FakeEmbedder, FakeEmbedderResolver
 from tests.pdfs import CLIMATE_PAPER_PAGES, SLEEP_PAPER_PAGES, make_pdf
 
 pytestmark = pytest.mark.anyio
 
 SLEEP_PDF = make_pdf(SLEEP_PAPER_PAGES)
 CLIMATE_PDF = make_pdf(CLIMATE_PAPER_PAGES)
+PAPER_WITH_REFERENCES_PDF = make_pdf(
+    [*SLEEP_PAPER_PAGES, ["References", *textwrap.wrap(LIGO_REFERENCES, 90)]]
+)
 
 
 class Harness:
@@ -222,3 +228,44 @@ def test_group_hits_keeps_only_nearly_best_passages() -> None:
     assert [r.document.id for r in results] == ["a", "b"]
     assert [p.passage_id for p in results[0].passages] == ["a:0", "a:1"]
     assert results[0].score == 0.033
+
+
+async def test_reference_lists_are_stored_but_not_indexed(lib: Harness) -> None:
+    doc_id = lib.import_bytes(PAPER_WITH_REFERENCES_PDF, "paper.pdf")
+    await lib.settle()
+
+    stored = lib.service._repo.passages_for_document(doc_id)
+    (references,) = [p for p in stored if p.page == 4]
+    assert references.kind == "references"
+    index = LanceIndexStore(lib.root / "index").open("embed-test")
+    assert index is not None
+    vector = FakeEmbedder().embed_queries([references.text])[0]
+    hits = index.search(vector, search_form(references.text), None, 100)
+    assert {h.passage_id for h in hits} == {p.id for p in stored if p.page < 4}
+
+
+def test_searchable_passages_skip_boilerplate_unless_nothing_else_is_left() -> None:
+    body, refs = _passage("a", 0), _passage("a", 1).model_copy(update={"kind": "references"})
+    assert searchable_passages([body, refs]) == [body]
+    assert searchable_passages([refs]) == [refs]
+
+
+async def test_reparsing_drops_stale_index_rows(tmp_path: Path) -> None:
+    first = Harness(tmp_path, FakeEmbedderResolver())
+    await first.service.start()
+    doc_id = first.import_bytes(SLEEP_PDF, "sleep.pdf")
+    await first.settle()
+    await first.service.stop()
+    assert first.service.index_status().indexed_documents == 1
+    # What the v2 schema migration does to documents parsed before passage kinds existed.
+    first.service._repo.set_status(doc_id, DocumentStatus.QUEUED)
+
+    second = Harness(tmp_path, FakeEmbedderResolver(ready=False))
+    await second.service.start()
+    try:
+        await second.settle()
+        assert second.status(doc_id) == DocumentStatus.READY
+        # Parsed again, so the old rows are gone and the document waits for "index now".
+        assert second.service.index_status().pending_documents == 1
+    finally:
+        await second.service.stop()
